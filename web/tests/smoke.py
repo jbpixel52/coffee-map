@@ -38,6 +38,21 @@ with sync_playwright() as p:
         "sprite image 'paper' missing — styles/sprite.json or sprite.png not served?"
     )
 
+    # painted-at-rest post-process: SVG displacement filter on the canvas +
+    # screen-space paper overlay (both degrade to a clean map if unsupported)
+    page.wait_for_function(
+        "window.__map.loaded() && !document.getElementById('map').classList.contains('moving')",
+        timeout=90_000,
+    )
+    paint = page.evaluate(
+        """() => ({
+             filter: getComputedStyle(document.querySelector('.maplibregl-canvas')).filter,
+             paper: !!document.getElementById('paper'),
+           })"""
+    )
+    assert "wc-paint" in paint["filter"], f"canvas displacement filter not applied: {paint['filter']!r}"
+    assert paint["paper"], "screen-space paper overlay missing"
+
     # NOTE: patchright's page.evaluate runs in an ISOLATED world by default —
     # main-world globals (window.__shops etc.) need isolated_context=False.
     n = page.evaluate("window.__shops.length", isolated_context=False)

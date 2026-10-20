@@ -13,18 +13,41 @@ async function boot() {
     fetch(`${BASE}data/meta.json`).then((r) => r.json()),
   ]);
 
+  // QA/screenshot hook: ?z=<zoom>&ll=<lon>,<lat> sets the initial camera
+  // (lets headless shots skip a mid-run jumpTo, which is crash-prone under
+  // software GL in constrained environments)
+  const params = new URLSearchParams(location.search);
+  const ll = (params.get("ll") ?? "").split(",").map(Number);
+  const zq = Number(params.get("z"));
+  const cam =
+    ll.length === 2 && ll.every(Number.isFinite) && Number.isFinite(zq)
+      ? { center: [ll[0], ll[1]] as [number, number], zoom: zq }
+      : { center: [-117.0382, 32.5149] as [number, number], zoom: 12.4 };
+
   const map = new maplibregl.Map({
     container: "map",
     // Our own watercolor theme over OpenFreeMap vector tiles (OSM data):
     // free, keyless, no external style service. See src/watercolor.ts.
     style: watercolorStyle,
-    center: [-117.0382, 32.5149],
-    zoom: 12.4,
+    center: cam.center,
+    zoom: cam.zoom,
   });
 
   // hooks the smoke test drives
   (window as any).__map = map;
   (window as any).__shops = fc.features;
+
+  // paper overlay asset + painted-at-rest filter toggling
+  const paperEl = document.getElementById("paper") as HTMLElement;
+  paperEl.style.backgroundImage = `url(${BASE}styles/paper.png)`;
+  const mapEl = document.getElementById("map") as HTMLElement;
+  // start crisp: the first paint loop loads tiles and repaints constantly,
+  // and re-running the SVG filter per frame is the expensive case. The
+  // painted look kicks in on the first idle and returns whenever motion stops.
+  mapEl.classList.add("moving");
+  map.on("movestart", () => mapEl.classList.add("moving"));
+  map.on("zoomstart", () => mapEl.classList.add("moving"));
+  map.on("idle", () => mapEl.classList.remove("moving"));
 
   const popupFor = (f: Feature<Point>) => {
     const p = f.properties as Record<string, any> & ShopProps;

@@ -326,7 +326,7 @@ export const watercolorStyle: StyleSpecification = {
       layout: { "line-cap": "round", "line-join": "round" },
       paint: {
         "line-color": PALETTE.roadShade,
-        "line-opacity": 0.55,
+        "line-opacity": 0.45,
         "line-blur": 3,
         "line-width": ["interpolate", ["linear"], ["zoom"], 8, 1.5, 12, 5, 16, 14],
       },
@@ -347,7 +347,7 @@ export const watercolorStyle: StyleSpecification = {
       layout: { "line-cap": "round", "line-join": "round" },
       paint: {
         "line-color": PALETTE.roadCasing,
-        "line-opacity": 0.65,
+        "line-opacity": 0.5,
         "line-blur": 0.6,
         "line-width": ["interpolate", ["linear"], ["zoom"], 8, 1.4, 12, 3.8, 16, 11],
       },
@@ -457,10 +457,10 @@ export const watercolorStyle: StyleSpecification = {
         "symbol-placement": "line",
         "text-field": name,
         "text-font": FONT,
-        "text-size": ["interpolate", ["linear"], ["zoom"], 14, 11, 18, 13],
+        "text-size": ["interpolate", ["linear"], ["zoom"], 14, 11.5, 18, 13.5],
         "text-letter-spacing": 0.02,
       },
-      paint: { "text-color": PALETTE.inkRoad, "text-halo-color": PALETTE.paper, "text-halo-width": 1.4 },
+      paint: { "text-color": PALETTE.inkRoad, "text-halo-color": PALETTE.paper, "text-halo-width": 1.8 },
     },
     {
       id: "transport-name-medium",
@@ -473,9 +473,9 @@ export const watercolorStyle: StyleSpecification = {
         "symbol-placement": "line",
         "text-field": name,
         "text-font": FONT,
-        "text-size": ["interpolate", ["linear"], ["zoom"], 15, 10, 18, 12.5],
+        "text-size": ["interpolate", ["linear"], ["zoom"], 15, 10.5, 18, 13],
       },
-      paint: { "text-color": PALETTE.inkRoad, "text-halo-color": PALETTE.paper, "text-halo-width": 1.3 },
+      paint: { "text-color": PALETTE.inkRoad, "text-halo-color": PALETTE.paper, "text-halo-width": 1.7 },
     },
     {
       id: "place-city",

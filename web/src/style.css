@@ -25,6 +25,27 @@ body {
   bottom: 28px;
   left: 0;
   right: 0;
+  background: #f8ead1; /* shows through the displaced filter's soft edges */
+}
+#paper {
+  position: absolute;
+  top: 41px;
+  bottom: 28px;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  background-repeat: repeat;
+  background-size: 256px 256px;
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+}
+/* hand-painted look: displace + soften the canvas while the map is at rest,
+   crisp while moving (panning with an SVG filter on a WebGL canvas is slow) */
+.maplibregl-canvas {
+  filter: url(#wc-paint);
+}
+#map.moving .maplibregl-canvas {
+  filter: none;
 }
 #attrib {
   position: absolute;

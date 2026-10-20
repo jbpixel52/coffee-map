@@ -14,7 +14,11 @@ Map UI: MapLibre GL over **OpenFreeMap** vector tiles (OSM data), re-styled
 with a **custom watercolor theme** — warm paper with fiber + grain, saturated
 turquoise water with pooling blooms, apple-green and peach washes, blurred
 edges, multi-color pigment drift (`web/src/watercolor.ts`, sprite in
-`web/public/styles/`).
+`web/public/styles/`). On top of the style, a **painted-at-rest pass**:
+an SVG turbulence displacement + soft blur over the canvas (disengaged while
+panning/zooming so motion stays smooth) and a screen-space paper overlay with
+`mix-blend-mode: multiply`, so the vector geometry stops reading as
+machine-straight. Both degrade gracefully to a clean map if unsupported.
 The visual reference is Stamen Watercolor, but no Stadia/Stamen service is
 used. Spanish (es-MX) strings, marker popups with a Google Maps search link.
 Data is refreshed by local scrape runs; GitHub Actions only builds and deploys
@@ -75,9 +79,10 @@ config + one refresh away. The UI strings are Spanish for now.
 - Map tiles — **OpenFreeMap** vector tiles from OpenStreetMap data (free,
   keyless, no attribution requirement beyond OSM's). The watercolor look is
   our own MapLibre style (`web/src/watercolor.ts`): palette + a self-hosted
-  sprite with paper/mottle/wash/drift/bloom tiles (`web/public/styles/sprite.*`,
-  regenerate with `uv run --with pillow python scripts/make_sprite.py`). No
-  external tile service, no API keys; footer keeps the OSM (ODbL) credit.
+  sprite with paper/mottle/wash/drift/bloom tiles and a `paper.png` overlay
+  (`web/public/styles/`, regenerate with
+  `uv run --with pillow python scripts/make_sprite.py`). No external tile
+  service, no API keys; footer keeps the OSM (ODbL) credit.
 
 ## Repo layout
 

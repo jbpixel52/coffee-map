@@ -13,6 +13,18 @@
       <span id="count"></span>
     </header>
     <div id="map"></div>
+    <!-- screen-space paper: multiplies over the canvas so the whole map sits
+         on visible paper even between texture tiles -->
+    <div id="paper" aria-hidden="true"></div>
+    <!-- painted-at-rest post-process: turbulence-displaced canvas edge so
+         vector geometry stops looking mechanically straight -->
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
+      <filter id="wc-paint" x="-3%" y="-3%" width="106%" height="106%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.021 0.026" numOctaves="2" seed="7" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G" />
+        <feGaussianBlur stdDeviation="0.14" />
+      </filter>
+    </svg>
     <footer id="attrib">
       Datos: © OpenStreetMap contributors (ODbL) · Google Maps · Instagram —
       Mapa: acuarela (estilo propio) sobre OpenFreeMap —

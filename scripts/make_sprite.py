@@ -135,6 +135,14 @@ out = Path(__file__).resolve().parents[1] / "web" / "public" / "styles"
 out.mkdir(parents=True, exist_ok=True)
 SHEET.save(out / "sprite.png")
 
+# screen-space paper overlay: the paper tile tiled 2x2 (seamless), served as
+# its own file so CSS can repeat it above the canvas with mix-blend-mode.
+paper2 = Image.new("RGBA", (TILE * 2, TILE * 2))
+for i in range(2):
+    for j in range(2):
+        paper2.paste(paper, (i * TILE, j * TILE))
+paper2.save(out / "paper.png")
+
 sprite = {
     name: {"width": TILE, "height": TILE, "x": TILE * i, "y": 0, "pixelRatio": 1}
     for i, name in enumerate(NAMES)
