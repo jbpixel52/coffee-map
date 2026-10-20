@@ -55,11 +55,15 @@ def scrape_markdown(payload: dict) -> str:
 
 # ---------------------------------------------------------------- extraction
 
-GMAPS_PLACE_RE = re.compile(
-    r"https?://(?:www\.)?google\.com/maps/place/([^/\s?#]+)/data=[^\s\"')]*"
-)
+# Google Maps place URLs come in two shapes on directory pages:
+#   .../maps/place/Café+Name/data=!…!3d32.52!4d-117.1!19sChIJ…   (name then data)
+#   .../maps/place/Café+Name/@32.52,-117.1,15z/data=!…!3d…!4d…!1s0x…:0x…  (coord segment)
+# and Google-panel links with an empty name ("place/@32.52,…") carry no name — skipped.
+GMAPS_PLACE_URL_RE = re.compile(r"https?://(?:www\.)?google\.com/maps/place/[^\s\"'\)\]]+")
+GMAPS_NAME_RE = re.compile(r"https?://(?:www\.)?google\.com/maps/place/([^/?#]+)")
 COORD_RE = re.compile(r"!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)")
 PLACE_ID_RE = re.compile(r"!19s([A-Za-z0-9_-]{10,})")
+PLACE_ID_FALLBACK_RE = re.compile(r"!1s(0x[0-9a-f]+:0x[0-9a-f]+)")
 
 IG_LINK_RE = re.compile(r"https?://(?:www\.)?instagram\.com/([A-Za-z0-9_.]{3,30})")
 IG_RESERVED = {
@@ -85,18 +89,22 @@ def extract_gmaps_links(md: str) -> list[dict]:
     """Google Maps place links embedded in a page -> candidates with coordinates."""
     out: list[dict] = []
     seen: set[str] = set()
-    for m in GMAPS_PLACE_RE.finditer(md):
+    for m in GMAPS_PLACE_URL_RE.finditer(md):
         url = m.group(0)
-        mc, mi = COORD_RE.search(url), PLACE_ID_RE.search(url)
+        mc = COORD_RE.search(url)
+        mi = PLACE_ID_RE.search(url) or PLACE_ID_FALLBACK_RE.search(url)
         if not (mc and mi):
             continue
+        name_m = GMAPS_NAME_RE.match(url)
+        if not name_m:
+            continue
+        name = urllib.parse.unquote_plus(name_m.group(1)).strip()
+        if not name or name.startswith("@"):
+            continue  # coordinate-panel links carry no place name
         sid = f"gmaps:{mi.group(1)}"
         if sid in seen:
             continue
         seen.add(sid)
-        name = urllib.parse.unquote_plus(m.group(1)).strip()
-        if not name:
-            continue
         out.append(
             {
                 "name": name,

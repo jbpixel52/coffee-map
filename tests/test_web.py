@@ -40,6 +40,29 @@ def test_extract_gmaps_links_needs_both_coords_and_id():
     assert web.extract_gmaps_links(md) == []
 
 
+def test_extract_gmaps_links_handles_coord_segment_and_fallback_id():
+    # Sprudge-style: /@lat,lng,15z/data=… with a 0x0:0x… fallback id
+    md = (
+        "located at [Larroque 271](https://www.google.com/maps/place/Nativo+Coffee+"
+        "Community/@32.5411054,-117.0302366,15z/data=!4m5!3m4!1s0x0:0x5312facc572da59"
+        "!8m2!3d32.5411054!4d-117.0302366). Follow them"
+    )
+    out = web.extract_gmaps_links(md)
+    assert len(out) == 1
+    assert out[0]["name"] == "Nativo Coffee Community"
+    assert out[0]["lat"] == 32.5411054
+    assert out[0]["source_id"] == "gmaps:0x0:0x5312facc572da59"
+
+
+def test_extract_gmaps_links_skips_nameless_panel_links():
+    # Wanderlog-style: place/@lat,lng,17z — a map panel, not a named place.
+    md = (
+        "[Reseñas](https://www.google.com/maps/place/@32.525704,-117.03762,17z/"
+        "data=!4m10!3m9!1s0x80d949a9f7f6e6f9:0xb4a32b0632499b5b!8m2!3d32.525704!4d-117.03762)"
+    )
+    assert web.extract_gmaps_links(md) == []
+
+
 def test_extract_list_names_strips_escaped_numbers_and_descriptors():
     out = web.extract_list_names(TRIPADVISOR_LIST)
     assert [o["name"] for o in out] == ["Cafe de la Flor", "Mision 19"]

@@ -45,3 +45,8 @@ web_queries = [
   "cafes Tijuana nueva",
   "especialidad cafe Tijuana 2026",
 ]
+# Directory pages the ranker misses but that carry full café lists with
+# coordinates in their Google Maps links.
+web_extra_pages = [
+  "https://hoteltacubaya.com/post/los-19-cafeterias-de-tijuana.p2050",
+]

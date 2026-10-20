@@ -24,6 +24,7 @@ class City:
     bbox: tuple[float, float, float, float]  # south, west, north, east
     gmaps_queries: list[str]
     web_queries: list[str] = field(default_factory=list)
+    web_extra_pages: list[str] = field(default_factory=list)
 
 
 def load_city(path: Path | None = None) -> City:
@@ -39,4 +40,5 @@ def load_city(path: Path | None = None) -> City:
         bbox=(raw["bbox_south"], raw["bbox_west"], raw["bbox_north"], raw["bbox_east"]),
         gmaps_queries=list(raw.get("gmaps_queries", [])),
         web_queries=list(raw.get("web_queries", [])),
+        web_extra_pages=list(raw.get("web_extra_pages", [])),
     )

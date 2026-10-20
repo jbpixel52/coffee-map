@@ -50,16 +50,23 @@ def tokens(name: str) -> set[str]:
 def token_covered(a: str, b: str, min_distinct_len: int = 4) -> bool:
     """Every distinctive token of the smaller string appears in the larger one.
 
-    Handles brand-style names and Instagram handles ('Brewja' vs
-    'brewja.barradecafe' -> norm 'brewja barradecafe'). A single very short
-    distinctive token ('lumi' is 4; below 4 is rejected) is not enough by itself.
+    Handles brand-style names and Instagram handles: tokens may be split
+    ('brewja' vs 'brewja.barradecafe') or fused ('Nativo Coffee Community' vs
+    'nativocoffee'). A single very short distinctive token ('lumi' is 4; below
+    4 is rejected) is not enough by itself.
     """
     ta, tb = tokens(a), tokens(b)
     if not ta or not tb:
         return False
-    short, long_ = (ta, tb) if len(ta) <= len(tb) else (tb, ta)
+    if len(ta) <= len(tb):
+        short, long_, long_s = ta, tb, b
+    else:
+        short, long_, long_s = tb, ta, a
     distinct = short - STOP_TOKENS
-    if not distinct or not distinct <= long_:
+    if not distinct:
+        return False
+    fused = "".join(norm_name(long_s).split())
+    if not all(t in long_ or t in fused for t in distinct):
         return False
     if len(distinct) == 1 and len(next(iter(distinct))) < min_distinct_len:
         return False

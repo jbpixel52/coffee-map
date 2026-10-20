@@ -225,30 +225,37 @@ def main(argv: list[str] | None = None) -> int:
             latest[r["key"]] = r["archive_ref"]
         done = {r["key"] for r in con.execute("SELECT key FROM fetches WHERE source='webpage'")}
         scraped = failed = 0
+
+        def _grab(url: str) -> None:
+            nonlocal scraped, failed
+            try:
+                page = web.scrape(url)
+            except web.CrwError as exc:
+                failed += 1
+                print(f"web-scrape FAIL {url}: {exc}")
+                return
+            md = web.scrape_markdown(page)
+            if not md:
+                failed += 1
+                print(f"web-scrape EMPTY {url}")
+                return
+            pref = archive_write(
+                "webpage", url, json.dumps(page, ensure_ascii=False).encode("utf-8"), "json"
+            )
+            record_fetch(con, "webpage", url, pref)
+            done.add(url)
+            scraped += 1
+            print(f"web-scrape {url} -> {len(md)} chars")
+            time.sleep(random.randint(2, 5))  # politeness: crw fetches these from the live web
+
         for q, ref in latest.items():
             payload = json.loads(archive_read(ref))
             for url in web.candidate_pages(web.search_results(payload), per_query=args.per_query):
-                if url in done:
-                    continue
-                try:
-                    page = web.scrape(url)
-                except web.CrwError as exc:
-                    failed += 1
-                    print(f"web-scrape FAIL {url}: {exc}")
-                    continue
-                md = web.scrape_markdown(page)
-                if not md:
-                    failed += 1
-                    print(f"web-scrape EMPTY {url}")
-                    continue
-                pref = archive_write(
-                    "webpage", url, json.dumps(page, ensure_ascii=False).encode("utf-8"), "json"
-                )
-                record_fetch(con, "webpage", url, pref)
-                done.add(url)
-                scraped += 1
-                print(f"web-scrape [{q}] {url} -> {len(md)} chars")
-                time.sleep(random.randint(2, 5))  # politeness: crw fetches these from the live web
+                if url not in done:
+                    _grab(url)
+        for url in city.web_extra_pages:
+            if url not in done:
+                _grab(url)
         print(f"web-scrape: {scraped} pages archived, {failed} failed")
     elif args.cmd == "web-candidates":
         import json

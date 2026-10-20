@@ -30,9 +30,19 @@ the committed data.
 uv sync                                # Python 3.12 toolchain
 uv run coffeemap osm-fetch             # Overpass -> data/archive/ (bytes on disk first)
 uv run coffeemap osm-parse             # parse archive -> data/coffeemap.db
-uv run coffeemap gmaps-fetch --max-scrolls 6   # 3 Google Maps queries, gentle pacing
+uv run coffeemap gmaps-fetch --max-scrolls 8   # 20 zone/term Google Maps queries, gentle pacing
 uv run coffeemap gmaps-parse
-uv run coffeemap ig-recon --limit 60   # logged-out IG profile recon (handles from OSM)
+uv run coffeemap web-search --limit 12 # local search service (fastCRW) SERPs -> archive
+uv run coffeemap web-scrape --per-query 5      # directory/blog listicles -> archive
+uv run coffeemap web-candidates        # extract café candidates (gmaps links, lists, IG handles)
+uv run coffeemap classify-validate     # sanity battery on the local model
+uv run coffeemap classify-candidates   # Kev tier: café-or-not for candidates (place,name)
+uv run coffeemap classify-places       # same gate for scraped gmaps/web places
+uv run coffeemap candidates-apply      # promote café verdicts to places (dedupe 120 m + name)
+uv run coffeemap ig-recon --limit 60   # logged-out IG profile recon (places + candidates)
+uv run coffeemap ig-enrich             # offline: full_name + latest post code from archive
+uv run coffeemap classify-candidates --kinds ig
+uv run coffeemap ig-attach             # link IG profiles to places (name/handle match)
 uv run coffeemap merge                 # canonical shops (100 m + name≥0.80 dedupe)
 uv run coffeemap export                # web/public/data/{shops.geojson,meta.json}
 uv run coffeemap status                # row counts per table
@@ -62,20 +72,31 @@ uv run python web/tests/smoke.py http://localhost:5199/coffee-map/   # headless 
 - **`ensure_browsers_path()` before `import patchright`** — patchright caches
   `PLAYWRIGHT_BROWSERS_PATH` at import time; the agent runtime's inherited
   value points at browsers this driver never installed.
+- **The classifier is local ("Kev" tier).** `classify_*` commands call the
+  machine's local LLM stack (LiteLLM `local-small`, an OVMS-served Qwen2.5),
+  never a hosted API — zero paid tokens. `classify-validate` runs a labeled
+  battery first; a wrong answering layer (e.g. a decision shim with broken
+  prompts) should be caught there, not mid-pipeline.
 
 ## Changing the city
 
 Everything city-shaped lives in `config/city.toml` (name, country, locale,
-timezone, centre/zoom, Overpass bbox, Google Maps queries). San Diego is one
-config + one refresh away. The UI strings are Spanish for now.
+timezone, centre/zoom, Overpass bbox, Google Maps queries, web search queries).
+San Diego is one config + one refresh away. The UI strings are Spanish for now.
 
 ## Data sources & licences
 
 - OpenStreetMap © OpenStreetMap contributors, **ODbL** — attribution is
   displayed in the map footer and must stay.
 - Google Maps — names/coordinates from public search pages; the public export
-  carries no ratings or review text.
-- Instagram — public profile fields (handle, follower count) only.
+  carries no ratings or review text. Directory pages that embed Google Maps
+  links (`/maps/place/.../data=…`) contribute place ids + coordinates too.
+- Web search — SERPs from the local `fastCRW` service; only used to find names
+  and Instagram handles of cafés (no article text is shipped).
+- Instagram — public profile fields (handle, follower count, full name) and
+  the latest post's shortcode, embedded on the map via Instagram's official
+  post-embed iframe. Nothing is mirrored: the click-preview loads directly
+  from instagram.com.
 - Map tiles — **OpenFreeMap** vector tiles from OpenStreetMap data (free,
   keyless, no attribution requirement beyond OSM's). The watercolor look is
   our own MapLibre style (`web/src/watercolor.ts`): palette + a self-hosted
@@ -88,7 +109,7 @@ config + one refresh away. The UI strings are Spanish for now.
 
 ```
 config/city.toml            the city (only file to edit for a new one)
-src/coffeemap/              pipeline: sources/{osm,gmaps,ig}.py, store, merge, export, cli
+src/coffeemap/              pipeline: sources/{osm,gmaps,ig,web}.py, classify, store, merge, export, cli
 scripts/                    refresh.sh, fixture captures, IG discovery probe
 tests/                      pytest suite (fixtures = real captured bytes)
 web/                        Vite + MapLibre app; web/public/data holds the export

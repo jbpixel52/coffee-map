@@ -1,4 +1,10 @@
-from coffeemap.merge import haversine_m, norm_name, should_merge
+from coffeemap.merge import (
+    haversine_m,
+    name_match,
+    norm_name,
+    should_merge,
+    token_covered,
+)
 
 
 def place(name, lat, lon, source="osm", sid="osm:node/1"):
@@ -40,3 +46,31 @@ def test_rebuild_is_idempotent(tmp_path):
     upsert_place(con, source="gmaps", source_id="gmaps:ChIJa", name="Cafe A", lat=32.5001, lon=-117.0001)
     assert rebuild_shops(con) == (1, 1)
     assert rebuild_shops(con) == (1, 1)
+
+
+def test_rebuild_excludes_not_cafe_places(tmp_path):
+    from coffeemap.merge import rebuild_shops
+    from coffeemap.store import connect, upsert_place
+
+    con = connect(tmp_path / "t.db")
+    upsert_place(con, source="gmaps", source_id="gmaps:ChIJn", name="Smart Fit", lat=32.5, lon=-117.0)
+    con.execute("UPDATE places SET verdict='not_cafe'")
+    con.commit()
+    assert rebuild_shops(con) == (0, 0)
+
+
+def test_token_covered_brand_vs_handle():
+    assert token_covered("Brewja", "brewja.barradecafe")
+    assert token_covered("Lumi", "LUMI CAFÉ")
+    assert token_covered("Quimérico", "Quimérico | Cafetería y Restaurante")
+
+
+def test_token_covered_rejects_generic_or_short_only():
+    assert not token_covered("Cafe", "Cafe Zona Rio")  # only stop-tokens
+    assert not token_covered("Ab", "Ab Cafe")  # 2-char distinctive token
+
+
+def test_name_match_folds_and_covers():
+    assert name_match("CRU Coffee Roasters & Cellars", "crucoffee")
+    assert name_match("Café de la Flor", "Cafe de la Flor - Plaza Río")
+    assert not name_match("Café de la Flor", "padam.bistro")
