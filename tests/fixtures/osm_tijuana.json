@@ -1,0 +1,3844 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-10-20T04:33:58Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 596260414,
+  "lat": 32.5842190,
+  "lon": -117.1001670,
+  "tags": {
+    "addr:city": "San Diego",
+    "addr:country": "US",
+    "addr:housenumber": "1550",
+    "addr:postcode": "92154",
+    "addr:street": "Palm Avenue",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "name": "Cafecito on Palm",
+    "outdoor_seating": "yes",
+    "source": "SanGIS Addresses Public Domain (http://www.sangis.org/)"
+  }
+},
+{
+  "type": "node",
+  "id": 1641441599,
+  "lat": 32.4735228,
+  "lon": -116.9184292,
+  "tags": {
+    "amenity": "cafe"
+  }
+},
+{
+  "type": "node",
+  "id": 1876514356,
+  "lat": 32.5160751,
+  "lon": -117.0226623,
+  "tags": {
+    "amenity": "cafe",
+    "name": "En Caliente"
+  }
+},
+{
+  "type": "node",
+  "id": 1876514367,
+  "lat": 32.5214228,
+  "lon": -117.0302155,
+  "tags": {
+    "addr:street": "Avenida Brasil",
+    "amenity": "cafe",
+    "cuisine": "ice_cream",
+    "name": "Thrifty Ice Cream"
+  }
+},
+{
+  "type": "node",
+  "id": 2368016766,
+  "lat": 32.4937087,
+  "lon": -116.9321340,
+  "tags": {
+    "amenity": "cafe",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "brand:wikipedia": "en:Starbucks",
+    "cuisine": "coffee_shop",
+    "internet_access": "wlan",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "takeaway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 2368020901,
+  "lat": 32.5142085,
+  "lon": -117.0071950,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:street": "Boulevard Salinas",
+    "amenity": "cafe",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "cuisine": "coffee_shop",
+    "internet_access": "wlan",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "takeaway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 2653096337,
+  "lat": 32.6827786,
+  "lon": -117.1788222,
+  "tags": {
+    "amenity": "cafe",
+    "name": "The Tavern"
+  }
+},
+{
+  "type": "node",
+  "id": 2690025927,
+  "lat": 32.4835962,
+  "lon": -117.0363559,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housename": "ARBODOMO",
+    "addr:housenumber": "6497-7a",
+    "addr:postcode": "22626",
+    "addr:street": "Calle Braulio Maldonado",
+    "amenity": "cafe",
+    "cuisine": "cafe;deli;fruit",
+    "internet_access": "yes",
+    "name": "ARBODOMO",
+    "opening_hours": "Mo-Sa 08:00-22:00",
+    "phone": "+52 664 637 0938",
+    "website": "http://www.arbodomo.com"
+  }
+},
+{
+  "type": "node",
+  "id": 3016880269,
+  "lat": 32.5433483,
+  "lon": -117.0437573,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Boba n More"
+  }
+},
+{
+  "type": "node",
+  "id": 3105775994,
+  "lat": 32.4446506,
+  "lon": -117.0352183,
+  "tags": {
+    "amenity": "cafe",
+    "internet_access": "wlan",
+    "name": "Café Baristi",
+    "smoking": "outside"
+  }
+},
+{
+  "type": "node",
+  "id": 3106019630,
+  "lat": 32.5225502,
+  "lon": -117.0321424,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Café Baristi",
+    "phone": "200-2555"
+  }
+},
+{
+  "type": "node",
+  "id": 3106019631,
+  "lat": 32.5216926,
+  "lon": -117.0272870,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "9031",
+    "addr:postcode": "22040",
+    "addr:street": "Avenida Ensenada",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop;tea;breakfast",
+    "internet_access": "yes",
+    "name": "Padám",
+    "opening_hours": "Mo-Sa 07:30-21:40; Su 13:00-21:00",
+    "outdoor_seating": "yes",
+    "phone": "+52 664 200 2125",
+    "website": "https://www.instagram.com/padam.bistro/"
+  }
+},
+{
+  "type": "node",
+  "id": 3106019633,
+  "lat": 32.5195565,
+  "lon": -117.0230845,
+  "tags": {
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "internet_access": "wlan",
+    "name": "Velvet Café & Bistro"
+  }
+},
+{
+  "type": "node",
+  "id": 3106022337,
+  "lat": 32.5165984,
+  "lon": -117.0218649,
+  "tags": {
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "internet_access": "wlan",
+    "name": "Café Baristi"
+  }
+},
+{
+  "type": "node",
+  "id": 3179120059,
+  "lat": 32.4422112,
+  "lon": -117.0361468,
+  "tags": {
+    "amenity": "cafe",
+    "internet_access": "wlan",
+    "name": "D'Volada Café"
+  }
+},
+{
+  "type": "node",
+  "id": 3206378068,
+  "lat": 32.5318272,
+  "lon": -116.9574774,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Kasa Café"
+  }
+},
+{
+  "type": "node",
+  "id": 3219419134,
+  "lat": 32.5184265,
+  "lon": -117.0552106,
+  "tags": {
+    "amenity": "cafe"
+  }
+},
+{
+  "type": "node",
+  "id": 3219419135,
+  "lat": 32.5170920,
+  "lon": -117.0631059,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Café Central"
+  }
+},
+{
+  "type": "node",
+  "id": 3225818512,
+  "lat": 32.4837992,
+  "lon": -117.0104500,
+  "tags": {
+    "amenity": "cafe",
+    "name": "D'Volada Café"
+  }
+},
+{
+  "type": "node",
+  "id": 3965224901,
+  "lat": 32.5137313,
+  "lon": -117.0115497,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "3330-10",
+    "addr:postcode": "22020",
+    "addr:street": "Calle Sonora",
+    "amenity": "cafe",
+    "name": "Das Cortez"
+  }
+},
+{
+  "type": "node",
+  "id": 4082245997,
+  "lat": 32.6606562,
+  "lon": -117.1055360,
+  "tags": {
+    "addr:city": "National City",
+    "addr:housenumber": "404",
+    "addr:postcode": "91950",
+    "addr:state": "CA",
+    "addr:street": "Mile of Cars Way",
+    "addr:unit": "101",
+    "amenity": "cafe",
+    "branch": "Mile of Cars Way & I-5",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "cuisine": "coffee_shop",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "phone": "+1 619-336-1209",
+    "ref": "1006845",
+    "takeaway": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/1006845/mile-of-cars-way-i-5-404-mile-of-cars-way-101-national-city-ca-91950854"
+  }
+},
+{
+  "type": "node",
+  "id": 4163949648,
+  "lat": 32.5274134,
+  "lon": -117.0189300,
+  "tags": {
+    "amenity": "cafe",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "cuisine": "coffee_shop",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "takeaway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 4243778089,
+  "lat": 32.5158609,
+  "lon": -117.0087962,
+  "tags": {
+    "amenity": "cafe",
+    "name": "food farden",
+    "name:en": "Food Garden",
+    "name:es": "food farden"
+  }
+},
+{
+  "type": "node",
+  "id": 4407923797,
+  "lat": 32.5272751,
+  "lon": -117.0181834,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Café de la Flor",
+    "name:es": "Café de la Flor"
+  }
+},
+{
+  "type": "node",
+  "id": 4489520248,
+  "lat": 32.5134718,
+  "lon": -117.0046048,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "11120",
+    "addr:postcode": "22014",
+    "addr:street": "Boulevard Agua Caliente",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "name": "Cru coffee roasters & cellars"
+  }
+},
+{
+  "type": "node",
+  "id": 4519165285,
+  "lat": 32.6843630,
+  "lon": -117.1795047,
+  "tags": {
+    "addr:city": "Coronado",
+    "addr:housenumber": "1134",
+    "addr:street": "Orange Avenue",
+    "amenity": "cafe",
+    "name": "CAFE 1134",
+    "phone": "+1-619-437-1134",
+    "website": "https://www.cafe1134.net/"
+  }
+},
+{
+  "type": "node",
+  "id": 4580484289,
+  "lat": 32.5313029,
+  "lon": -117.0399022,
+  "tags": {
+    "addr:housenumber": "1133",
+    "addr:street": "Avenida C - Niños Heróes",
+    "amenity": "cafe",
+    "internet_access": "wlan",
+    "name": "Mundo Anime Cafe",
+    "name:en": "Mundo Anime Cafe",
+    "name:es": "Mundo Anime Cafe"
+  }
+},
+{
+  "type": "node",
+  "id": 4580524594,
+  "lat": 32.5275010,
+  "lon": -117.0357068,
+  "tags": {
+    "amenity": "cafe",
+    "cuisine": "japanese",
+    "name": "Otaku Anime Café",
+    "name:en": "Otaku Anime Cafe",
+    "name:es": "Otaku Anime Café"
+  }
+},
+{
+  "type": "node",
+  "id": 4613317489,
+  "lat": 32.5152458,
+  "lon": -117.0123048,
+  "tags": {
+    "addr:housenumber": "10395",
+    "addr:street": "Boulevard Agua Caliente",
+    "amenity": "cafe",
+    "internet_access": "wlan",
+    "name": "Blue Luna Cafe & Deli",
+    "name:en": "Blue Luna Cafe & Deli",
+    "name:es": "Blue Luna Cafe & Deli",
+    "opening_hours": "Mo-Fr 07:00-20:00; Sa 08:00-16:00",
+    "phone": "6861022",
+    "website": "https://www.blueluna.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 4693125329,
+  "lat": 32.5242683,
+  "lon": -117.0218680,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "9551",
+    "addr:postcode": "22010",
+    "addr:street": "Boulevard General Rodolfo Sánchez Taboada",
+    "amenity": "cafe",
+    "brand": "Baristi",
+    "brand:wikidata": "Q99959844",
+    "cuisine": "coffee_shop",
+    "internet_access": "yes",
+    "name": "Baristi",
+    "opening_hours": "Mo-Sa 07:00-22:00; Su 12:00-22:00",
+    "outdoor_seating": "yes",
+    "phone": "+52 664 200 2497",
+    "takeaway": "yes",
+    "website": "https://cafebaristi.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 4739001039,
+  "lat": 32.5324521,
+  "lon": -116.9649757,
+  "tags": {
+    "amenity": "cafe",
+    "name": "formal"
+  }
+},
+{
+  "type": "node",
+  "id": 4739032925,
+  "lat": 32.5301446,
+  "lon": -116.9713165,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:postcode": "22420",
+    "addr:street": "Avenida Paseo de la Independencia",
+    "amenity": "cafe",
+    "name": "Café D'Volada"
+  }
+},
+{
+  "type": "node",
+  "id": 4848250729,
+  "lat": 32.6480962,
+  "lon": -116.9667670,
+  "tags": {
+    "addr:city": "Chula Vista",
+    "addr:housenumber": "2295",
+    "addr:postcode": "91915",
+    "addr:state": "CA",
+    "addr:street": "Otay Lakes Road",
+    "addr:unit": "116",
+    "amenity": "cafe",
+    "branch": "Eastlake Parkway & Otay Lakes",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "cuisine": "coffee_shop",
+    "internet_access": "yes",
+    "internet_access:fee": "yes",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "outdoor_seating": "yes",
+    "phone": "+1 619-216-3007",
+    "ref": "14075",
+    "smoking": "no",
+    "takeaway": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/14075/eastlake-parkway-otay-lakes-2295-otay-lakes-rd-116-chula-vista-ca-919151160-us"
+  }
+},
+{
+  "type": "node",
+  "id": 4931765349,
+  "lat": 32.5188996,
+  "lon": -117.0070261,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Cafeteria"
+  }
+},
+{
+  "type": "node",
+  "id": 4931765351,
+  "lat": 32.5189592,
+  "lon": -117.0071233,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Cafeteria"
+  }
+},
+{
+  "type": "node",
+  "id": 4931777852,
+  "lat": 32.5202266,
+  "lon": -117.0156450,
+  "tags": {
+    "amenity": "cafe",
+    "brand": "Café Punta del Cielo",
+    "brand:wikidata": "Q5739148",
+    "cuisine": "coffee_shop",
+    "name": "Café Punta del Cielo",
+    "takeaway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 4937432081,
+  "lat": 32.6570389,
+  "lon": -117.0430379,
+  "tags": {
+    "addr:city": "Bonita",
+    "addr:housenumber": "3901",
+    "addr:postcode": "91902",
+    "addr:state": "CA",
+    "addr:street": "Bonita Road",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop;sandwich;coffee;ice_cream",
+    "name": "Donny's Cafe",
+    "outdoor_seating": "yes",
+    "website": "https://donnyscafe.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 4965202828,
+  "lat": 32.5269844,
+  "lon": -117.0358266,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:street": "Avenida Revolución",
+    "amenity": "cafe",
+    "internet_access:fee": "yes",
+    "name": "D'Volada",
+    "wheelchair": "limited"
+  }
+},
+{
+  "type": "node",
+  "id": 4976462380,
+  "lat": 32.6481411,
+  "lon": -117.0583930,
+  "tags": {
+    "addr:city": "Chula Vista",
+    "addr:housenumber": "3047",
+    "addr:postcode": "91910",
+    "addr:state": "CA",
+    "addr:street": "Bonita Road",
+    "addr:unit": "108",
+    "amenity": "cafe",
+    "branch": "Bonita & 805",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "cuisine": "coffee_shop",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "phone": "+1 619-476-6648",
+    "ref": "1005455",
+    "takeaway": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/1005455/bonita-805-3047-bonita-road-108-chula-vista-ca-919103265-us"
+  }
+},
+{
+  "type": "node",
+  "id": 5011197700,
+  "lat": 32.5321580,
+  "lon": -117.0364359,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "1070",
+    "addr:neighbourhood": "Zona Centro",
+    "addr:postcode": "22000",
+    "addr:state": "Baja California",
+    "addr:street": "Avenida Revolución",
+    "amenity": "cafe",
+    "cuisine": "breakfast;coffee_shop;crepe",
+    "name": "Café Praga",
+    "name:en": "Praga Cafe",
+    "name:es": "Café Praga",
+    "opening_hours": "Mo-Su 08:00-22:00",
+    "outdoor_seating": "yes",
+    "phone": "+52 664 685 7793",
+    "website": "https://pragacafe.restaurantwebexperts.com",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 5031104739,
+  "lat": 32.5441901,
+  "lon": -117.0419553,
+  "tags": {
+    "addr:city": "International Gateway",
+    "addr:housenumber": "4201",
+    "addr:postcode": "92173",
+    "addr:state": "CA",
+    "addr:unit": "102",
+    "amenity": "cafe",
+    "branch": "Las Americas Premium Outlet",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "cuisine": "coffee_shop",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "phone": "+1 619-690-5144",
+    "ref": "12235",
+    "takeaway": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/12235/las-americas-premium-outlet-4201-camino-de-la-plz-102-san-ysidro-ca-921733047-"
+  }
+},
+{
+  "type": "node",
+  "id": 5076203369,
+  "lat": 32.4976127,
+  "lon": -116.9885632,
+  "tags": {
+    "amenity": "cafe"
+  }
+},
+{
+  "type": "node",
+  "id": 5076210094,
+  "lat": 32.5006869,
+  "lon": -116.9860880,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Café de la Flor"
+  }
+},
+{
+  "type": "node",
+  "id": 5253417326,
+  "lat": 32.5295523,
+  "lon": -117.0229677,
+  "tags": {
+    "amenity": "cafe"
+  }
+},
+{
+  "type": "node",
+  "id": 5423850579,
+  "lat": 32.5873994,
+  "lon": -117.1058739,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Trident"
+  }
+},
+{
+  "type": "node",
+  "id": 5580979004,
+  "lat": 32.5090458,
+  "lon": -116.9926730,
+  "tags": {
+    "amenity": "cafe",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "brand:wikipedia": "en:Starbucks",
+    "cuisine": "coffee_shop",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "takeaway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 5583492004,
+  "lat": 32.5275124,
+  "lon": -117.1171520,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "100",
+    "addr:postcode": "22500",
+    "addr:street": "Parque México Norte",
+    "amenity": "cafe",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "D Volada",
+    "opening_hours": "Mo-Su 07:00-22:00",
+    "outdoor_seating": "yes",
+    "phone": "+52 664 630 1111",
+    "website": "dvolada.com"
+  }
+},
+{
+  "type": "node",
+  "id": 5611987147,
+  "lat": 32.5268014,
+  "lon": -117.1166420,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Cafe y Plantas"
+  }
+},
+{
+  "type": "node",
+  "id": 5794340554,
+  "lat": 32.5462746,
+  "lon": -116.9748790,
+  "tags": {
+    "amenity": "cafe",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "cuisine": "coffee_shop",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "takeaway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 5807363611,
+  "lat": 32.4938244,
+  "lon": -116.9062432,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Fuene de agua"
+  }
+},
+{
+  "type": "node",
+  "id": 5861422388,
+  "lat": 32.5355907,
+  "lon": -117.0383726,
+  "tags": {
+    "amenity": "cafe",
+    "cuisine": "mexican;coffee_shop",
+    "name": "El gallo"
+  }
+},
+{
+  "type": "node",
+  "id": 5893462690,
+  "lat": 32.5303888,
+  "lon": -116.9576232,
+  "tags": {
+    "amenity": "cafe",
+    "name": "D Volada"
+  }
+},
+{
+  "type": "node",
+  "id": 6023791170,
+  "lat": 32.6775720,
+  "lon": -117.0953535,
+  "tags": {
+    "addr:housenumber": "1105",
+    "addr:street": "East Plaza Boulevard",
+    "addr:unit": "A",
+    "amenity": "cafe",
+    "description": "Cafe and Desserts",
+    "email": "sdbobatea@gmail.com",
+    "name": "SD Boba Tea",
+    "opening_hours": "Mo-Th,Su 10:00-22:00; Fr-Sa 10:00-23:00",
+    "outdoor_seating": "yes",
+    "phone": "+1-619-477-8327",
+    "takeaway": "yes",
+    "website": "https://www.sdbobatea.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 6150664715,
+  "lat": 32.6148542,
+  "lon": -117.0264795,
+  "tags": {
+    "addr:city": "Chula Vista",
+    "addr:housenumber": "605",
+    "addr:postcode": "91911",
+    "addr:state": "CA",
+    "addr:street": "East Palomar Street",
+    "addr:unit": "B",
+    "amenity": "cafe",
+    "branch": "Medical Center & East Palomar, C",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "cuisine": "coffee_shop",
+    "internet_access:fee": "yes",
+    "level": "0",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "opening_hours": "Mo-Sa 05:00-22:00; Su 06:00-22:00",
+    "outdoor_seating": "yes",
+    "phone": "+1 619-482-5121",
+    "ref": "11347",
+    "takeaway": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/11347/medical-center-e-palomar-c-605-e-palomar-street-b-chula-vista-ca-919116975-us",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 6173692918,
+  "lat": 32.6051246,
+  "lon": -117.0410500,
+  "tags": {
+    "amenity": "cafe",
+    "brand": "Tapioca Express",
+    "brand:wikidata": "Q23462008",
+    "cuisine": "bubble_tea",
+    "name": "Tapioca Express",
+    "opening_hours": "Mo-Su 09:00-20:00",
+    "payment:american_express": "yes",
+    "payment:cash": "yes",
+    "payment:contactless": "yes",
+    "payment:diners_club": "yes",
+    "payment:discover_card": "yes",
+    "payment:jcb": "yes",
+    "payment:mastercard": "yes",
+    "payment:visa": "yes",
+    "takeaway": "yes",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 6173692919,
+  "lat": 32.6050709,
+  "lon": -117.0410248,
+  "tags": {
+    "amenity": "cafe",
+    "cuisine": "dessert",
+    "name": "Filipino Desserts Plus",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 6215376898,
+  "lat": 32.6245698,
+  "lon": -116.9661887,
+  "tags": {
+    "amenity": "cafe",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "cuisine": "coffee_shop",
+    "level": "0",
+    "name": "BNCafe",
+    "opening_hours": "Mo-Th,Su 09:00-21:00; Fr-Sa 09:00-22:00",
+    "takeaway": "yes",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 6215376908,
+  "lat": 32.6237236,
+  "lon": -116.9665360,
+  "tags": {
+    "amenity": "cafe",
+    "cuisine": "bubble_tea",
+    "name": "R&B Tea"
+  }
+},
+{
+  "type": "node",
+  "id": 6307330604,
+  "lat": 32.5302637,
+  "lon": -116.9568640,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:street": "Calle Universidad",
+    "amenity": "cafe",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "brand:wikipedia": "en:Starbucks",
+    "cuisine": "coffee_shop",
+    "internet_access": "wlan",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "outdoor_seating": "yes",
+    "takeaway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 6312015623,
+  "lat": 32.6232678,
+  "lon": -116.9701008,
+  "tags": {
+    "addr:housenumber": "2015",
+    "addr:street": "Birch Road",
+    "addr:unit": "1201",
+    "amenity": "cafe",
+    "cuisine": "tacos",
+    "name": "Taqueria Revolución",
+    "opening_hours": "Mo-Th 10:30-21:00; Sa-Su 10:30-23:00",
+    "opening_hours:covid19": "Su-Sa 11:00-21:00",
+    "outdoor_seating": "yes",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 6327910657,
+  "lat": 32.6232960,
+  "lon": -116.9704004,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Deli Fruits"
+  }
+},
+{
+  "type": "node",
+  "id": 6355766023,
+  "lat": 32.6285944,
+  "lon": -116.9659402,
+  "tags": {
+    "addr:city": "Chula Vista",
+    "addr:housenumber": "2127",
+    "addr:postcode": "91915",
+    "addr:state": "CA",
+    "addr:street": "Olympic Parkway",
+    "addr:unit": "1010",
+    "amenity": "cafe",
+    "branch": "Olympic Parkway & Eastlake",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "cuisine": "coffee_shop",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "phone": "+1 619-216-5907",
+    "ref": "11068",
+    "takeaway": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/11068/olympic-parkway-eastlake-2127-olympic-parkway-1010-chula-vista-ca-919151360"
+  }
+},
+{
+  "type": "node",
+  "id": 6355766036,
+  "lat": 32.6286148,
+  "lon": -116.9651240,
+  "tags": {
+    "amenity": "cafe",
+    "brand": "Tapioca Express",
+    "brand:wikidata": "Q23462008",
+    "cuisine": "bubble_tea",
+    "name": "Tapioca Express",
+    "takeaway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 6371394318,
+  "lat": 32.6454350,
+  "lon": -117.0019739,
+  "tags": {
+    "amenity": "cafe",
+    "brand": "Tapioca Express",
+    "brand:wikidata": "Q23462008",
+    "changing_table": "no",
+    "cuisine": "bubble_tea",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Tapioca Express",
+    "takeaway": "yes",
+    "toilets:access": "yes",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 6405180165,
+  "lat": 32.6305663,
+  "lon": -117.0866941,
+  "tags": {
+    "addr:city": "Chula Vista",
+    "addr:housenumber": "555",
+    "addr:postcode": "91910",
+    "addr:state": "CA",
+    "addr:street": "Broadway, Chula Vista Center",
+    "addr:unit": "147",
+    "amenity": "cafe",
+    "branch": "Chula Vista Center, Chula Vist",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "cuisine": "coffee_shop",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "level": "0",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "opening_hours": "Mo-Th 05:30-21:00; Sa 06:30-21:30; Su 06:30-21:00; Fr 05:30-21:30",
+    "outdoor_seating": "yes",
+    "phone": "+1 619-409-1848",
+    "ref": "16706",
+    "takeaway": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/16706/chula-vista-center-chula-vist-555-broadway-147-chula-vista-ca-919105344-us",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 6426354247,
+  "lat": 32.4998748,
+  "lon": -117.0020567,
+  "tags": {
+    "amenity": "cafe",
+    "name": "En Caliente"
+  }
+},
+{
+  "type": "node",
+  "id": 6509755206,
+  "lat": 32.6503087,
+  "lon": -117.0868940,
+  "tags": {
+    "addr:city": "Chula Vista",
+    "addr:housenumber": "20",
+    "addr:postcode": "91910",
+    "addr:state": "CA",
+    "addr:street": "3rd Avenue",
+    "addr:unit": "204",
+    "amenity": "cafe",
+    "branch": "4th & C, Chula Vista",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "cuisine": "coffee_shop",
+    "drive_through": "yes",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "outdoor_seating": "yes",
+    "phone": "+1 619-422-5632",
+    "ref": "16803",
+    "takeaway": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/16803/4th-c-chula-vista-20-3rd-avenue-204-chula-vista-ca-919101082-us"
+  }
+},
+{
+  "type": "node",
+  "id": 6630276287,
+  "lat": 32.5847474,
+  "lon": -117.0387900,
+  "tags": {
+    "addr:city": "San Diego",
+    "addr:housenumber": "4370",
+    "addr:postcode": "92154",
+    "addr:state": "CA",
+    "addr:street": "Palm Avenue",
+    "addr:unit": "Suite Q",
+    "air_conditioning": "yes",
+    "amenity": "cafe",
+    "brand": "Tapioca Express",
+    "brand:wikidata": "Q23462008",
+    "cuisine": "bubble_tea",
+    "name": "Tapioca Express",
+    "outdoor_seating": "no",
+    "phone": "+1-619-428-5508",
+    "takeaway": "yes",
+    "website": "https://www.tapiocaexpress.com",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 6630276292,
+  "lat": 32.5847116,
+  "lon": -117.0392381,
+  "tags": {
+    "amenity": "cafe",
+    "cuisine": "dessert",
+    "name": "U Dessert Eats"
+  }
+},
+{
+  "type": "node",
+  "id": 6645053464,
+  "lat": 32.5835429,
+  "lon": -117.1155780,
+  "tags": {
+    "addr:city": "Imperial Beach",
+    "addr:housenumber": "801",
+    "addr:postcode": "91932",
+    "addr:state": "CA",
+    "addr:street": "Palm Avenue",
+    "addr:unit": "104",
+    "amenity": "cafe",
+    "branch": "9th & Palm",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "cuisine": "coffee_shop",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "phone": "+1 619-942-0264",
+    "ref": "1019172",
+    "takeaway": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/1019172/9th-palm-801-palm-ave-suite-104-imperial-beach-ca-919321518"
+  }
+},
+{
+  "type": "node",
+  "id": 6656081468,
+  "lat": 32.6290875,
+  "lon": -117.0395985,
+  "tags": {
+    "amenity": "cafe",
+    "cuisine": "bubble_tea",
+    "name": "Vanitea",
+    "opening_hours": "Mo-Th,Su 10:30-22:00; Fr-Sa 10:30-23:00",
+    "outdoor_seating": "yes",
+    "payment:cash": "yes",
+    "payment:contactless": "no",
+    "payment:credit_cards": "yes",
+    "payment:electronic_purses": "no",
+    "takeaway": "yes",
+    "toilets": "yes",
+    "toilets:access": "permissive",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 6662723853,
+  "lat": 32.5057015,
+  "lon": -116.9243085,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Café D'Volada"
+  }
+},
+{
+  "type": "node",
+  "id": 6662723854,
+  "lat": 32.5065441,
+  "lon": -116.9242080,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Crü Coee Roasters y Cellars"
+  }
+},
+{
+  "type": "node",
+  "id": 6662723855,
+  "lat": 32.5051699,
+  "lon": -116.9235669,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Juice n’ Joy"
+  }
+},
+{
+  "type": "node",
+  "id": 6662723856,
+  "lat": 32.5050783,
+  "lon": -116.9246693,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Cafetería EXPRESS"
+  }
+},
+{
+  "type": "node",
+  "id": 6670516969,
+  "lat": 32.6771812,
+  "lon": -117.0922147,
+  "tags": {
+    "addr:city": "National City",
+    "addr:housenumber": "1325",
+    "addr:postcode": "91950",
+    "addr:state": "CA",
+    "addr:street": "East Plaza Boulevard",
+    "amenity": "cafe",
+    "branch": "Plaza & North",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "cuisine": "coffee_shop",
+    "drive_through": "yes",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "outdoor_seating": "yes",
+    "phone": "+1 619-495-7074",
+    "ref": "1017578",
+    "takeaway": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/1017578/plaza-n-1325-e-plaza-blvd-national-city-ca-919503682-us"
+  }
+},
+{
+  "type": "node",
+  "id": 6711322047,
+  "lat": 32.6517083,
+  "lon": -116.9549689,
+  "tags": {
+    "addr:housenumber": "891",
+    "addr:street": "Showroom Place",
+    "amenity": "cafe",
+    "cuisine": "mexican",
+    "name": "Vega Caffe",
+    "outdoor_seating": "yes",
+    "toilets": "yes",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 6718049115,
+  "lat": 32.4347331,
+  "lon": -117.0302351,
+  "tags": {
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "name": "Blue Luna Café"
+  }
+},
+{
+  "type": "node",
+  "id": 6744651813,
+  "lat": 32.6446520,
+  "lon": -116.9966760,
+  "tags": {
+    "amenity": "cafe",
+    "description": "Coffee House: Espresso, gourmet coffees & teas",
+    "name": "Lollicup Tea Zone"
+  }
+},
+{
+  "type": "node",
+  "id": 6821613416,
+  "lat": 32.6542419,
+  "lon": -117.0651990,
+  "tags": {
+    "amenity": "cafe",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "cuisine": "coffee_shop",
+    "internet_access": "wlan",
+    "level": "0",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "opening_hours": "Mo-Sa 08:00-23:00; Su 08:00-22:00",
+    "operator": "Target",
+    "takeaway": "yes",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 6846203116,
+  "lat": 32.6550903,
+  "lon": -117.0657891,
+  "tags": {
+    "amenity": "cafe",
+    "cuisine": "dessert",
+    "level": "1",
+    "name": "Freeze Gourmet"
+  }
+},
+{
+  "type": "node",
+  "id": 6846203131,
+  "lat": 32.6540914,
+  "lon": -117.0655143,
+  "tags": {
+    "addr:city": "National City",
+    "addr:housenumber": "3060",
+    "addr:postcode": "91950",
+    "addr:state": "CA",
+    "addr:street": "Plaza Bonita Road",
+    "amenity": "cafe",
+    "branch": "Target Natl Cty Place Bonita 2232",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "cuisine": "coffee_shop",
+    "level": "1",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "phone": "+1 619-791-2749",
+    "ref": "7295",
+    "takeaway": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/7295/target-natl-cty-pl-bonita-2232-3060-plaza-bonita-rd-national-city-ca-919508004-us"
+  }
+},
+{
+  "type": "node",
+  "id": 6846203138,
+  "lat": 32.6545288,
+  "lon": -117.0651505,
+  "tags": {
+    "amenity": "cafe",
+    "cuisine": "dessert",
+    "level": "1",
+    "name": "DQ Orange Julius"
+  }
+},
+{
+  "type": "node",
+  "id": 6852355859,
+  "lat": 32.4963176,
+  "lon": -116.9617712,
+  "tags": {
+    "amenity": "cafe",
+    "brand": "McCafé",
+    "brand:wikidata": "Q3114287",
+    "brand:wikipedia": "en:McCafé",
+    "cuisine": "coffee_shop",
+    "name": "McCafé",
+    "takeaway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 6858361039,
+  "lat": 32.6846392,
+  "lon": -117.1285319,
+  "tags": {
+    "addr:city": "San Diego",
+    "addr:housenumber": "45",
+    "addr:postcode": "92136",
+    "addr:state": "CA",
+    "addr:street": "Brinser Street",
+    "addr:unit": "45",
+    "amenity": "cafe",
+    "branch": "Base Access Naval Base SD Wate",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "cuisine": "coffee_shop",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "opening_hours": "Mo-Fr 04:30-16:30",
+    "phone": "+1 619-556-9472",
+    "takeaway": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/18706/base-access-naval-base-sd-wate-3515-brinser-st-building-45-san-diego-ca-921365518"
+  }
+},
+{
+  "type": "node",
+  "id": 6983561861,
+  "lat": 32.6290971,
+  "lon": -117.0397829,
+  "tags": {
+    "addr:city": "Chula Vista",
+    "addr:housenumber": "519",
+    "addr:postcode": "91910",
+    "addr:state": "CA",
+    "addr:street": "Telegraph Canyon Road",
+    "amenity": "cafe",
+    "branch": "Telegraph Canyon & I-805",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "cuisine": "coffee_shop",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "phone": "+1 619-482-9415",
+    "ref": "13834",
+    "takeaway": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/13834/telegraph-canyon-i-805-519-telegraph-canyon-road-chula-vista-ca-919106436"
+  }
+},
+{
+  "type": "node",
+  "id": 7209611064,
+  "lat": 32.5300437,
+  "lon": -116.9728340,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "22427",
+    "addr:postcode": "22427",
+    "addr:street": "Calzada del Tecnológico",
+    "amenity": "cafe",
+    "capacity": "30",
+    "cuisine": "coffee_shop",
+    "internet_access": "yes",
+    "internet_access:fee": "no",
+    "name": "Blue Luna",
+    "opening_hours": "Mo-Sa 06:00-21:00",
+    "outdoor_seating": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 8424238975,
+  "lat": 32.6316074,
+  "lon": -116.9849217,
+  "tags": {
+    "addr:city": "Chula Vista",
+    "addr:housenumber": "1750",
+    "addr:postcode": "91913",
+    "addr:state": "CA",
+    "addr:street": "East Palomar Street",
+    "amenity": "cafe",
+    "internet_access": "wlan",
+    "internet_access:fee": "customers",
+    "name": "Fresheria",
+    "outdoor_seating": "yes",
+    "phone": "+1-619-863-0021",
+    "website": "https://lafresheria.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 8474238717,
+  "lat": 32.5221256,
+  "lon": -117.0237924,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "2365",
+    "addr:postcode": "22015",
+    "addr:street": "Avenida Río Balsas",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop;regional;sandwich;tea",
+    "internet_access": "wlan",
+    "name": "Quimérico",
+    "opening_hours": "Mo-Sa 08:00-22:00; Su 10:00-16:00",
+    "outdoor_seating": "yes",
+    "phone": "+52 664 681 2133",
+    "website": "https://www.instagram.com/quimerico_mx/"
+  }
+},
+{
+  "type": "node",
+  "id": 8474238917,
+  "lat": 32.5192448,
+  "lon": -117.0269893,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "2528",
+    "addr:postcode": "22040",
+    "addr:street": "Avenida Ensenada",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "internet_access": "wlan",
+    "name": "Páramo",
+    "opening_hours": "Mo-Fr 08:00-20:00; Sa-Su 09:00-21:00",
+    "outdoor_seating": "yes",
+    "website": "https://shop.paramocafedeorigen.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 8474239017,
+  "lat": 32.5186181,
+  "lon": -117.0224058,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "2647",
+    "addr:postcode": "22044",
+    "addr:street": "Avenida Cuauhtémoc Sur Poniente",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop;tea",
+    "internet_access": "wlan",
+    "name": "REGOR",
+    "opening_hours": "Mo-Sa 07:15-22:00; Su 11:15-19:30",
+    "outdoor_seating": "yes",
+    "phone": "+52 664 976 9030",
+    "website": "https://www.instagram.com/regorcafe/"
+  }
+},
+{
+  "type": "node",
+  "id": 8474239117,
+  "lat": 32.5126622,
+  "lon": -117.0199748,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "3311",
+    "addr:postcode": "22045",
+    "addr:street": "Calle Guillermo Prieto",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop;sandwich;tea",
+    "internet_access": "wlan",
+    "name": "Granate",
+    "name:en": "Granate Café",
+    "name:es": "Granate Café",
+    "opening_hours": "Mo-Fr 08:00-20:00; Sa 08:00-20:00; Su 10:00-18:00",
+    "outdoor_seating": "yes",
+    "phone": "+52 664 976 5582",
+    "website": "https://www.instagram.com/granatecafemx/"
+  }
+},
+{
+  "type": "node",
+  "id": 8474246417,
+  "lat": 32.5030392,
+  "lon": -116.9898326,
+  "tags": {
+    "addr:housenumber": "4805",
+    "addr:postcode": "22106",
+    "addr:street": "Avenida de Las Américas Oriente",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop;sandwich;tea",
+    "diet:vegetarian": "yes",
+    "internet_access": "wlan",
+    "name": "Silvestre"
+  }
+},
+{
+  "type": "node",
+  "id": 8474764118,
+  "lat": 32.5191993,
+  "lon": -117.0163024,
+  "tags": {
+    "addr:housenumber": "2656",
+    "addr:postcode": "22015",
+    "addr:street": "Avenida Río Tijuana",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop;tea",
+    "internet_access": "wlan",
+    "name": "Café Ojos Claros"
+  }
+},
+{
+  "type": "node",
+  "id": 8474764119,
+  "lat": 32.5239065,
+  "lon": -117.0264722,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "9108",
+    "addr:postcode": "22000",
+    "addr:street": "Calle Fray Justo Sierra",
+    "amenity": "cafe",
+    "cuisine": "cake;coffee_shop;sandwich;tea",
+    "internet_access": "wlan",
+    "name": "BOGESCA Café",
+    "opening_hours": "Mo-Sa 07:30-21:00; Su 10:00-17:00",
+    "outdoor_seating": "yes",
+    "phone": "+52 664 207 2139",
+    "website": "https://www.facebook.com/bogesca/"
+  }
+},
+{
+  "type": "node",
+  "id": 8474765117,
+  "lat": 32.5214740,
+  "lon": -117.0295037,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "8751",
+    "addr:postcode": "22040",
+    "addr:street": "Avenida Brasil",
+    "amenity": "cafe",
+    "bar": "yes",
+    "cuisine": "coffee_shop;local;sandwich;tea;regional",
+    "internet_access": "wlan",
+    "name": "Magul",
+    "opening_hours": "Mo-We 09:00-22:00; Th-Sa 09:00-24:00; Su 09:00-22:00",
+    "outdoor_seating": "no",
+    "phone": "+52 664 647 8904",
+    "reservation": "yes",
+    "website": "https://www.instagram.com/magulmx/"
+  }
+},
+{
+  "type": "node",
+  "id": 8474765118,
+  "lat": 32.5235863,
+  "lon": -117.0272190,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "9039-B",
+    "addr:postcode": "22000",
+    "addr:street": "Calle Fray Justo Sierra",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "internet_access": "wlan",
+    "name": "Pichino's Coffee",
+    "name:en": "Pichino’s Coffee and Crew",
+    "name:es": "Pichino’s Coffee and Crew",
+    "opening_hours": "Mo-Fr 08:00-21:00; Sa 09:00-21:00; Su 10:00-21:00",
+    "outdoor_seating": "yes",
+    "phone": "+52 664 208 8630",
+    "website": "https://www.instagram.com/pichinoscoffeeandcrew/"
+  }
+},
+{
+  "type": "node",
+  "id": 8474765317,
+  "lat": 32.5227990,
+  "lon": -117.0175570,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "10342",
+    "addr:postcode": "22010",
+    "addr:street": "Calle Joaquín Clausel",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "internet_access": "wlan",
+    "name": "Caffe Sospeso",
+    "opening_hours": "Mo-Fr 07:00-17:00; Sa 08:30-17:00",
+    "outdoor_seating": "yes",
+    "phone": "+52 664 900 7125",
+    "website": "https://www.caffesospeso.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 8474766317,
+  "lat": 32.5220789,
+  "lon": -117.0303822,
+  "tags": {
+    "addr:housenumber": "2270",
+    "addr:postcode": "22040",
+    "addr:street": "Avenida Aguascalientes",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "internet_access": "wlan",
+    "name": "Grulla Café"
+  }
+},
+{
+  "type": "node",
+  "id": 8477410023,
+  "lat": 32.5110574,
+  "lon": -117.0136889,
+  "tags": {
+    "addr:housenumber": "101-4",
+    "addr:postcode": "22020",
+    "addr:street": "Calle Sonora",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop;tea",
+    "internet_access": "wlan",
+    "name": "Gazzo Café",
+    "website": "https://gazzo.mx/"
+  }
+},
+{
+  "type": "node",
+  "id": 8477412717,
+  "lat": 32.5041005,
+  "lon": -116.9991775,
+  "tags": {
+    "addr:housenumber": "40B",
+    "addr:postcode": "22020",
+    "addr:street": "Avenida Zitácuaro",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop;tea",
+    "internet_access": "wlan",
+    "name": "Leccero Café Social"
+  }
+},
+{
+  "type": "node",
+  "id": 8477440717,
+  "lat": 32.5190772,
+  "lon": -117.0192750,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "2617-A",
+    "addr:postcode": "22044",
+    "addr:street": "Avenida Santa María",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "internet_access": "wlan",
+    "internet_access:fee": "customers",
+    "name": "Lux Coffee Bar & Roasters",
+    "opening_hours": "Mo-Sa 07:00-20:30; Su 07:00-14:30",
+    "outdoor_seating": "no",
+    "phone": "+52 664 857 6413",
+    "website": "https://www.instagram.com/luxcoffeebar/"
+  }
+},
+{
+  "type": "node",
+  "id": 8477440817,
+  "lat": 32.5188672,
+  "lon": -117.0080325,
+  "tags": {
+    "addr:housenumber": "1508",
+    "addr:postcode": "22010",
+    "addr:street": "Calle Paseo de los Héroes",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop;sandwich;tea",
+    "internet_access": "wlan",
+    "name": "Baristi Tostadorws",
+    "name:en": "Baristi Tostadores",
+    "name:es": "Baristi Tostadores",
+    "phone": "+52 664 900 7419",
+    "website": "https://baristitostadores.com"
+  }
+},
+{
+  "type": "node",
+  "id": 8477447017,
+  "lat": 32.5091394,
+  "lon": -116.9853763,
+  "tags": {
+    "addr:housenumber": "4117",
+    "addr:postcode": "22015",
+    "addr:street": "Calle de las Magnolias",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "internet_access": "wlan",
+    "name": "Brothers' Cold Brew",
+    "phone": "+52 664 120 9410"
+  }
+},
+{
+  "type": "node",
+  "id": 8477447117,
+  "lat": 32.5003448,
+  "lon": -116.9872727,
+  "tags": {
+    "addr:housenumber": "26",
+    "addr:postcode": "22106",
+    "addr:street": "Calle Marcelino Champagnat",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop;sandwich;tea",
+    "internet_access": "wlan",
+    "name": "Bench",
+    "phone": "+52 664 904 3576"
+  }
+},
+{
+  "type": "node",
+  "id": 8623253717,
+  "lat": 32.5214695,
+  "lon": -117.0204831,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "9733",
+    "addr:postcode": "22015",
+    "addr:street": "Calle Río Colorado",
+    "amenity": "cafe",
+    "contact:instagram": "brewja.barradecafe",
+    "cuisine": "coffee_shop",
+    "internet_access": "wlan",
+    "name": "Brewja barra de café",
+    "opening_hours": "Mo-Sa 08:00-20:00",
+    "outdoor_seating": "yes",
+    "phone": "+52 664 732 7463",
+    "website": "https://www.instagram.com/brewja.barradecafe/"
+  }
+},
+{
+  "type": "node",
+  "id": 9161416085,
+  "lat": 32.5237919,
+  "lon": -117.1239209,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "1342",
+    "addr:postcode": "22504",
+    "addr:street": "Paseo Costero",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop;sandwich",
+    "internet_access": "wlan",
+    "internet_access:fee": "customers",
+    "name": "Café Acuamarino",
+    "opening_hours": "Mo-Su 08:00-22:00",
+    "outdoor_seating": "yes",
+    "phone": "+52 664 631 8023"
+  }
+},
+{
+  "type": "node",
+  "id": 9210778449,
+  "lat": 32.5142780,
+  "lon": -117.0116127,
+  "tags": {
+    "amenity": "cafe",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "brand:wikipedia": "en:Starbucks",
+    "cuisine": "coffee_shop",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "takeaway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 9257867555,
+  "lat": 32.5127146,
+  "lon": -117.0070545,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Punta del Cielo"
+  }
+},
+{
+  "type": "node",
+  "id": 9311625140,
+  "lat": 32.6207144,
+  "lon": -116.9678596,
+  "tags": {
+    "addr:city": "Chula Vista",
+    "addr:housenumber": "1610",
+    "addr:postcode": "91915",
+    "addr:state": "CA",
+    "addr:street": "Millenia Avenue",
+    "addr:unit": "101",
+    "amenity": "cafe",
+    "branch": "Birch & 125",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "cuisine": "coffee_shop",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "phone": "+1 619-397-3789",
+    "ref": "1024407",
+    "takeaway": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/1024407/birch-125-1610-millenia-ave-101-chula-vista-ca-919152796-us"
+  }
+},
+{
+  "type": "node",
+  "id": 9311625141,
+  "lat": 32.6196809,
+  "lon": -116.9611460,
+  "tags": {
+    "addr:city": "Chula Vista",
+    "addr:housenumber": "1745",
+    "addr:postcode": "91915",
+    "addr:state": "CA",
+    "addr:street": "Eastlake Parkway",
+    "amenity": "cafe",
+    "branch": "Vons Chula Vista 2826",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "cuisine": "coffee_shop",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "phone": "+1 619-397-3467",
+    "ref": "1019284",
+    "takeaway": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/1019284/vons-chula-vista-2826-1745-eastlake-parkway-chula-vista-ca-91915-us"
+  }
+},
+{
+  "type": "node",
+  "id": 9336287893,
+  "lat": 32.6767926,
+  "lon": -117.1075089,
+  "tags": {
+    "addr:city": "National City",
+    "addr:housenumber": "640",
+    "addr:postcode": "91950",
+    "addr:state": "CA",
+    "addr:street": "National City Boulevard",
+    "addr:unit": "Suite 130",
+    "amenity": "cafe",
+    "name": "Esquina Vintage and Coffee",
+    "outdoor_seating": "no",
+    "phone": "+1-619-856-5276",
+    "website": "www.esquinavintageandcoffee.com"
+  }
+},
+{
+  "type": "node",
+  "id": 9345113996,
+  "lat": 32.5315174,
+  "lon": -116.9515802,
+  "tags": {
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "name": "D'Volada"
+  }
+},
+{
+  "type": "node",
+  "id": 9345114073,
+  "lat": 32.5300787,
+  "lon": -116.9501788,
+  "tags": {
+    "amenity": "cafe",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "brand:wikipedia": "en:Starbucks",
+    "cuisine": "coffee_shop",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "takeaway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 9345114123,
+  "lat": 32.5310900,
+  "lon": -116.9504406,
+  "tags": {
+    "amenity": "cafe",
+    "brand": "Baristi",
+    "brand:wikidata": "Q99959844",
+    "cuisine": "coffee_shop",
+    "name": "Baristi",
+    "takeaway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 9412007722,
+  "lat": 32.4714551,
+  "lon": -116.9222244,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "216",
+    "addr:postcode": "22225",
+    "addr:street": "Avenida Seminario",
+    "amenity": "cafe",
+    "name": "Cool Beans Coffee Roasters"
+  }
+},
+{
+  "type": "node",
+  "id": 9413701091,
+  "lat": 32.5250554,
+  "lon": -117.0169407,
+  "tags": {
+    "amenity": "cafe",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "brand:wikipedia": "en:Starbucks",
+    "cuisine": "coffee_shop",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "takeaway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 9467393981,
+  "lat": 32.5179046,
+  "lon": -117.0182701,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Curzee Coffee"
+  }
+},
+{
+  "type": "node",
+  "id": 9530955258,
+  "lat": 32.6397546,
+  "lon": -117.0495988,
+  "tags": {
+    "addr:city": "Chula Vista",
+    "addr:housenumber": "374",
+    "addr:postcode": "91910",
+    "addr:state": "CA",
+    "addr:street": "East H Street",
+    "amenity": "cafe",
+    "bar": "yes",
+    "cuisine": "coffee_shop",
+    "name": "Caffe Tazza",
+    "outdoor_seating": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 9535625996,
+  "lat": 32.4754643,
+  "lon": -116.9933848,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Bubble Waffles Co."
+  }
+},
+{
+  "type": "node",
+  "id": 9546320100,
+  "lat": 32.5267716,
+  "lon": -117.0464382,
+  "tags": {
+    "amenity": "cafe",
+    "name": "D'Volada Cafeteria"
+  }
+},
+{
+  "type": "node",
+  "id": 9647366071,
+  "lat": 32.5363395,
+  "lon": -117.0229595,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Jose Cafe"
+  }
+},
+{
+  "type": "node",
+  "id": 9678755649,
+  "lat": 32.5673443,
+  "lon": -116.9654140,
+  "tags": {
+    "addr:city": "San Diego",
+    "addr:country": "US",
+    "addr:housenumber": "8299",
+    "addr:postcode": "92154",
+    "addr:state": "CA",
+    "addr:street": "Otay Mesa Road",
+    "addr:unit": "D",
+    "amenity": "cafe",
+    "branch": "Highway 905 & La Media, San Diego",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "cuisine": "coffee_shop",
+    "name": "Starbucks",
+    "name:ja": "スターバックス",
+    "official_name": "Starbucks Coffee",
+    "phone": "+1 619-710-0082",
+    "ref": "7992",
+    "takeaway": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/7992/hwy-905-la-media-san-diego-8299-otay-mesa-road-d-san-diego-ca-921547701-us"
+  }
+},
+{
+  "type": "node",
+  "id": 9837011631,
+  "lat": 32.5309099,
+  "lon": -117.1143237,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Restaurant Ricardo's"
+  }
+},
+{
+  "type": "node",
+  "id": 9904839384,
+  "lat": 32.5078906,
+  "lon": -116.9907953,
+  "tags": {
+    "amenity": "cafe",
+    "internet_access": "yes",
+    "name": "Mi cielito lindo",
+    "outdoor_seating": "yes",
+    "phone": "+526649048105"
+  }
+},
+{
+  "type": "node",
+  "id": 10125136876,
+  "lat": 32.6761736,
+  "lon": -117.0914746,
+  "tags": {
+    "amenity": "cafe",
+    "cuisine": "bubble_tea",
+    "name": "Ice Box",
+    "takeaway": "yes",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 10170216904,
+  "lat": 32.6612501,
+  "lon": -116.9708124,
+  "tags": {
+    "addr:city": "Chula Vista",
+    "addr:housenumber": "2326",
+    "addr:postcode": "91914",
+    "addr:state": "CA",
+    "addr:street": "Proctor Valley Road",
+    "addr:unit": "109",
+    "amenity": "cafe",
+    "branch": "Proctor Valley & Mount Miguel",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "cuisine": "coffee_shop",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "outdoor_seating": "yes",
+    "phone": "+1 619-397-5696",
+    "ref": "17297",
+    "takeaway": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/17297/proctor-valley-mt-miguel-2326-proctor-valley-rd-109-chula-vista-ca-91914600"
+  }
+},
+{
+  "type": "node",
+  "id": 10178165217,
+  "lat": 32.5410859,
+  "lon": -117.0301059,
+  "tags": {
+    "addr:housenumber": "271",
+    "addr:postcode": "22010",
+    "addr:street": "Calle Larroque",
+    "amenity": "cafe",
+    "contact:instagram": "nativocoffee",
+    "cuisine": "breakfast;coffee_shop;mexican",
+    "name": "Nativo Coffee",
+    "name:en": "Nativo Coffee Community",
+    "name:es": "Nativo Coffee",
+    "opening_hours": "Su 08:00-20:45; Mo 06:30-19:45; Tu-Th 06:30-20:45; Fr-Sa 06:30-21:45",
+    "phone": "+52 664 607 3922",
+    "website": "https://www.coyoteprojects.com"
+  }
+},
+{
+  "type": "node",
+  "id": 10274399661,
+  "lat": 32.5323431,
+  "lon": -117.0371886,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:postcode": "22000",
+    "addr:street": "Pasaje Sonia",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "name": "Cafe Pangea",
+    "opening_hours": "Mo-Su 07:00-22:00",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 10698746512,
+  "lat": 32.5216795,
+  "lon": -117.0264451,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "2312",
+    "addr:postcode": "22040",
+    "addr:street": "Avenida Fresnillo",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop;tea;sandwich",
+    "internet_access": "yes",
+    "name": "Aramellia Café",
+    "opening_hours": "Mo-Sa 09:00-21:00; Su 13:00-21:00",
+    "outdoor_seating": "yes",
+    "phone": "+52 664 684 0195",
+    "website": "https://www.instagram.com/aramelliamx/"
+  }
+},
+{
+  "type": "node",
+  "id": 10722282335,
+  "lat": 32.5135249,
+  "lon": -116.9649166,
+  "tags": {
+    "amenity": "cafe",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "cuisine": "coffee_shop",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "takeaway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 10974812012,
+  "lat": 32.5134520,
+  "lon": -116.9658989,
+  "tags": {
+    "amenity": "cafe"
+  }
+},
+{
+  "type": "node",
+  "id": 10974812013,
+  "lat": 32.5134465,
+  "lon": -116.9658302,
+  "tags": {
+    "amenity": "cafe"
+  }
+},
+{
+  "type": "node",
+  "id": 11047652150,
+  "lat": 32.5452137,
+  "lon": -116.9743625,
+  "tags": {
+    "amenity": "cafe",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "check_date": "2023-07-14",
+    "cuisine": "coffee_shop",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "payment:mastercard": "yes",
+    "payment:visa": "yes",
+    "takeaway": "yes",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 11047671729,
+  "lat": 32.5453474,
+  "lon": -116.9767913,
+  "tags": {
+    "amenity": "cafe",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "check_date": "2023-07-15",
+    "cuisine": "coffee_shop",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "payment:mastercard": "yes",
+    "payment:visa": "yes",
+    "takeaway": "yes",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 11158025984,
+  "lat": 32.3724510,
+  "lon": -116.9404897,
+  "tags": {
+    "amenity": "cafe",
+    "name": "El Zorrito"
+  }
+},
+{
+  "type": "node",
+  "id": 11272639087,
+  "lat": 32.6232247,
+  "lon": -116.9980172,
+  "tags": {
+    "addr:city": "Chula Vista",
+    "addr:housenumber": "1392",
+    "addr:postcode": "91913",
+    "addr:state": "CA",
+    "addr:street": "East Palomar Street",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "name": "Cafe 86",
+    "outdoor_seating": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 11445145412,
+  "lat": 32.5328931,
+  "lon": -117.0368873,
+  "tags": {
+    "amenity": "cafe",
+    "brand": "Baristi",
+    "brand:wikidata": "Q99959844",
+    "cuisine": "coffee_shop",
+    "name": "Baristi",
+    "takeaway": "yes",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 11445145413,
+  "lat": 32.5297260,
+  "lon": -117.0361710,
+  "tags": {
+    "amenity": "cafe",
+    "brand": "Baristi",
+    "brand:wikidata": "Q99959844",
+    "cuisine": "coffee_shop",
+    "name": "Baristi",
+    "takeaway": "yes",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 11464765504,
+  "lat": 32.5091364,
+  "lon": -116.9882125,
+  "tags": {
+    "amenity": "cafe",
+    "internet_access": "wlan",
+    "name": "D'Volada"
+  }
+},
+{
+  "type": "node",
+  "id": 11496773476,
+  "lat": 32.5079139,
+  "lon": -116.9830075,
+  "tags": {
+    "amenity": "cafe",
+    "name": "D'Volada"
+  }
+},
+{
+  "type": "node",
+  "id": 11544894481,
+  "lat": 32.5880610,
+  "lon": -117.0106504,
+  "tags": {
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "name": "Coffee Cart"
+  }
+},
+{
+  "type": "node",
+  "id": 11601327592,
+  "lat": 32.5092334,
+  "lon": -116.9901991,
+  "tags": {
+    "amenity": "cafe",
+    "name": "El Hidalgo"
+  }
+},
+{
+  "type": "node",
+  "id": 11606759068,
+  "lat": 32.5140260,
+  "lon": -116.9880750,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "3565",
+    "addr:postcode": "22100",
+    "addr:street": "Boulevard de las Américas Oriente",
+    "amenity": "cafe",
+    "name": "D' Volada"
+  }
+},
+{
+  "type": "node",
+  "id": 11606778107,
+  "lat": 32.5093545,
+  "lon": -116.9896786,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Harmonia"
+  }
+},
+{
+  "type": "node",
+  "id": 11625258310,
+  "lat": 32.5111186,
+  "lon": -116.9862336,
+  "tags": {
+    "amenity": "cafe"
+  }
+},
+{
+  "type": "node",
+  "id": 11664620326,
+  "lat": 32.5117234,
+  "lon": -116.9964919,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "11930",
+    "addr:postcode": "22100",
+    "addr:street": "Avenida 20 de Noviembre",
+    "amenity": "cafe",
+    "name": "Azar Cafe"
+  }
+},
+{
+  "type": "node",
+  "id": 11793906869,
+  "lat": 32.5302332,
+  "lon": -117.0361918,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Conteiner Cafe",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 11880041345,
+  "lat": 32.5809293,
+  "lon": -117.1319950,
+  "tags": {
+    "addr:city": "Imperial Beach",
+    "addr:housenumber": "805",
+    "addr:postcode": "91932",
+    "addr:state": "CA",
+    "addr:street": "Ocean Lane",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "name": "Mike Hess Brewing IB Expresso"
+  }
+},
+{
+  "type": "node",
+  "id": 12009722064,
+  "lat": 32.5875079,
+  "lon": -117.1066867,
+  "tags": {
+    "addr:city": "Imperial Beach",
+    "addr:housenumber": "535",
+    "addr:postcode": "91932",
+    "addr:street": "Florence St,",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "name": "Novo Brazil Brewing"
+  }
+},
+{
+  "type": "node",
+  "id": 12063776069,
+  "lat": 32.6956964,
+  "lon": -117.1379089,
+  "tags": {
+    "addr:housenumber": "2619",
+    "addr:postcode": "92113",
+    "addr:street": "National Avenue",
+    "amenity": "cafe",
+    "contact:facebook": "CafeMoto",
+    "contact:instagram": "cafemoto",
+    "contact:twitter": "cafemoto",
+    "email": "info@cafemoto.com",
+    "name": "Cafe Moto",
+    "opening_hours": "Mo-Fr 06:00-15:00; Sa-Su 07:00-14:30",
+    "phone": "+1-619-239-6686",
+    "website": "https://cafemoto.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 12394612253,
+  "lat": 32.5796287,
+  "lon": -117.0349096,
+  "tags": {
+    "addr:city": "San Diego",
+    "addr:housenumber": "756",
+    "addr:postcode": "92154",
+    "addr:state": "CA",
+    "addr:street": "Dennery Road",
+    "addr:unit": "201",
+    "air_conditioning": "yes",
+    "amenity": "cafe",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "cuisine": "coffee_shop",
+    "drive_through": "yes",
+    "internet_access": "wlan",
+    "level": "0",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "opening_hours": "Mo-Sa 04:00-24:00; Su 04:30-24:00",
+    "phone": "+1 619-690-5411",
+    "smoking": "no",
+    "takeaway": "yes",
+    "toilets": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/1028732/palm-and-dennery-756-dennery-road-san-diego-ca-921548456-us"
+  }
+},
+{
+  "type": "node",
+  "id": 12566109301,
+  "lat": 32.5350017,
+  "lon": -117.0115286,
+  "tags": {
+    "addr:housenumber": "11650-L10",
+    "addr:postcode": "22400",
+    "addr:street": "Avenida Aquiles Serdán",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop;local",
+    "internet_access": "wlan",
+    "name": "LACANDA Café y Cariño",
+    "opening_hours": "Mo-Sa 08:00-21:00; Su 11:30-19:30",
+    "phone": "+52 664 104 3895"
+  }
+},
+{
+  "type": "node",
+  "id": 12820802289,
+  "lat": 32.6992467,
+  "lon": -117.1466519,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Ryan Bros"
+  }
+},
+{
+  "type": "node",
+  "id": 13099749401,
+  "lat": 32.6441277,
+  "lon": -117.0812003,
+  "tags": {
+    "addr:housenumber": "218",
+    "addr:postcode": "91910",
+    "addr:street": "3rd Avenue",
+    "amenity": "cafe",
+    "contact:instagram": "mujerdivinacoffee",
+    "cuisine": "mexican",
+    "name": "Mujer Divina Burrito and Coffee House",
+    "website:menu": "https://order.toasttab.com/online/mujer-divina-chula-vista-218-third-ave"
+  }
+},
+{
+  "type": "node",
+  "id": 13099753401,
+  "lat": 32.6442168,
+  "lon": -117.0812314,
+  "tags": {
+    "addr:housenumber": "214",
+    "addr:postcode": "91910",
+    "addr:street": "3rd Avenue",
+    "amenity": "cafe",
+    "contact:instagram": "brunchmujerdivina",
+    "cuisine": "mexican",
+    "name": "Mujer Divina Brunch Cafe"
+  }
+},
+{
+  "type": "node",
+  "id": 13099760501,
+  "lat": 32.6441716,
+  "lon": -117.0812118,
+  "tags": {
+    "addr:housenumber": "216",
+    "addr:postcode": "91910",
+    "addr:street": "3rd Avenue",
+    "amenity": "cafe",
+    "contact:instagram": "divinamatcha_",
+    "cuisine": "tea",
+    "name": "Divina Matcha"
+  }
+},
+{
+  "type": "node",
+  "id": 13196525801,
+  "lat": 32.6399172,
+  "lon": -117.0796875,
+  "tags": {
+    "addr:housenumber": "320 B",
+    "addr:postcode": "91910",
+    "addr:street": "3rd Avenue",
+    "amenity": "cafe",
+    "contact:instagram": "tgcafechulavista",
+    "name": "TG Cafe",
+    "phone": "+1-619-947-6601"
+  }
+},
+{
+  "type": "node",
+  "id": 13310284856,
+  "lat": 32.4851519,
+  "lon": -117.0364489,
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "1159",
+    "addr:postcode": "22626",
+    "addr:state": "BC",
+    "addr:street": "Calle Braulio Maldonado",
+    "amenity": "cafe",
+    "name": "Café Olimpo"
+  }
+},
+{
+  "type": "node",
+  "id": 13414466925,
+  "lat": 32.4396822,
+  "lon": -117.0635261,
+  "tags": {
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "name": "D'Volada Café"
+  }
+},
+{
+  "type": "node",
+  "id": 13717302802,
+  "lat": 32.5314843,
+  "lon": -116.9665289,
+  "tags": {
+    "amenity": "cafe",
+    "name": "El circulo"
+  }
+},
+{
+  "type": "node",
+  "id": 13731254401,
+  "lat": 32.5315672,
+  "lon": -116.9612402,
+  "tags": {
+    "amenity": "cafe",
+    "name": "FORMAL"
+  }
+},
+{
+  "type": "node",
+  "id": 13757594501,
+  "lat": 32.5316474,
+  "lon": -116.9612959,
+  "tags": {
+    "amenity": "cafe"
+  }
+},
+{
+  "type": "node",
+  "id": 13757615602,
+  "lat": 32.5322570,
+  "lon": -116.9650929,
+  "tags": {
+    "amenity": "cafe"
+  }
+},
+{
+  "type": "node",
+  "id": 13797173901,
+  "lat": 32.5316665,
+  "lon": -116.9612917,
+  "tags": {
+    "amenity": "cafe"
+  }
+},
+{
+  "type": "node",
+  "id": 13797186702,
+  "lat": 32.5316219,
+  "lon": -116.9613103,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Cafetería FEYRI"
+  }
+},
+{
+  "type": "node",
+  "id": 13797305501,
+  "lat": 32.5322844,
+  "lon": -116.9649238,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Cafetería central"
+  }
+},
+{
+  "type": "node",
+  "id": 13797309105,
+  "lat": 32.5322930,
+  "lon": -116.9648366,
+  "tags": {
+    "amenity": "cafe",
+    "name": "cafetería"
+  }
+},
+{
+  "type": "node",
+  "id": 13831332377,
+  "lat": 32.5324811,
+  "lon": -116.9672956,
+  "tags": {
+    "amenity": "cafe",
+    "cuisine": "sandwich",
+    "name": "cafeteria informal",
+    "opening_hours": "Mo-Fr 08:00-17:00"
+  }
+},
+{
+  "type": "node",
+  "id": 13831386709,
+  "lat": 32.5315722,
+  "lon": -116.9612249,
+  "tags": {
+    "amenity": "cafe",
+    "cuisine": "coffee_shop;sandwich;breakfast;bagel",
+    "name": "Cafeteria Formal"
+  }
+},
+{
+  "type": "node",
+  "id": 13831387414,
+  "lat": 32.5315815,
+  "lon": -116.9612331,
+  "tags": {
+    "amenity": "cafe",
+    "name": "FORMAL"
+  }
+},
+{
+  "type": "node",
+  "id": 13831390909,
+  "lat": 32.5315898,
+  "lon": -116.9612313,
+  "tags": {
+    "addr:street": "Circuito Universitario",
+    "amenity": "cafe",
+    "cuisine": "brunch",
+    "internet_access": "yes",
+    "internet_access:fee": "no",
+    "name": "Cafeteria FEYRI",
+    "outdoor_seating": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 13831390920,
+  "lat": 32.5313191,
+  "lon": -116.9675267,
+  "tags": {
+    "addr:street": "Circuito Universitario",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "internet_access": "no",
+    "name": "Cafeteria derecho",
+    "opening_hours": "Mo-Fr 09:00-18:00"
+  }
+},
+{
+  "type": "node",
+  "id": 13831390921,
+  "lat": 32.5307584,
+  "lon": -116.9668094,
+  "tags": {
+    "addr:street": "Circuito Universitario",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "internet_access": "no",
+    "name": "Cafeteria Arma",
+    "note": "Informal"
+  }
+},
+{
+  "type": "node",
+  "id": 13831392940,
+  "lat": 32.5308841,
+  "lon": -116.9667929,
+  "tags": {
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "name": "Cafeteria informal"
+  }
+},
+{
+  "type": "node",
+  "id": 13831393384,
+  "lat": 32.5315977,
+  "lon": -116.9664669,
+  "tags": {
+    "amenity": "cafe",
+    "name": "el jardin"
+  }
+},
+{
+  "type": "node",
+  "id": 13831393385,
+  "lat": 32.5324934,
+  "lon": -116.9648169,
+  "tags": {
+    "amenity": "cafe",
+    "name": "comida china (formal)"
+  }
+},
+{
+  "type": "node",
+  "id": 13831393386,
+  "lat": 32.5325104,
+  "lon": -116.9648980,
+  "tags": {
+    "amenity": "cafe",
+    "name": "tortas tonka (formal)"
+  }
+},
+{
+  "type": "node",
+  "id": 13831393387,
+  "lat": 32.5325211,
+  "lon": -116.9649490,
+  "tags": {
+    "amenity": "cafe",
+    "name": "d volada (formal)"
+  }
+},
+{
+  "type": "node",
+  "id": 13831393388,
+  "lat": 32.5323995,
+  "lon": -116.9650945,
+  "tags": {
+    "amenity": "cafe",
+    "name": "elotes y postres (formal)"
+  }
+},
+{
+  "type": "node",
+  "id": 13831408776,
+  "lat": 32.5325314,
+  "lon": -116.9650209,
+  "tags": {
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "name": "D´volda"
+  }
+},
+{
+  "type": "node",
+  "id": 13831420806,
+  "lat": 32.5315074,
+  "lon": -116.9652979,
+  "tags": {
+    "amenity": "cafe",
+    "name": "la naranja"
+  }
+},
+{
+  "type": "node",
+  "id": 13831512278,
+  "lat": 32.5325363,
+  "lon": -116.9663084,
+  "tags": {
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "name": "Cafeteria Informal"
+  }
+},
+{
+  "type": "node",
+  "id": 13831532077,
+  "lat": 32.5325287,
+  "lon": -116.9650227,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Dvolada"
+  }
+},
+{
+  "type": "node",
+  "id": 13831533753,
+  "lat": 32.5313542,
+  "lon": -116.9676168,
+  "tags": {
+    "amenity": "cafe",
+    "name": "CAFETERIA"
+  }
+},
+{
+  "type": "node",
+  "id": 13831539147,
+  "lat": 32.5315969,
+  "lon": -116.9664457,
+  "tags": {
+    "amenity": "cafe",
+    "name": "El Jardín"
+  }
+},
+{
+  "type": "node",
+  "id": 13831539151,
+  "lat": 32.5315367,
+  "lon": -116.9674415,
+  "tags": {
+    "amenity": "cafe",
+    "name": "HomePlate"
+  }
+},
+{
+  "type": "node",
+  "id": 13831539180,
+  "lat": 32.5305782,
+  "lon": -116.9669204,
+  "tags": {
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "name": "MATCHA"
+  }
+},
+{
+  "type": "node",
+  "id": 13831541861,
+  "lat": 32.5315347,
+  "lon": -116.9653104,
+  "tags": {
+    "amenity": "cafe",
+    "name": "La Naranja"
+  }
+},
+{
+  "type": "node",
+  "id": 13831541874,
+  "lat": 32.5313317,
+  "lon": -116.9674830,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Homeplate Cafe"
+  }
+},
+{
+  "type": "node",
+  "id": 13831545832,
+  "lat": 32.5349444,
+  "lon": -116.9626856,
+  "tags": {
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "name": "Carrito de cafe"
+  }
+},
+{
+  "type": "node",
+  "id": 13831556218,
+  "lat": 32.5313778,
+  "lon": -116.9672531,
+  "tags": {
+    "amenity": "cafe",
+    "name": "La Naranja"
+  }
+},
+{
+  "type": "node",
+  "id": 13831563759,
+  "lat": 32.5349224,
+  "lon": -116.9627188,
+  "tags": {
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "name": "Carrito de Cafe"
+  }
+},
+{
+  "type": "node",
+  "id": 13831571103,
+  "lat": 32.5313092,
+  "lon": -116.9674781,
+  "tags": {
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "name": "Home Plate Cafe"
+  }
+},
+{
+  "type": "node",
+  "id": 13848009688,
+  "lat": 32.5324533,
+  "lon": -116.9650036,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Pizza"
+  }
+},
+{
+  "type": "node",
+  "id": 13848009696,
+  "lat": 32.5315784,
+  "lon": -116.9611909,
+  "tags": {
+    "amenity": "cafe"
+  }
+},
+{
+  "type": "node",
+  "id": 13854843537,
+  "lat": 32.5321676,
+  "lon": -116.9651479,
+  "tags": {
+    "amenity": "cafe",
+    "name": "OXXO"
+  }
+},
+{
+  "type": "node",
+  "id": 13854962297,
+  "lat": 32.5325733,
+  "lon": -116.9640476,
+  "tags": {
+    "amenity": "cafe"
+  }
+},
+{
+  "type": "node",
+  "id": 13859377002,
+  "lat": 32.5324833,
+  "lon": -116.9644925,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Cafeteria Central"
+  }
+},
+{
+  "type": "node",
+  "id": 13954897602,
+  "lat": 32.5289130,
+  "lon": -117.0315448,
+  "tags": {
+    "addr:housenumber": "1595",
+    "addr:postcode": "22000",
+    "addr:street": "Avenida Melchor Ocampo",
+    "amenity": "cafe",
+    "contact:instagram": "claroscurocafe22",
+    "cuisine": "coffee_shop",
+    "name": "Claroscuro Café y Arte",
+    "opening_hours": "Mo-Th 08:00-20:00; Fr-Sa 08:00-21:00"
+  }
+},
+{
+  "type": "node",
+  "id": 13954898301,
+  "lat": 32.5290003,
+  "lon": -117.0315562,
+  "tags": {
+    "addr:housenumber": "1516",
+    "addr:postcode": "22000",
+    "addr:street": "Avenida Melchor Ocampo",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "name": "La Lechuza Cafe",
+    "opening_hours": "Mo-Sa 08:00-20:00; Su 10:00-18:00",
+    "phone": "+526647139573"
+  }
+},
+{
+  "type": "node",
+  "id": 14040553400,
+  "lat": 32.5527578,
+  "lon": -117.0458691,
+  "tags": {
+    "addr:city": "San Ysidro",
+    "addr:housenumber": "138",
+    "addr:postcode": "92173",
+    "addr:state": "CA",
+    "addr:street": "West San Ysidro Boulevard",
+    "addr:unit": "2",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "name": "Cafecito 1806",
+    "outdoor_seating": "yes",
+    "website": "https://cafecito-1806.square.site/"
+  }
+},
+{
+  "type": "node",
+  "id": 14040561849,
+  "lat": 32.6253460,
+  "lon": -117.1057223,
+  "tags": {
+    "addr:city": "Chula Vista",
+    "addr:housenumber": "999",
+    "addr:postcode": "91910",
+    "addr:state": "CA",
+    "addr:street": "Bayside Pkwy",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop;tea",
+    "name": "Kayak Cafe",
+    "opening_hours": "Fr 07:00-12:00, Sa-Su 08:00-14:00",
+    "outdoor_seating": "yes",
+    "website": "https://www.kayakcafesd.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 14176037797,
+  "lat": 32.6055869,
+  "lon": -117.0670984,
+  "tags": {
+    "addr:city": "Chula Vista",
+    "addr:housenumber": "1324",
+    "addr:postcode": "91911",
+    "addr:state": "CA",
+    "addr:street": "3rd Avenue",
+    "addr:unit": "8",
+    "amenity": "cafe",
+    "cuisine": "coffee_shop;wine",
+    "drive_through": "no",
+    "level": "0",
+    "name": "Kafe-lum",
+    "opening_hours": "Mo off; Tu-Th 08:00-18:00; Fr-Sa 08:00-20:00; Su 08:00-16:00",
+    "outdoor_seating": "yes",
+    "toilets": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 31801153,
+  "center": {
+    "lat": 32.5460152,
+    "lon": -117.0317674
+  },
+  "tags": {
+    "addr:city": "San Ysidro",
+    "addr:country": "US",
+    "addr:housenumber": "680",
+    "addr:postcode": "92173",
+    "addr:state": "CA",
+    "addr:street": "East San Ysidro Boulevard",
+    "amenity": "cafe",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "building": "retail",
+    "cuisine": "coffee_shop",
+    "drive_through": "yes",
+    "internet_access": "wlan",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "opening_hours": "Mo-Sa 04:00-21:30; Su 04:30-21:30",
+    "phone": "+1-619-981-9802",
+    "sangis:OBJECTID": "1116",
+    "sangis:TYPE": "Commercial",
+    "source": "SanGIS Footprints_Nonresidential_SD public domain (http://www.sangis.org/)",
+    "takeaway": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/68797-302803/san-ysidro-camino-de-la-plaz-680-e-san-ysidro-blvd-san-ysidro-ca-921733113-us"
+  }
+},
+{
+  "type": "way",
+  "id": 31801263,
+  "center": {
+    "lat": 32.5604309,
+    "lon": -117.0628833
+  },
+  "tags": {
+    "addr:city": "San Diego",
+    "addr:country": "US",
+    "addr:housenumber": "2032",
+    "addr:postcode": "92173",
+    "addr:state": "CA",
+    "addr:street": "Dairy Mart Road",
+    "air_conditioning": "yes",
+    "amenity": "cafe",
+    "branch": "Dairy Mart & I-5",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "building": "commercial",
+    "cuisine": "coffee_shop",
+    "drive_through": "yes",
+    "internet_access": "yes",
+    "internet_access:fee": "no",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "outdoor_seating": "yes",
+    "phone": "+1 619-662-6070",
+    "ref": "1027510",
+    "sangis:OBJECTID": "1376",
+    "sangis:TYPE": "Commercial",
+    "source": "SanGIS Business Sites Public Domain (http://www.sangis.org/)",
+    "takeaway": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/1027510/dairy-mart-i-5-2032-dairy-mart-road-san-diego-ca-921731841-us"
+  }
+},
+{
+  "type": "way",
+  "id": 31819806,
+  "center": {
+    "lat": 32.5847794,
+    "lon": -117.0611509
+  },
+  "tags": {
+    "addr:city": "San Diego",
+    "addr:housenumber": "3320",
+    "addr:postcode": "92154",
+    "addr:state": "CA",
+    "addr:street": "Palm Avenue",
+    "air_conditioning": "yes",
+    "amenity": "cafe",
+    "branch": "Palm & Beyer",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "building": "retail",
+    "building:levels": "1",
+    "cuisine": "coffee_shop",
+    "drive_through": "yes",
+    "internet_access": "wlan",
+    "internet_access:fee": "customers",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "outdoor_seating": "yes",
+    "phone": "+1 619-575-4337",
+    "sangis:OBJECTID": "7069",
+    "sangis:TYPE": "Commercial",
+    "source": "SanGIS Footprints_Nonresidential_SD public domain (http://www.sangis.org/)",
+    "takeaway": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/17074/palm-beyer-3320-palm-avenue-san-diego-ca-921541662-us"
+  }
+},
+{
+  "type": "way",
+  "id": 338830931,
+  "center": {
+    "lat": 32.6984540,
+    "lon": -117.1700064
+  },
+  "tags": {
+    "addr:housenumber": "1201",
+    "addr:street": "First Street",
+    "amenity": "cafe",
+    "building": "retail",
+    "check_date": "2023-07-13",
+    "name": "Old Town Coffee and Tea",
+    "payment:mastercard": "yes",
+    "payment:visa": "yes",
+    "phone": "+1 619-232-1679",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 505169971,
+  "center": {
+    "lat": 32.5204914,
+    "lon": -117.0095377
+  },
+  "tags": {
+    "amenity": "cafe",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "brand:wikipedia": "en:Starbucks",
+    "building": "yes",
+    "cuisine": "coffee_shop",
+    "internet_access": "wlan",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "takeaway": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 506882758,
+  "center": {
+    "lat": 32.5299458,
+    "lon": -117.1166305
+  },
+  "tags": {
+    "amenity": "cafe",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "brand:wikipedia": "en:Starbucks",
+    "building": "yes",
+    "cuisine": "coffee_shop",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "takeaway": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 508313240,
+  "center": {
+    "lat": 32.6692151,
+    "lon": -117.0223587
+  },
+  "tags": {
+    "addr:city": "Bonita",
+    "addr:housenumber": "5030",
+    "addr:postcode": "91902",
+    "addr:state": "CA",
+    "addr:street": "Bonita Road",
+    "addr:unit": "A",
+    "amenity": "cafe",
+    "branch": "Bonnie Brae Center",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "building": "commercial",
+    "cuisine": "coffee_shop",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "phone": "+1 619-479-0671",
+    "ref": "15584",
+    "takeaway": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/15584/bonnie-brae-center-5030-bonita-road-a-bonita-ca-919021700-us",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 532622711,
+  "center": {
+    "lat": 32.6973244,
+    "lon": -117.1726167
+  },
+  "tags": {
+    "addr:city": "Coronado",
+    "addr:country": "US",
+    "addr:housenumber": "181",
+    "addr:postcode": "92118",
+    "addr:street": "Orange Avenue",
+    "amenity": "cafe",
+    "building": "detached",
+    "cuisine": "juice",
+    "name": "Vemma",
+    "source:addr": "SanGIS Addresses Public Domain (http://www.sangis.org/)"
+  }
+},
+{
+  "type": "way",
+  "id": 545578168,
+  "center": {
+    "lat": 32.5315587,
+    "lon": -116.9664744
+  },
+  "tags": {
+    "amenity": "cafe",
+    "building": "yes",
+    "name": "Cafe El Cículo"
+  }
+},
+{
+  "type": "way",
+  "id": 549418976,
+  "center": {
+    "lat": 32.5848243,
+    "lon": -117.1181893
+  },
+  "tags": {
+    "amenity": "cafe",
+    "building": "yes",
+    "name": "Star Dust Donut Shop"
+  }
+},
+{
+  "type": "way",
+  "id": 597933903,
+  "center": {
+    "lat": 32.5157947,
+    "lon": -117.0034530
+  },
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "11164",
+    "addr:postcode": "22010",
+    "addr:street": "Prolongacion Paseo de los Heroes",
+    "amenity": "cafe",
+    "building": "school",
+    "height": "3.5",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Gazzo",
+    "outdoor_seating": "yes",
+    "phone": "+526649736743",
+    "website": "https://www.gazzo.mx/"
+  }
+},
+{
+  "type": "way",
+  "id": 608443737,
+  "center": {
+    "lat": 32.6386652,
+    "lon": -116.9964839
+  },
+  "tags": {
+    "amenity": "cafe",
+    "building": "yes",
+    "name": "Time Out Café",
+    "outdoor_seating": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 616320873,
+  "center": {
+    "lat": 32.5287415,
+    "lon": -116.9827795
+  },
+  "tags": {
+    "amenity": "cafe",
+    "building": "yes",
+    "name": "Coffee"
+  }
+},
+{
+  "type": "way",
+  "id": 621283610,
+  "center": {
+    "lat": 32.5256120,
+    "lon": -116.9721181
+  },
+  "tags": {
+    "amenity": "cafe",
+    "building": "school",
+    "building:levels": "1",
+    "name": "Cafeteria de la Escuela"
+  }
+},
+{
+  "type": "way",
+  "id": 621343263,
+  "center": {
+    "lat": 32.6393827,
+    "lon": -116.9962201
+  },
+  "tags": {
+    "amenity": "cafe",
+    "building": "yes",
+    "cuisine": "coffee"
+  }
+},
+{
+  "type": "way",
+  "id": 667821920,
+  "center": {
+    "lat": 32.6407117,
+    "lon": -116.9985370
+  },
+  "tags": {
+    "amenity": "cafe",
+    "building": "yes",
+    "name": "Tradewinds"
+  }
+},
+{
+  "type": "way",
+  "id": 680928988,
+  "center": {
+    "lat": 32.5071639,
+    "lon": -116.9240210
+  },
+  "tags": {
+    "amenity": "cafe",
+    "building": "yes",
+    "name": "Juice n’ Joy"
+  }
+},
+{
+  "type": "way",
+  "id": 735372714,
+  "center": {
+    "lat": 32.6034095,
+    "lon": -117.0837293
+  },
+  "tags": {
+    "addr:city": "Chula Vista",
+    "addr:housenumber": "670",
+    "addr:postcode": "91911",
+    "addr:state": "CA",
+    "addr:street": "Palomar Street",
+    "amenity": "cafe",
+    "branch": "Palomar & Industrial",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "building": "retail",
+    "cuisine": "coffee_shop",
+    "drive_through": "yes",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "phone": "+1 619-409-9688",
+    "ref": "87151",
+    "takeaway": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/87151/palomar-industrial-670-palomar-street-chula-vista-ca-919112607-us",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 745454798,
+  "center": {
+    "lat": 32.5102611,
+    "lon": -116.9649978
+  },
+  "tags": {
+    "amenity": "cafe",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "brand:wikipedia": "en:Starbucks",
+    "building": "yes",
+    "cuisine": "coffee_shop",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "takeaway": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 761304442,
+  "center": {
+    "lat": 32.6781098,
+    "lon": -117.0820892
+  },
+  "tags": {
+    "addr:city": "National City",
+    "addr:housenumber": "2230",
+    "addr:postcode": "91950",
+    "addr:state": "CA",
+    "addr:street": "East Plaza Boulevard, Grove Plaza",
+    "amenity": "cafe",
+    "branch": "Plaza & Grove",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "building": "yes",
+    "cuisine": "coffee_shop",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "phone": "+1 619-472-5318",
+    "ref": "11227",
+    "takeaway": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/11227/plaza-grove-2230-e-plaza-blvd-national-city-ca-919505160-us"
+  }
+},
+{
+  "type": "way",
+  "id": 764493724,
+  "center": {
+    "lat": 32.6212022,
+    "lon": -116.9620963
+  },
+  "tags": {
+    "addr:housenumber": "2110",
+    "addr:street": "Birch Road",
+    "addr:unit": "103",
+    "amenity": "cafe",
+    "brand": "Happy Lemon",
+    "brand:wikidata": "Q109968422",
+    "building": "yes",
+    "changing_table": "no",
+    "cuisine": "bubble_tea",
+    "name": "Happy Lemon",
+    "opening_hours": "Mo-Th,Su 11:00-23:00; Fr-Sa 11:00-24:00",
+    "outdoor_seating": "yes",
+    "payment:american_express": "yes",
+    "payment:contactless": "yes",
+    "payment:discover_card": "yes",
+    "payment:mastercard": "yes",
+    "payment:visa": "yes",
+    "phone": "+1 619-600-3680",
+    "takeaway": "yes",
+    "toilets": "yes",
+    "toilets:access": "yes",
+    "toilets:wheelchair": "yes",
+    "website": "https://www.happylemonsandiego.com/",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 775461670,
+  "center": {
+    "lat": 32.5847326,
+    "lon": -117.0917641
+  },
+  "tags": {
+    "addr:city": "San Diego",
+    "addr:housenumber": "635",
+    "addr:postcode": "92154",
+    "addr:state": "CA",
+    "addr:street": "Saturn Boulevard",
+    "addr:unit": "B",
+    "amenity": "cafe",
+    "branch": "Palm & Saturn, San Diego",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "cuisine": "coffee_shop",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "phone": "+1 619-575-2230",
+    "ref": "12445",
+    "sangis:OBJECTID": "1161",
+    "sangis:TYPE": "Commercial",
+    "source": "SanGIS Footprints_Nonresidential_SD public domain (http://www.sangis.org/)",
+    "takeaway": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/12445/palm-saturn-san-diego-635-saturn-blvd-suite-b-san-diego-ca-921544732-us"
+  }
+},
+{
+  "type": "way",
+  "id": 784306439,
+  "center": {
+    "lat": 32.5134532,
+    "lon": -117.0216746
+  },
+  "tags": {
+    "addr:street": "Boulevard Cuauhtémoc Sur",
+    "amenity": "cafe",
+    "building": "yes",
+    "name": "Santo Cafeto"
+  }
+},
+{
+  "type": "way",
+  "id": 940231825,
+  "center": {
+    "lat": 32.5945323,
+    "lon": -117.0410867
+  },
+  "tags": {
+    "addr:city": "Chula Vista",
+    "addr:housenumber": "4270",
+    "addr:postcode": "91911",
+    "addr:state": "CA",
+    "addr:street": "Main Street",
+    "amenity": "cafe",
+    "branch": "Main & Melrose",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "building": "retail",
+    "cuisine": "coffee_shop",
+    "drive_through": "yes",
+    "internet_access": "wlan",
+    "internet_access:fee": "customers",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "phone": "+1 619-409-9170",
+    "takeaway": "yes",
+    "website": "https://www.starbucks.com/store-locator/store/1021784/main-melrose-4270-main-street-chula-vista-ca-919116502-us"
+  }
+},
+{
+  "type": "way",
+  "id": 959895111,
+  "center": {
+    "lat": 32.4898447,
+    "lon": -116.9311193
+  },
+  "tags": {
+    "amenity": "cafe",
+    "building": "yes",
+    "name": "BlueLuna Cafe"
+  }
+},
+{
+  "type": "way",
+  "id": 960167987,
+  "center": {
+    "lat": 32.4928203,
+    "lon": -116.9346459
+  },
+  "tags": {
+    "amenity": "cafe",
+    "building": "yes",
+    "name": "Cafe La Flor"
+  }
+},
+{
+  "type": "way",
+  "id": 1021057498,
+  "center": {
+    "lat": 32.5378441,
+    "lon": -116.9259219
+  },
+  "tags": {
+    "amenity": "cafe",
+    "building": "school",
+    "emergency": "fire_extinguisher",
+    "name": "Cafetería Escolar",
+    "smoking": "no"
+  }
+},
+{
+  "type": "way",
+  "id": 1045086625,
+  "center": {
+    "lat": 32.5095631,
+    "lon": -116.9880658
+  },
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "4041",
+    "addr:postcode": "22105",
+    "addr:street": "Avenida Gladiolas",
+    "amenity": "cafe",
+    "building": "commercial",
+    "building:levels": "3",
+    "cuisine": "sandwich;salad;coffee_shop;dessert;cake;milkshakes;tea;waffles;panini;bagel",
+    "description": "Cafetería apta para perros",
+    "description:en": "Dog-friendly coffee shop",
+    "dog": "yes",
+    "fid": "14559",
+    "height": "7.0",
+    "internet_access": "yes",
+    "internet_access:fee": "customers",
+    "name": "HR Coffee & Deli",
+    "opening_hours": "Mo-Sa 08:00-23:00; Su 11:00-22:00",
+    "outdoor_seating": "yes",
+    "phone": "+526649044765",
+    "source": "Ayuntamiento de Tijuana"
+  }
+},
+{
+  "type": "way",
+  "id": 1045087885,
+  "center": {
+    "lat": 32.5101940,
+    "lon": -116.9877345
+  },
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "3920",
+    "addr:postcode": "22105",
+    "addr:street": "Avenida Gladiolas",
+    "amenity": "cafe",
+    "building": "yes",
+    "building:levels": "1",
+    "description": "Cat themed cafe",
+    "fid": "13286",
+    "height": "3.5",
+    "name": "Bastet Cat",
+    "source": "Ayuntamiento de Tijuana",
+    "theme": "cat",
+    "website": "http://bastetcatcafe.com/"
+  }
+},
+{
+  "type": "way",
+  "id": 1045090978,
+  "center": {
+    "lat": 32.5118646,
+    "lon": -116.9938485
+  },
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "12216",
+    "addr:neighbourhood": "20 de Noviembre",
+    "addr:postcode": "22100",
+    "addr:state": "Baja California",
+    "addr:street": "Avenida 20 de Noviembre",
+    "addr:unit": "1",
+    "amenity": "cafe",
+    "building": "residential",
+    "building:levels": "1",
+    "cuisine": "regional;mexican",
+    "fid": "10175",
+    "height": "3.5",
+    "name": "Cafe de Calle",
+    "outdoor_seating": "no",
+    "source": "Ayuntamiento de Tijuana"
+  }
+},
+{
+  "type": "way",
+  "id": 1111265085,
+  "center": {
+    "lat": 32.5399210,
+    "lon": -117.0315058
+  },
+  "tags": {
+    "amenity": "cafe",
+    "building": "yes",
+    "name": "D´Volada"
+  }
+},
+{
+  "type": "way",
+  "id": 1167759732,
+  "center": {
+    "lat": 32.5237336,
+    "lon": -117.0132505
+  },
+  "tags": {
+    "amenity": "cafe",
+    "building": "yes",
+    "name": "Café de la Fonda"
+  }
+},
+{
+  "type": "way",
+  "id": 1248316225,
+  "center": {
+    "lat": 32.5099707,
+    "lon": -116.9893627
+  },
+  "tags": {
+    "amenity": "cafe",
+    "building": "yes",
+    "cuisine": "french",
+    "name": "Cafe de la Alianza Francesa"
+  }
+},
+{
+  "type": "way",
+  "id": 1248692108,
+  "center": {
+    "lat": 32.5182412,
+    "lon": -117.0161110
+  },
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "10140",
+    "addr:postcode": "22015",
+    "addr:street": "Boulevard Agua Caliente",
+    "amenity": "cafe",
+    "building": "yes",
+    "cuisine": "coffee_shop;sandwich;dessert",
+    "indoor_seating": "no",
+    "internet_access": "yes",
+    "internet_access:fee": "customers",
+    "name": "Caffenio",
+    "note": "Facturacion: https://facturaciondrive.caffenio.com/",
+    "opening_hours": "Mo-Sa 06:00-22:00; Su 07:00-22:00",
+    "phone": "+528002233364",
+    "website": "https://caffenio.com/",
+    "website:menu": "https://caffenio.com/cafeterias/menu/"
+  }
+},
+{
+  "type": "way",
+  "id": 1342980431,
+  "center": {
+    "lat": 32.6157272,
+    "lon": -117.0696071
+  },
+  "tags": {
+    "addr:city": "Chula Vista",
+    "addr:country": "US",
+    "addr:housenumber": "1049",
+    "addr:postcode": "91911",
+    "addr:street": "3rd Avenue",
+    "amenity": "cafe",
+    "brand": "Starbucks",
+    "brand:wikidata": "Q37158",
+    "building": "yes",
+    "cuisine": "coffee_shop",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Starbucks",
+    "official_name": "Starbucks Coffee",
+    "source": "microsoft/BuildingFootprints;SanGIS Addresses Public Domain (http://www.sangis.org/)",
+    "takeaway": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 1434792538,
+  "center": {
+    "lat": 32.5167728,
+    "lon": -116.9788681
+  },
+  "tags": {
+    "addr:city": "Tijuana",
+    "addr:housenumber": "13660",
+    "addr:neighbourhood": "El Chamizal",
+    "addr:postcode": "22415",
+    "addr:state": "B.C.",
+    "addr:street": "Vía Rápida Oriente",
+    "amenity": "cafe",
+    "branch": "Buena Vista",
+    "brand": "Caffenio",
+    "building": "commercial",
+    "cuisine": "coffee_shop",
+    "delivery": "yes",
+    "drive_through": "yes",
+    "email": "clientes@caffenio.com",
+    "internet_access": "wlan",
+    "internet_access:fee": "customers",
+    "name": "Caffenio",
+    "opening_hours": "Mo-Sa 06:00-22:00; Su 07:00-22:00",
+    "outdoor_seating": "yes",
+    "payment:cash": "yes",
+    "payment:credit_cards": "yes",
+    "payment:debit_cards": "yes",
+    "takeaway": "yes",
+    "toilets": "yes",
+    "website": "https://caffenio.com",
+    "website:menu": "https://caffenio.com/cafeterias/menu/"
+  }
+},
+{
+  "type": "way",
+  "id": 1435553164,
+  "center": {
+    "lat": 32.4889710,
+    "lon": -117.0875214
+  },
+  "tags": {
+    "amenity": "cafe",
+    "building": "yes",
+    "cuisine": "sandwich",
+    "name": "Cafeteria",
+    "opening_hours": "Mo-Fr 09:00-17:00",
+    "outdoor_seating": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 1469026349,
+  "center": {
+    "lat": 32.6155846,
+    "lon": -116.9656969
+  },
+  "tags": {
+    "amenity": "cafe",
+    "building": "yes",
+    "cuisine": "coffee_shop",
+    "name": "Casa De Otay – The Casita"
+  }
+}
+
+  ]
+}
