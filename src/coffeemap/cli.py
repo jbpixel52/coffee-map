@@ -54,6 +54,17 @@ def main(argv: list[str] | None = None) -> int:
             print(f"{table:12s} {n}")
         for row in con.execute("SELECT source, COUNT(*) n FROM places GROUP BY source"):
             print(f"  places[{row['source']}] {row['n']}")
+    elif args.cmd == "merge":
+        from .merge import rebuild_shops
+
+        shops, merged = rebuild_shops(con)
+        print(f"merge: {shops} shops ({merged} duplicate place rows merged)")
+    elif args.cmd == "export":
+        import json as _json
+
+        from .export import export
+
+        print(_json.dumps(export(con, city), ensure_ascii=False, indent=2))
     else:
         print(f"{args.cmd}: not implemented yet", file=sys.stderr)
         return 2
