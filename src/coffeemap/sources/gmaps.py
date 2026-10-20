@@ -4,7 +4,7 @@ from __future__ import annotations
 import random
 import re
 
-from ..config import City
+from ..config import ROOT, City
 
 COORD_RE = re.compile(r"!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)")
 PLACE_ID_RE = re.compile(r"!19s([A-Za-z0-9_-]{10,})")
@@ -15,13 +15,14 @@ CARD_CSS = 'div[role="article"] a[href*="/maps/place/"]'
 def ensure_browsers_path() -> None:
     """Point PLAYWRIGHT_BROWSERS_PATH at the project-owned .browsers when present.
 
-    An inherited path from the agent runtime points at revisions this patchright
-    didn't install — launches then fail with `Executable doesn't exist`.
+    MUST be called before `import patchright`: patchright reads the env var once
+    at import time and caches it. An inherited path from the agent runtime
+    (e.g. /opt/hermes/tools) points at revisions this patchright never
+    installed — launches then fail with `Executable doesn't exist`.
     """
     import os
-    from pathlib import Path
 
-    ours = Path(__file__).resolve().parents[2] / ".browsers"
+    ours = ROOT / ".browsers"
     if ours.exists():
         os.environ["PLAYWRIGHT_BROWSERS_PATH"] = str(ours)
 
@@ -37,10 +38,14 @@ def fetch_query(page, query: str, city: City, max_scrolls: int = 6) -> str:
     page.wait_for_timeout(4000)
     feed = page.query_selector('[role="feed"]')
     if feed is not None:
-        for _ in range(max_scrolls):
-            feed.hover()
-            page.mouse.wheel(0, 2500)
-            page.wait_for_timeout(random.randint(1200, 2500))
+        # Do NOT use feed.hover(): the actionability check hangs on Maps'
+        # virtualized feed. Park the mouse over the feed's centre and wheel.
+        box = feed.bounding_box()
+        if box:
+            page.mouse.move(box["x"] + box["width"] / 2, box["y"] + box["height"] / 2)
+            for _ in range(max_scrolls):
+                page.mouse.wheel(0, 2500)
+                page.wait_for_timeout(random.randint(1200, 2500))
     return page.content()
 
 

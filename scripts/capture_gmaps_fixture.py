@@ -3,10 +3,13 @@ import gzip
 from pathlib import Path
 
 from coffeemap.config import load_city
-from coffeemap.sources.gmaps import ensure_browsers_path, fetch_query
-from patchright.sync_api import sync_playwright
+from coffeemap.sources.gmaps import ensure_browsers_path
 
-ensure_browsers_path()
+ensure_browsers_path()  # must run before patchright is imported (it caches the env)
+
+from coffeemap.sources.gmaps import fetch_query  # noqa: E402
+from patchright.sync_api import sync_playwright  # noqa: E402
+
 city = load_city()
 out = Path("tests/fixtures/gmaps_search.html.gz")
 

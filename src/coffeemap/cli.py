@@ -55,11 +55,13 @@ def main(argv: list[str] | None = None) -> int:
         for row in con.execute("SELECT source, COUNT(*) n FROM places GROUP BY source"):
             print(f"  places[{row['source']}] {row['n']}")
     elif args.cmd == "gmaps-fetch":
-        from patchright.sync_api import sync_playwright
-
+        # ensure_browsers_path() MUST run before patchright is imported: it reads
+        # PLAYWRIGHT_BROWSERS_PATH once at import time and caches it.
         from .sources.gmaps import ensure_browsers_path, fetch_query
 
         ensure_browsers_path()
+        from patchright.sync_api import sync_playwright
+
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True, args=["--no-sandbox"])
             ctx = browser.new_context(

@@ -6,7 +6,11 @@
 import json
 import sys
 
-from patchright.sync_api import sync_playwright
+from coffeemap.sources.gmaps import ensure_browsers_path
+
+ensure_browsers_path()  # must run before patchright is imported (it caches the env)
+
+from patchright.sync_api import sync_playwright  # noqa: E402
 
 url = sys.argv[1]
 meta = json.loads(open("web/public/data/meta.json", encoding="utf-8").read())
