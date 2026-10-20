@@ -2,6 +2,7 @@ import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { Feature, FeatureCollection, Point } from "geojson";
 import { shopMatches, type ShopProps } from "./filter";
+import { watercolorStyle } from "./watercolor";
 import "./style.css";
 
 const BASE = import.meta.env.BASE_URL;
@@ -14,13 +15,11 @@ async function boot() {
 
   const map = new maplibregl.Map({
     container: "map",
-    // Stamen Watercolor (raster, by Stamen Design, served by Stadia Maps).
-    // Keyless from localhost; production (github.io) needs the domain
-    // registered in the Stadia dashboard — browser Referer auth, no API key.
-    style: "https://tiles.stadiamaps.com/styles/stamen_watercolor.json",
+    // Our own watercolor theme over OpenFreeMap vector tiles (OSM data):
+    // free, keyless, no external style service. See src/watercolor.ts.
+    style: watercolorStyle,
     center: [-117.0382, 32.5149],
     zoom: 12.4,
-    maxZoom: 16, // the original watercolor tileset is missing tiles above 16
   });
 
   // hooks the smoke test drives
