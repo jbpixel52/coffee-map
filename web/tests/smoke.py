@@ -18,6 +18,13 @@ meta = json.loads(open("web/public/data/meta.json", encoding="utf-8").read())
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True, args=["--no-sandbox"])
     page = browser.new_context(viewport={"width": 1280, "height": 900}).new_page()
+    tiles = {"ok": 0, "err": 0}
+
+    def on_resp(r):
+        if "tiles.stadiamaps.com" in r.url:
+            tiles["ok" if r.status == 200 else "err"] += 1
+
+    page.on("response", on_resp)
     page.goto(url, wait_until="load", timeout=60_000)
     page.wait_for_function("window.__map && window.__map.isStyleLoaded()", timeout=60_000)
     page.wait_for_timeout(1500)
@@ -65,8 +72,10 @@ with sync_playwright() as p:
     text = (page.text_content(".maplibregl-popup-content") or "").strip()
     assert "Google Maps" in text, text
     assert "seguidores" in text and str(igf) in text, f"popup missing followers ({igf}): {text}"
+    assert tiles["ok"] >= 1 and tiles["err"] == 0, f"watercolor tiles: {tiles}"
     print(
-        f"OK: {n} markers, {meta['with_instagram']} with IG; "
+        f"OK: {n} markers, {meta['with_instagram']} with IG, "
+        f"{tiles['ok']} watercolor tiles; "
         f"popup: {text.splitlines()[0][:60]} (seguidores {igf})"
     )
     browser.close()

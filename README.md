@@ -10,9 +10,10 @@ from three scraped sources with an archive-first pipeline. Live at
 | Enrichment | Google Maps search (logged-out scrape) | shops OSM misses, with coordinates + place ids |
 | Social | Instagram profiles (logged-out recon) | handle + follower count per shop (13 profiles today) |
 
-Map UI: MapLibre GL + OpenFreeMap Liberty tiles, Spanish (es-MX) strings, marker
-popups with a Google Maps search link. Data is refreshed by local scrape runs;
-GitHub Actions only builds and deploys the committed data.
+Map UI: MapLibre GL over **Stamen Watercolor** raster tiles (Stamen Design,
+served by Stadia Maps), Spanish (es-MX) strings, marker popups with a Google
+Maps search link. Data is refreshed by local scrape runs; GitHub Actions only
+builds and deploys the committed data.
 
 ## Quickstart
 
@@ -66,6 +67,13 @@ config + one refresh away. The UI strings are Spanish for now.
 - Google Maps — names/coordinates from public search pages; the public export
   carries no ratings or review text.
 - Instagram — public profile fields (handle, follower count) only.
+- Map tiles — **Stamen Watercolor** by Stamen Design, served by **Stadia Maps**
+  (`https://tiles.stadiamaps.com/styles/stamen_watercolor.json`); attribution
+  (Stadia · Stamen · OSM) is displayed in the footer and must stay. Keyless
+  from localhost; the deployed site authenticates **by domain** — register
+  `jbpixel52.github.io` in the Stadia dashboard (Manage Properties →
+  Authentication Configuration → add subdomain `jbpixel52`, domain
+  `github.io`). No API key is stored in the repo.
 
 ## Repo layout
 

@@ -14,9 +14,13 @@ async function boot() {
 
   const map = new maplibregl.Map({
     container: "map",
-    style: "https://tiles.openfreemap.org/styles/liberty",
+    // Stamen Watercolor (raster, by Stamen Design, served by Stadia Maps).
+    // Keyless from localhost; production (github.io) needs the domain
+    // registered in the Stadia dashboard — browser Referer auth, no API key.
+    style: "https://tiles.stadiamaps.com/styles/stamen_watercolor.json",
     center: [-117.0382, 32.5149],
     zoom: 12.4,
+    maxZoom: 16, // the original watercolor tileset is missing tiles above 16
   });
 
   // hooks the smoke test drives
@@ -63,7 +67,7 @@ async function boot() {
         "circle-radius": ["interpolate", ["linear"], ["zoom"], 10, 3, 14, 6],
         "circle-color": ["case", ["has", "instagram"], "#c2410c", "#1d4ed8"],
         "circle-stroke-color": "#ffffff",
-        "circle-stroke-width": 1,
+        "circle-stroke-width": 1.5,
       },
     });
     map.on("click", "shops", (e) => {
