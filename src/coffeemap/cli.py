@@ -54,6 +54,41 @@ def main(argv: list[str] | None = None) -> int:
             print(f"{table:12s} {n}")
         for row in con.execute("SELECT source, COUNT(*) n FROM places GROUP BY source"):
             print(f"  places[{row['source']}] {row['n']}")
+    elif args.cmd == "gmaps-fetch":
+        from patchright.sync_api import sync_playwright
+
+        from .sources.gmaps import ensure_browsers_path, fetch_query
+
+        ensure_browsers_path()
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True, args=["--no-sandbox"])
+            ctx = browser.new_context(
+                locale=city.locale,
+                timezone_id=city.timezone,
+                viewport={"width": 1366, "height": 1000},
+            )
+            page = ctx.new_page()
+            for i, q in enumerate(city.gmaps_queries):
+                html = fetch_query(page, q, city, args.max_scrolls)
+                ref = archive_write("gmaps", q, html.encode("utf-8"), "html")
+                record_fetch(con, "gmaps", q, ref)
+                print(f"gmaps-fetch [{q}] {html.count('/maps/place/')} card links -> {ref}")
+                if i < len(city.gmaps_queries) - 1:
+                    time.sleep(random.randint(8, 15))  # be gentle with anonymous Maps
+            browser.close()
+    elif args.cmd == "gmaps-parse":
+        from .sources.gmaps import parse_html
+
+        refs = [
+            r["archive_ref"]
+            for r in con.execute("SELECT archive_ref FROM fetches WHERE source='gmaps' ORDER BY id")
+        ]
+        for ref in refs:
+            for it in parse_html(archive_read(ref).decode("utf-8")):
+                upsert_place(con, source="gmaps", archive_ref=ref, **it)
+        con.commit()
+        n = con.execute("SELECT COUNT(*) FROM places WHERE source='gmaps'").fetchone()[0]
+        print(f"gmaps-parse: {n} places from {len(refs)} archived pages")
     elif args.cmd == "merge":
         from .merge import rebuild_shops
 
