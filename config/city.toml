@@ -1,0 +1,12 @@
+name = "Tijuana"
+country = "Mexico"
+locale = "es-MX"
+timezone = "America/Tijuana"
+center_lat = 32.5149
+center_lon = -117.0382
+zoom = 12.4
+bbox_south = 32.37
+bbox_west = -117.20
+bbox_north = 32.70
+bbox_east = -116.87
+gmaps_queries = ["coffee shops Tijuana", "cafeterias Tijuana", "cafe Tijuana"]
