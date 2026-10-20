@@ -2,6 +2,7 @@ import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { Feature, FeatureCollection, Point } from "geojson";
 import { shopMatches, type ShopProps } from "./filter";
+import { popupHtml } from "./popup";
 import { watercolorStyle } from "./watercolor";
 import "./style.css";
 
@@ -52,17 +53,11 @@ async function boot() {
   const popupFor = (f: Feature<Point>) => {
     const p = f.properties as Record<string, any> & ShopProps;
     const [lon, lat] = f.geometry.coordinates;
-    const gm = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-      `${p.name} ${lat},${lon}`,
-    )}`;
-    const ig = p.instagram
-      ? `<a href="https://instagram.com/${p.instagram}" target="_blank" rel="noopener">@${p.instagram}</a>` +
-        (p.ig_followers ? ` · ${p.ig_followers} seguidores` : "")
-      : "—";
-    return new maplibregl.Popup().setLngLat([lon, lat]).setHTML(
-      `<strong>${p.name}</strong><br/>IG: ${ig}<br/>` +
-        `<a href="${gm}" target="_blank" rel="noopener">Google Maps</a>`,
-    );
+    // Rich click-preview: name + Instagram embed of the shop's latest post
+    // (falls back to a profile link, then to a plain no-IG note).
+    return new maplibregl.Popup({ maxWidth: "340px" })
+      .setLngLat([lon, lat])
+      .setHTML(popupHtml({ ...(p as any), lat, lon }));
   };
 
   const applyFilters = () => {

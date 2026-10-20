@@ -9,4 +9,39 @@ bbox_south = 32.37
 bbox_west = -117.20
 bbox_north = 32.70
 bbox_east = -116.87
-gmaps_queries = ["coffee shops Tijuana", "cafeterias Tijuana", "cafe Tijuana"]
+gmaps_queries = [
+  "coffee shops Tijuana",
+  "cafeterias Tijuana",
+  "cafe Tijuana",
+  "cafe de especialidad Tijuana",
+  "coffee Tijuana",
+  "brunch Tijuana",
+  "panaderia Tijuana",
+  "cafe Zona Rio Tijuana",
+  "cafeteria Zona Rio Tijuana",
+  "cafe Cacho Tijuana",
+  "cafe Chapultepec Tijuana",
+  "cafe Hipodromo Tijuana",
+  "cafe Playas de Tijuana",
+  "coffee Playas de Tijuana",
+  "cafeteria Otay Tijuana",
+  "cafe La Mesa Tijuana",
+  "cafe Centro Tijuana",
+  "cafe Avenida Revolucion Tijuana",
+  "cafeteria Agua Caliente Tijuana",
+  "cafe Sanchez Taboada Tijuana",
+]
+web_queries = [
+  "mejores cafeterias Tijuana",
+  "mejores cafes de especialidad Tijuana",
+  "cafeterias bonitas Tijuana instagram",
+  "best coffee shops Tijuana",
+  "guia cafes Tijuana",
+  "cafeterias Zona Rio Tijuana",
+  "cafes Playas de Tijuana",
+  "brunch cafes Tijuana",
+  "panaderias de especialidad Tijuana",
+  "cafeterias Tijuana instagram",
+  "cafes Tijuana nueva",
+  "especialidad cafe Tijuana 2026",
+]

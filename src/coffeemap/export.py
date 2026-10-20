@@ -39,6 +39,8 @@ def export(con: sqlite3.Connection, city: City) -> dict:
                 "name": r["name"],
                 "instagram": r["instagram"],
                 "ig_followers": igp["followers"] if igp else None,
+                "ig_full_name": igp["full_name"] if igp else None,
+                "ig_latest_code": igp["latest_code"] if igp else None,
                 "ig_last_post_at": igp["last_post_at"] if igp else None,
                 "website": r["website"],
                 "sources": (r["sources"] or "").split(","),

@@ -68,26 +68,32 @@ with sync_playwright() as p:
     page.click("#only-ig")
     page.wait_for_timeout(300)
 
-    # popup: prefer a shop WITH instagram followers (proves the recon join) —
+    # popup: prefer a shop WITH a latest-post code (proves the embed plumbing) —
     # recentre on it, isolate it via the search box, then click its projected
     # position plus the container offset (map.project returns map-container
     # coords, not viewport coords).
-    name, x, y, igf = page.evaluate(
+    name, x, y, igf, code, handle = page.evaluate(
         """() => {
              let best = null;
              for (const f of window.__shops) {
-               if (f.properties.ig_followers && f.properties.ig_followers > 0) { best = f; break; }
+               if (f.properties.ig_latest_code) { best = f; break; }
              }
-             if (!best) return [null, 0, 0, 0];
+             if (!best) {
+               for (const f of window.__shops) {
+                 if (f.properties.ig_followers && f.properties.ig_followers > 0) { best = f; break; }
+               }
+             }
+             if (!best) return [null, 0, 0, 0, null, null];
              const [lon, lat] = best.geometry.coordinates;
              window.__map.jumpTo({center: [lon, lat]});
              const pt = window.__map.project([lon, lat]);
              const r = document.getElementById("map").getBoundingClientRect();
-             return [best.properties.name, pt.x + r.left, pt.y + r.top, best.properties.ig_followers];
+             return [best.properties.name, pt.x + r.left, pt.y + r.top, best.properties.ig_followers,
+                     best.properties.ig_latest_code, best.properties.instagram];
            }""",
         isolated_context=False,
     )
-    assert name, "no shop with ig_followers in the dataset — recon+export not joined?"
+    assert name, "no shop with IG data in the dataset — ig pipeline not joined?"
     page.wait_for_timeout(400)
     page.fill("#q", name)
     page.wait_for_timeout(400)
@@ -95,11 +101,19 @@ with sync_playwright() as p:
     page.wait_for_selector(".maplibregl-popup-content", timeout=10_000)
     text = (page.text_content(".maplibregl-popup-content") or "").strip()
     assert "Google Maps" in text, text
-    assert "seguidores" in text and str(igf) in text, f"popup missing followers ({igf}): {text}"
+    if igf:
+        assert "seguidores" in text and str(igf) in text, f"popup missing followers ({igf}): {text}"
+    if handle:
+        href = page.get_attribute(".maplibregl-popup-content a.popup-link", "href")
+        assert href and handle in href, f"profile link {href!r} missing {handle!r}"
+    if code:
+        page.wait_for_selector(".maplibregl-popup-content iframe.popup-embed", timeout=10_000)
+        src = page.get_attribute(".maplibregl-popup-content iframe.popup-embed", "src")
+        assert src and f"/p/{code}/embed/" in src, f"embed src {src!r} missing code {code!r}"
     assert tiles["ok"] >= 1 and tiles["err"] == 0, f"vector tiles: {tiles}"
     print(
         f"OK: {n} markers, {meta['with_instagram']} with IG, "
         f"{tiles['ok']} vector tiles; "
-        f"popup: {text.splitlines()[0][:60]} (seguidores {igf})"
+        f"popup: {text.splitlines()[0][:60]} (seguidores {igf}, embed {code})"
     )
     browser.close()

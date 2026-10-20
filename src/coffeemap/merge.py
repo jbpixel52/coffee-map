@@ -11,6 +11,12 @@ from .store import now_utc
 MERGE_DISTANCE_M = 100.0
 NAME_RATIO_MIN = 0.80
 
+# Tokens too generic to carry identity on their own.
+STOP_TOKENS = {
+    "cafe", "cafeteria", "coffee", "cafes", "de", "del", "la", "el", "los", "las",
+    "y", "the", "shop", "bar", "mx", "mexico", "tijuana", "baja", "co", "and",
+}
+
 
 def norm_name(name: str) -> str:
     name = unicodedata.normalize("NFKD", name)
@@ -36,10 +42,51 @@ def should_merge(a: dict, b: dict) -> bool:
     return na == nb or SequenceMatcher(None, na, nb).ratio() >= NAME_RATIO_MIN
 
 
+def tokens(name: str) -> set[str]:
+    """Identity-bearing tokens of a name ('Brewja Barra de Café' -> {brewja, barra})."""
+    return {t for t in norm_name(name).split() if len(t) >= 2}
+
+
+def token_covered(a: str, b: str, min_distinct_len: int = 4) -> bool:
+    """Every distinctive token of the smaller string appears in the larger one.
+
+    Handles brand-style names and Instagram handles ('Brewja' vs
+    'brewja.barradecafe' -> norm 'brewja barradecafe'). A single very short
+    distinctive token ('lumi' is 4; below 4 is rejected) is not enough by itself.
+    """
+    ta, tb = tokens(a), tokens(b)
+    if not ta or not tb:
+        return False
+    short, long_ = (ta, tb) if len(ta) <= len(tb) else (tb, ta)
+    distinct = short - STOP_TOKENS
+    if not distinct or not distinct <= long_:
+        return False
+    if len(distinct) == 1 and len(next(iter(distinct))) < min_distinct_len:
+        return False
+    return True
+
+
+def name_match(a: str, b: str, ratio_min: float = NAME_RATIO_MIN) -> bool:
+    """Fuzzy identity between a place name and an ig handle / full name."""
+    na, nb = norm_name(a), norm_name(b)
+    if not na or not nb:
+        return False
+    if na == nb or SequenceMatcher(None, na, nb).ratio() >= ratio_min:
+        return True
+    return token_covered(a, b)
+
+
 def rebuild_shops(con: sqlite3.Connection) -> tuple[int, int]:
     """Rebuild shops/shop_places from places. Returns (shops, merged_places)."""
     now = now_utc()
-    places = [dict(r) for r in con.execute("SELECT * FROM places ORDER BY source, source_id")]
+    places = [
+        dict(r)
+        for r in con.execute(
+            """SELECT * FROM places
+               WHERE COALESCE(verdict, 'cafe') <> 'not_cafe'
+               ORDER BY source, source_id"""
+        )
+    ]
     clusters: list[list[dict]] = []
     for p in places:
         for cluster in clusters:

@@ -67,6 +67,8 @@ def parse_profile_html(html: str) -> dict | None:
         posts = root.get("media_count")
     return {
         "username": root.get("username"),
+        "full_name": root.get("full_name"),
+        "biography": (root.get("biography") or "")[:220],
         "followers": root.get("follower_count"),
         "posts": posts,
         "post_codes": codes,

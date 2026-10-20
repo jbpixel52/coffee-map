@@ -8,7 +8,10 @@ def test_loads_default_city(tmp_path: Path):
     assert city.name == "Tijuana"
     assert city.bbox == (32.37, -117.20, 32.70, -116.87)
     assert city.locale == "es-MX"
-    assert len(city.gmaps_queries) == 3
+    # multi-query harvest (zone variants) + web-tier SERP queries
+    assert len(city.gmaps_queries) >= 15
+    assert any("Zona Rio" in q for q in city.gmaps_queries)
+    assert len(city.web_queries) >= 10
 
 
 def test_loads_custom_path(tmp_path: Path):
@@ -21,3 +24,4 @@ def test_loads_custom_path(tmp_path: Path):
     city = load_city(p)
     assert city.name == "Rosarito"
     assert city.gmaps_queries == []
+    assert city.web_queries == []

@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import tomllib
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]  # src/coffeemap/config.py -> repo root
@@ -23,6 +23,7 @@ class City:
     zoom: float
     bbox: tuple[float, float, float, float]  # south, west, north, east
     gmaps_queries: list[str]
+    web_queries: list[str] = field(default_factory=list)
 
 
 def load_city(path: Path | None = None) -> City:
@@ -37,4 +38,5 @@ def load_city(path: Path | None = None) -> City:
         zoom=raw.get("zoom", 12.0),
         bbox=(raw["bbox_south"], raw["bbox_west"], raw["bbox_north"], raw["bbox_east"]),
         gmaps_queries=list(raw.get("gmaps_queries", [])),
+        web_queries=list(raw.get("web_queries", [])),
     )
