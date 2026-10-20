@@ -35,12 +35,19 @@ SYSTEM_PROMPT = (
 )
 
 # Few-shot anchors: matched the labeled battery results on the local model.
+# The last four teach name-shape patterns the 1.5B model gets wrong cold:
+# brand-style tokens (Baristi), the word "Electric", roasteries, and the
+# "restaurant + Café in name" trap.
 FEW_SHOT = [
     ("Business: Starbucks", "CAFE"),
     ("Business: Cafeteria y Panaderia La Especial", "CAFE"),
     ("Business: Farmacia del Ahorro", "NOT_CAFE"),
     ("Business: Smart Fit", "NOT_CAFE"),
     ("Business: Panaderia La Espiga", "NOT_CAFE"),
+    ("Business: Electric Coffee Roasters", "CAFE"),
+    ("Business: Baristi Tostadores - Río", "CAFE"),
+    ("Business: Container Coffee Roaster", "CAFE"),
+    ("Business: Comida China Café 8", "NOT_CAFE"),
 ]
 
 TAG_RE = re.compile(r"<[^>]+>")
@@ -124,6 +131,10 @@ LABELED_BATTERY: list[tuple[str, str]] = [
     ("Hotel Real Inn", "not_cafe"),
     ("Veterinaria Animal Care", "not_cafe"),
     ("Ferreteria El Tornillo", "not_cafe"),
+    ("Electric Coffee Roasters", "cafe"),
+    ("Baristi Tostadores - Río", "cafe"),
+    ("Container Coffee Roaster", "cafe"),
+    ("Comida China Café 8", "not_cafe"),
 ]
 
 

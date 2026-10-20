@@ -395,19 +395,23 @@ def main(argv: list[str] | None = None) -> int:
         for pr in profs:
             h = pr["handle"]
             verdict = allowed.get(h.lower(), "__nosource__")
-            if verdict not in ("cafe", "__nosource__"):
-                skipped += 1
-                print(f"ig-attach {h}: skipped (verdict={verdict})")
-                continue
             matches = [
                 pl
                 for pl in places
                 if name_match(pl["name"], h) or (pr["full_name"] and name_match(pl["name"], pr["full_name"]))
             ]
+            cafe_matches = [pl for pl in matches if (pl["verdict"] or "cafe") != "not_cafe"]
+            # The 1.5B model marks some real café-brand handles NOT_CAFE (it
+            # dislikes handles); a name-match to a confirmed café place is
+            # stronger evidence than that verdict.
+            if verdict == "not_cafe" and not cafe_matches:
+                skipped += 1
+                print(f"ig-attach {h}: skipped (verdict={verdict})")
+                continue
             if not matches:
                 print(f"ig-attach {h}: no matching place")
                 continue
-            for pl in matches:
+            for pl in cafe_matches or matches:
                 pairs += 1
                 if not (pl["instagram"] or "").strip():
                     con.execute("UPDATE places SET instagram=? WHERE id=?", (h, pl["id"]))

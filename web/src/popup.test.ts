@@ -69,4 +69,28 @@ describe("popupHtml", () => {
     expect(url).toContain("https://www.google.com/maps/search/?api=1&query=");
     expect(url).toContain("Caf%C3%A9%20X%2032.5%2C-117");
   });
+
+  it("suppresses an IG display name that only differs by case/accents", () => {
+    const html = popupHtml({
+      ...base,
+      instagram: "luxcoffeebar",
+      ig_full_name: "LUX COFFEE BAR & ROASTERS",
+    });
+    expect(html).not.toContain("popup-fullname");
+  });
+
+  it("keeps a genuinely different IG display name", () => {
+    const html = popupHtml({ ...base, instagram: "luxcoffeebar", ig_full_name: "Lux • Cafetería" });
+    expect(html).toContain("popup-fullname");
+  });
+
+  it("renders the outbound links above the embed so a tall iframe cannot hide them", () => {
+    const html = popupHtml({
+      ...base,
+      instagram: "luxcoffeebar",
+      ig_latest_code: "C6o2H4uvc5U",
+    });
+    expect(html.indexOf("Google Maps ↗")).toBeGreaterThan(-1);
+    expect(html.indexOf("Google Maps ↗")).toBeLessThan(html.indexOf("<iframe"));
+  });
 });

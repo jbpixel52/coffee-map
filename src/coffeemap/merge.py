@@ -47,38 +47,92 @@ def tokens(name: str) -> set[str]:
     return {t for t in norm_name(name).split() if len(t) >= 2}
 
 
+def _ratio(a: str, b: str) -> float:
+    return SequenceMatcher(None, a, b).ratio()
+
+
+def _fused_hit(tok: str, fused: str) -> bool:
+    """tok appears in the fused string: exactly at 6+ chars, at a word edge at
+    5 ('regor' is a prefix of 'regorcafe'), or with spelling support at 5+
+    ('vortexcoffeehouse' ~ 'vorticecoffeehouse' at 0.91)."""
+    if len(tok) >= 6 and tok in fused:
+        return True
+    if len(tok) >= 5 and (fused.startswith(tok) or fused.endswith(tok)):
+        return True
+    if len(tok) < 5 or not fused:
+        return False
+    return _ratio(tok, fused) >= 0.90
+
+
 def token_covered(a: str, b: str, min_distinct_len: int = 4) -> bool:
     """Every distinctive token of the smaller string appears in the larger one.
 
     Handles brand-style names and Instagram handles: tokens may be split
-    ('brewja' vs 'brewja.barradecafe') or fused ('Nativo Coffee Community' vs
-    'nativocoffee'). A single very short distinctive token ('lumi' is 4; below
-    4 is rejected) is not enough by itself.
+    ('brewja' vs 'brewja.barradecafe'), fused ('Nativo Coffee Community' vs
+    'nativocoffee'), reordered-fused ('Mujer Divina Brunch Cafe' vs
+    'brunchmujerdivina'), or typo'd ('VÓRTICE COFFEE HOUSE' vs
+    'vortexcoffeehouse'). Lone short tokens (4-5 chars) need spelling support
+    ('lumi' vs 'lumicafemx_' passes, 'flor' vs 'florderquis' does not).
     """
     ta, tb = tokens(a), tokens(b)
     if not ta or not tb:
         return False
     if len(ta) <= len(tb):
-        short, long_, long_s = ta, tb, b
+        short, long_, long_s, short_s = ta, tb, b, a
     else:
-        short, long_, long_s = tb, ta, a
-    distinct = short - STOP_TOKENS
-    if not distinct:
+        short, long_, long_s, short_s = tb, ta, a, b
+    sdist, ldist = short - STOP_TOKENS, long_ - STOP_TOKENS
+    if not sdist or not ldist:
         return False
-    fused = "".join(norm_name(long_s).split())
-    if not all(t in long_ or t in fused for t in distinct):
-        return False
-    if len(distinct) == 1 and len(next(iter(distinct))) < min_distinct_len:
-        return False
-    return True
+    long_fused = "".join(norm_name(long_s).split())
+    short_fused = "".join(norm_name(short_s).split())
+    overall = _ratio(norm_name(a), norm_name(b))
+
+    if all(t in long_ or _fused_hit(t, long_fused) for t in sdist):
+        if len(sdist) > 1:
+            return True
+        lone = next(iter(sdist))
+        side = norm_name(short_s)
+        if lone == side and len(lone) >= min_distinct_len:
+            return True  # a whole one-word name ('Lumi') inside the other side
+        if len(lone) >= min_distinct_len + 2:  # a longer distinctive word ('munchiesicecream')
+            return True
+        if overall >= 0.65:
+            return True
+
+    if all(t in short_fused for t in ldist):
+        lone = next(iter(ldist)) if len(ldist) == 1 else None
+        if lone is None or len(lone) >= min_distinct_len + 2:
+            return True
+        if overall >= 0.65:  # 'lumi'@0.84 and 'valle'@0.90 pass; 'mundo'@0.56 fails
+            return True
+    return False
+
+
+NAME_RATIO_STRICT = 0.92
 
 
 def name_match(a: str, b: str, ratio_min: float = NAME_RATIO_MIN) -> bool:
-    """Fuzzy identity between a place name and an ig handle / full name."""
+    """Fuzzy identity between a place name and an ig handle / full name.
+
+    - Near-identical spelling (ratio >= 0.92) is accepted outright.
+    - Mid ratios (>= ratio_min) additionally require every distinctive word of
+      the shorter side to be present as a word in the longer side: 'Punto
+      Coffee Community' and 'Nativo Coffee Community' share a long suffix and
+      float at ratio 0.82, but 'punto' is not in the other side.
+    - Otherwise token coverage decides (handles fuse/reorder/truncate words).
+    """
     na, nb = norm_name(a), norm_name(b)
     if not na or not nb:
         return False
-    if na == nb or SequenceMatcher(None, na, nb).ratio() >= ratio_min:
+    if na == nb:
+        return True
+    r = SequenceMatcher(None, na, nb).ratio()
+    if r >= NAME_RATIO_STRICT:
+        return True
+    ta, tb = tokens(a), tokens(b)
+    short, long_ = (ta, tb) if len(ta) <= len(tb) else (tb, ta)
+    if r >= ratio_min and (short - STOP_TOKENS) and (short - STOP_TOKENS) <= long_:
         return True
     return token_covered(a, b)
 

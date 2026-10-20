@@ -1,6 +1,6 @@
 # Coffee Map
 
-A web map of **every coffee shop in Tijuana** — 273 shops and counting — built
+A web map of **every coffee shop in Tijuana** — 608 shops and counting — built
 from three scraped sources with an archive-first pipeline. Live at
 **https://jbpixel52.github.io/coffee-map/**.
 
@@ -8,7 +8,7 @@ from three scraped sources with an archive-first pipeline. Live at
 |---|---|---|
 | Backbone | OpenStreetMap (Overpass, ODbL) | the full café census — node/way coordinates, names, tags |
 | Enrichment | Google Maps search (logged-out scrape) | shops OSM misses, with coordinates + place ids |
-| Social | Instagram profiles (logged-out recon) | handle + follower count per shop (13 profiles today) |
+| Social | Instagram profiles (logged-out recon) | handle + follower count per shop (53 profiles fetched, 71 shops linked today) |
 
 Map UI: MapLibre GL over **OpenFreeMap** vector tiles (OSM data), re-styled
 with a **custom watercolor theme** — warm paper with fiber + grain, saturated
@@ -20,7 +20,8 @@ panning/zooming so motion stays smooth) and a screen-space paper overlay with
 `mix-blend-mode: multiply`, so the vector geometry stops reading as
 machine-straight. Both degrade gracefully to a clean map if unsupported.
 The visual reference is Stamen Watercolor, but no Stadia/Stamen service is
-used. Spanish (es-MX) strings, marker popups with a Google Maps search link.
+used. Spanish (es-MX) strings, marker popups with an inline Instagram post
+embed (official iframe, latest post) plus a Google Maps search link.
 Data is refreshed by local scrape runs; GitHub Actions only builds and deploys
 the committed data.
 

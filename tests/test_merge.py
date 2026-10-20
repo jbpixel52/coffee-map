@@ -70,6 +70,29 @@ def test_token_covered_rejects_generic_or_short_only():
     assert not token_covered("Ab", "Ab Cafe")  # 2-char distinctive token
 
 
+def test_token_covered_reordered_fused_handle():
+    assert token_covered("Mujer Divina Brunch Cafe", "brunchmujerdivina")
+    assert token_covered("Blue Luna Cafe", "bluelunamx")
+    assert not token_covered("Café de la Flor", "florderquis")  # 'flor' alone is not enough
+
+
+def test_token_covered_typo_and_boundary_guards():
+    # one-typo fused name still matches
+    assert token_covered("VÓRTICE COFFEE HOUSE", "vortexcoffeehouse")
+    assert token_covered("Lumi Café", "lumicafemx_")
+    # fused substrings across token boundaries or lone generic words do not
+    assert not token_covered("Barro Café", "Lux Coffee Bar & Roasters")
+    assert not token_covered("CAFE MUNDO", "silvestre.mundo")
+
+
+def test_name_match_rejects_shared_suffix_lookalikes():
+    assert not name_match("Punto Coffee Community", "NATIVO COFFEE COMMUNITY")
+    assert not name_match("AUM COFFEE COMMUNITY", "NATIVO COFFEE COMMUNITY")
+    assert not name_match("CRU coffee roasters", "Electric Coffee Roasters")
+    assert not name_match("Materia Café", "miatierracafe")
+    assert name_match("Munchies Ice Cream & Coffee Shop", "munchiesicecream")
+
+
 def test_name_match_folds_and_covers():
     assert name_match("CRU Coffee Roasters & Cellars", "crucoffee")
     assert name_match("Café de la Flor", "Cafe de la Flor - Plaza Río")

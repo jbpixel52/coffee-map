@@ -14,6 +14,16 @@ export interface ShopPreview {
 // angle brackets) is a URL-injection attempt and must be rejected.
 const CODE_RE = /^[A-Za-z0-9_-]{5,24}$/;
 
+/** Case/diacritics-insensitive name fold for near-duplicate suppression. */
+function foldName(s: string): string {
+  return (s ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 export function escapeHtml(value: string): string {
   return (value ?? "")
     .replace(/&/g, "&amp;")
@@ -38,9 +48,13 @@ export function popupHtml(p: ShopPreview): string {
   const parts: string[] = [
     `<strong class="popup-name">${escapeHtml(p.name || "Café")}</strong>`,
   ];
-  if (p.ig_full_name && p.ig_full_name !== p.name) {
+  // only show the IG display name when it adds information beyond the name
+  if (p.ig_full_name && foldName(p.ig_full_name) !== foldName(p.name)) {
     parts.push(`<span class="popup-fullname">${escapeHtml(p.ig_full_name)}</span>`);
   }
+  const gmaps =
+    `<a class="popup-link popup-gmaps" href="${gmapsSearchUrl(p.name, p.lat, p.lon)}" ` +
+    `target="_blank" rel="noopener">Google Maps ↗</a>`;
   const handle = (p.instagram || "").trim();
   if (handle) {
     const followers =
@@ -48,6 +62,14 @@ export function popupHtml(p: ShopPreview): string {
         ? ` <span class="popup-followers">· ${p.ig_followers} seguidores</span>`
         : "";
     parts.push(`<span class="popup-handle">@${escapeHtml(handle)}${followers}</span>`);
+    // links stay ABOVE the embed: a tall iframe must not push them off-screen
+    parts.push(
+      `<span class="popup-links">` +
+        `<a class="popup-link" href="https://www.instagram.com/${encodeURIComponent(handle)}/" ` +
+        `target="_blank" rel="noopener">Instagram ↗</a>` +
+        gmaps +
+        `</span>`,
+    );
     const embed = instagramEmbedUrl(p.ig_latest_code);
     if (embed) {
       parts.push(
@@ -55,16 +77,9 @@ export function popupHtml(p: ShopPreview): string {
           `allowtransparency="true" allowfullscreen scrolling="no"></iframe>`,
       );
     }
-    parts.push(
-      `<a class="popup-link" href="https://www.instagram.com/${encodeURIComponent(handle)}/" ` +
-        `target="_blank" rel="noopener">Ver perfil completo ↗</a>`,
-    );
   } else {
     parts.push(`<span class="popup-no-ig">Sin Instagram conocido</span>`);
+    parts.push(`<span class="popup-links">${gmaps}</span>`);
   }
-  parts.push(
-    `<a class="popup-link popup-gmaps" href="${gmapsSearchUrl(p.name, p.lat, p.lon)}" ` +
-      `target="_blank" rel="noopener">Google Maps ↗</a>`,
-  );
   return `<div class="popup">${parts.join("")}</div>`;
 }
