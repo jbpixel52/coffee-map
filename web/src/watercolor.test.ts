@@ -29,7 +29,7 @@ describe("watercolor style", () => {
     expect(water.paint["fill-color"]).toBe(PALETTE.water);
     expect(layers.find((l) => l.id === "water-bleed").paint["line-blur"]).toBeGreaterThan(0);
     // pooled blotches ride above the plain fill (color+pattern can't share a layer)
-    expect(layers.find((l) => l.id === "water-wash").paint["fill-pattern"]).toBe("wash");
+    expect(layers.find((l) => l.id === "water-wash").paint["fill-pattern"]).toBe("bloom");
   });
 
   it("lays paper grain over the washes but under the labels", () => {
@@ -44,10 +44,26 @@ describe("watercolor style", () => {
   it("paints buildings as a wash under a mottle speckle", () => {
     const wash = layers.find((l) => l.id === "building");
     const mottle = layers.find((l) => l.id === "building-mottle");
-    expect(wash.paint["fill-color"]).toBe(PALETTE.building);
     expect(wash.paint["fill-pattern"]).toBeUndefined();
     expect(mottle.paint["fill-pattern"]).toBe("mottle");
     expect(mottle.paint["fill-color"]).toBeUndefined();
+  });
+
+  it("varies building tints per feature id (painted blocks)", () => {
+    const wash = layers.find((l) => l.id === "building");
+    const expr = wash.paint["fill-color"];
+    expect(Array.isArray(expr)).toBe(true);
+    expect(expr[0]).toBe("match");
+    for (const c of [PALETTE.building, PALETTE.buildingPink, PALETTE.buildingCream]) {
+      expect(expr).toContain(c);
+    }
+  });
+
+  it("tints whole regions with a colorful drift layer", () => {
+    const drift = layers.find((l) => l.id === "color-drift");
+    expect(drift.type).toBe("background");
+    expect(drift.paint["background-pattern"]).toBe("drift");
+    expect(drift.paint["background-opacity"]).toBeLessThan(1);
   });
 
   it("only references sprite images that the generated sprite ships", () => {

@@ -1,20 +1,22 @@
 /**
  * Watercolor style: our own theme over OpenFreeMap vector tiles (OSM data).
  *
- * The look follows Stamen Watercolor — warm paper, muted washes, soft blurred
- * edges, faded-ink labels — but it is a *vector re-theme*, not the original
- * painted raster (that one is a Stadia-hosted service; deliberately not used).
- * Paper grain / mottle / wash textures come from a self-hosted sprite
- * (web/public/styles/sprite.*, regenerate with scripts/make_sprite.py).
+ * The look follows Stamen Watercolor — warm paper, saturated colorful washes,
+ * uneven pigment, soft blurred edges, faded-ink labels — but it is a *vector
+ * re-theme*, not the original painted raster (that one is a Stadia-hosted
+ * service; deliberately not used). Textures come from a self-hosted sprite
+ * (web/public/styles/sprite.*, regenerate with scripts/make_sprite.py):
+ * paper grain + fibers, building mottle, warm wash pooling, a large
+ * multi-color drift, and blue water blooms.
  *
  * MapLibre quirks this file depends on:
  *  - a fill with BOTH fill-color and fill-pattern renders only the pattern,
  *    so "wash + speckle" needs two stacked layers (see building);
  *  - the sprite URL must be absolute — MapLibre feeds it to `new URL()`.
  *
- * Layer order: paper → area washes (+pooling and blurred edges) → water →
- * borders → roads (blurred shade / casing / white core) → buildings →
- * paper-grain → labels.
+ * Layer order: paper → area washes (+pooling, drift and blurred edges) →
+ * water → borders → roads (blurred shade / casing / warm-white core) →
+ * buildings → paper-grain → labels.
  */
 import type { StyleSpecification } from "maplibre-gl";
 
@@ -24,35 +26,37 @@ const BASE = import.meta.env.BASE_URL;
 const ORIGIN = typeof window !== "undefined" ? window.location.origin : "http://localhost";
 
 export const PALETTE = {
-  paper: "#f2ead7",
+  paper: "#f8ead1",
   ink: "#332b22",
   inkMid: "#3f362b",
   inkSoft: "#463c31",
   inkRoad: "#5b4c3c",
-  water: "#b3cfdf",
-  waterDeep: "#8fb8cf",
-  waterLine: "#96bdd6",
-  waterName: "#5f89a3",
-  grass: "#cbd7ab",
-  wood: "#c2cfa0",
-  farmland: "#e2dab8",
-  sand: "#e6dcbf",
-  park: "#c8d5a4",
-  moss: "#c3d0a4",
-  landuse: "#efe3c9",
-  commercial: "#f0dcc8",
-  building: "#e7d3b8",
-  road: "#ffffff",
-  roadMedium: "#fefaf0",
-  roadMinor: "#fcf6e8",
-  roadCasing: "#d2bb96",
-  roadShade: "#c19f74",
-  roadPath: "#cbbba0",
-  rail: "#b7a98f",
+  water: "#72cfe0",
+  waterDeep: "#2f9dc2",
+  waterLine: "#4fb4d4",
+  waterName: "#2b7a97",
+  grass: "#b6dc9a",
+  wood: "#9fc47a",
+  farmland: "#eed9a2",
+  sand: "#f0e3c2",
+  park: "#a8d488",
+  moss: "#8fbe6a",
+  landuse: "#f7dfc0",
+  commercial: "#f3d0b4",
+  building: "#e6c3a2",
+  buildingPink: "#e9b09b",
+  buildingCream: "#f0dcb9",
+  road: "#fef8e4",
+  roadMedium: "#fbf0d2",
+  roadMinor: "#f8e9be",
+  roadCasing: "#d6ad6a",
+  roadShade: "#c99a5f",
+  roadPath: "#cbb489",
+  rail: "#b3a184",
   boundary: "#a08d76",
 } as const;
 
-export const SPRITE_IDS = ["paper", "mottle", "wash"] as const;
+export const SPRITE_IDS = ["paper", "mottle", "wash", "drift", "bloom"] as const;
 
 const FONT = ["Noto Sans Regular"];
 const FONT_BOLD = ["Noto Sans Bold"];
@@ -60,6 +64,15 @@ const FONT_ITALIC = ["Noto Sans Italic"];
 const name = ["coalesce", ["get", "name:es"], ["get", "name"]] as unknown as string;
 const AREA_CLASSES = ["wood", "grass", "farmland", "sand", "wetland", "rock", "ice"];
 const PARK_CLASSES = ["national_park", "protected_area"];
+
+// pseudo-random per-feature tint: id % 3 → painted-block variety (Stamen-like)
+const buildingTint = [
+  "match",
+  ["%", ["to-number", ["coalesce", ["id"], 0]], 3],
+  0, PALETTE.buildingPink,
+  1, PALETTE.building,
+  PALETTE.buildingCream,
+] as unknown as string;
 
 export const watercolorStyle: StyleSpecification = {
   version: 8,
@@ -89,12 +102,12 @@ export const watercolorStyle: StyleSpecification = {
           "grass", PALETTE.grass,
           "farmland", PALETTE.farmland,
           "sand", PALETTE.sand,
-          "wetland", "#c3d3bb",
-          "rock", "#ddd6c6",
-          "ice", "#f0ece0",
+          "wetland", "#b7d9ac",
+          "rock", "#e0d4bd",
+          "ice", "#f4f0e6",
           PALETTE.landuse,
         ],
-        "fill-opacity": ["match", ["get", "class"], "wood", 0.75, "grass", 0.7, 0.55],
+        "fill-opacity": ["match", ["get", "class"], "wood", 0.82, "grass", 0.78, 0.62],
       },
     },
     {
@@ -104,7 +117,7 @@ export const watercolorStyle: StyleSpecification = {
       source: "openmaptiles",
       "source-layer": "landcover",
       filter: ["match", ["get", "class"], AREA_CLASSES, true, false],
-      paint: { "fill-pattern": "wash", "fill-opacity": 0.4 },
+      paint: { "fill-pattern": "wash", "fill-opacity": 0.55 },
     },
     {
       // blurred edge so washes feather instead of ending on a vector line
@@ -115,7 +128,7 @@ export const watercolorStyle: StyleSpecification = {
       filter: ["match", ["get", "class"], AREA_CLASSES, true, false],
       paint: {
         "line-color": PALETTE.moss,
-        "line-opacity": 0.3,
+        "line-opacity": 0.45,
         "line-blur": 4,
         "line-width": ["interpolate", ["linear"], ["zoom"], 4, 2, 8, 3, 14, 6],
       },
@@ -126,7 +139,7 @@ export const watercolorStyle: StyleSpecification = {
       source: "openmaptiles",
       "source-layer": "park",
       filter: ["match", ["get", "class"], PARK_CLASSES, true, false],
-      paint: { "fill-color": PALETTE.park, "fill-opacity": 0.55 },
+      paint: { "fill-color": PALETTE.park, "fill-opacity": 0.65 },
     },
     {
       id: "park-wash",
@@ -134,7 +147,7 @@ export const watercolorStyle: StyleSpecification = {
       source: "openmaptiles",
       "source-layer": "park",
       filter: ["match", ["get", "class"], PARK_CLASSES, true, false],
-      paint: { "fill-pattern": "wash", "fill-opacity": 0.45 },
+      paint: { "fill-pattern": "wash", "fill-opacity": 0.55 },
     },
     {
       id: "park-bleed",
@@ -144,7 +157,7 @@ export const watercolorStyle: StyleSpecification = {
       filter: ["match", ["get", "class"], PARK_CLASSES, true, false],
       paint: {
         "line-color": PALETTE.moss,
-        "line-opacity": 0.35,
+        "line-opacity": 0.45,
         "line-blur": 4,
         "line-width": ["interpolate", ["linear"], ["zoom"], 6, 2, 14, 6],
       },
@@ -167,23 +180,44 @@ export const watercolorStyle: StyleSpecification = {
           ["get", "class"],
           "commercial", PALETTE.commercial,
           "retail", PALETTE.commercial,
-          "industrial", "#eadbc3",
-          "cemetery", "#cfd8b8",
-          "school", "#f2e1cb",
-          "university", "#f2e1cb",
-          "hospital", "#f2e1cb",
+          "industrial", "#eedbb8",
+          "cemetery", "#b8d693",
+          "school", "#f7e3c4",
+          "university", "#f7e3c4",
+          "hospital", "#f7e3c4",
           ["stadium", "pitch", "playground"], PALETTE.grass,
           PALETTE.landuse,
         ],
         "fill-opacity": [
           "match",
           ["get", "class"],
-          "residential", 0.5,
-          "cemetery", 0.4,
-          ["stadium", "pitch", "playground"], 0.5,
-          0.35,
+          "residential", 0.6,
+          "cemetery", 0.5,
+          ["stadium", "pitch", "playground"], 0.6,
+          0.45,
         ],
       },
+    },
+    {
+      // pooling inside urban blocks too — the city reads as one big wash
+      id: "landuse-wash",
+      type: "fill",
+      source: "openmaptiles",
+      "source-layer": "landuse",
+      filter: [
+        "match",
+        ["get", "class"],
+        ["residential", "commercial", "retail", "industrial", "school", "university", "hospital"],
+        true,
+        false,
+      ],
+      paint: { "fill-pattern": "wash", "fill-opacity": 0.45 },
+    },
+    {
+      // large multi-color blobs: uneven pigment across whole regions
+      id: "color-drift",
+      type: "background",
+      paint: { "background-color": "rgba(0,0,0,0)", "background-pattern": "drift", "background-opacity": 0.42 },
     },
     {
       // soft bleed under the water fill: a blurred line reads as a wash edge
@@ -193,9 +227,22 @@ export const watercolorStyle: StyleSpecification = {
       "source-layer": "water",
       paint: {
         "line-color": PALETTE.waterDeep,
-        "line-opacity": 0.45,
-        "line-blur": 4,
-        "line-width": ["interpolate", ["linear"], ["zoom"], 8, 2.5, 12, 5, 16, 12],
+        "line-opacity": 0.7,
+        "line-blur": 7,
+        "line-width": ["interpolate", ["linear"], ["zoom"], 8, 3, 12, 7, 16, 16],
+      },
+    },
+    {
+      // wide, faint feather: the shore bleeds into the sand, wet-on-wet
+      id: "water-shore",
+      type: "line",
+      source: "openmaptiles",
+      "source-layer": "water",
+      paint: {
+        "line-color": PALETTE.waterDeep,
+        "line-opacity": 0.3,
+        "line-blur": 12,
+        "line-width": ["interpolate", ["linear"], ["zoom"], 8, 6, 12, 14, 16, 30],
       },
     },
     {
@@ -203,16 +250,16 @@ export const watercolorStyle: StyleSpecification = {
       type: "fill",
       source: "openmaptiles",
       "source-layer": "water",
-      paint: { "fill-color": PALETTE.water, "fill-opacity": 0.85 },
+      paint: { "fill-color": PALETTE.water, "fill-opacity": 0.92 },
     },
     {
-      // pooled blotches inside the water: fill-color + fill-pattern would hide
-      // the color, so the wash rides above the plain fill as its own layer
+      // blue blooms inside the water: fill-color + fill-pattern would hide
+      // the color, so the pooling rides above the plain fill as its own layer
       id: "water-wash",
       type: "fill",
       source: "openmaptiles",
       "source-layer": "water",
-      paint: { "fill-pattern": "wash", "fill-opacity": 0.75 },
+      paint: { "fill-pattern": "bloom", "fill-opacity": 0.9 },
     },
     {
       id: "waterway",
@@ -279,7 +326,7 @@ export const watercolorStyle: StyleSpecification = {
       layout: { "line-cap": "round", "line-join": "round" },
       paint: {
         "line-color": PALETTE.roadShade,
-        "line-opacity": 0.45,
+        "line-opacity": 0.55,
         "line-blur": 3,
         "line-width": ["interpolate", ["linear"], ["zoom"], 8, 1.5, 12, 5, 16, 14],
       },
@@ -301,6 +348,7 @@ export const watercolorStyle: StyleSpecification = {
       paint: {
         "line-color": PALETTE.roadCasing,
         "line-opacity": 0.65,
+        "line-blur": 0.6,
         "line-width": ["interpolate", ["linear"], ["zoom"], 8, 1.4, 12, 3.8, 16, 11],
       },
     },
@@ -357,15 +405,16 @@ export const watercolorStyle: StyleSpecification = {
       },
     },
     {
-      // wash + speckle: fill-color and fill-pattern can't share one fill layer
+      // wash + speckle: fill-color and fill-pattern can't share one fill layer.
+      // The tint varies per feature id so blocks look individually painted.
       id: "building",
       type: "fill",
       source: "openmaptiles",
       "source-layer": "building",
       minzoom: 14,
       paint: {
-        "fill-color": PALETTE.building,
-        "fill-opacity": ["interpolate", ["linear"], ["zoom"], 14, 0.5, 15.5, 0.62, 17, 0.7],
+        "fill-color": buildingTint,
+        "fill-opacity": ["interpolate", ["linear"], ["zoom"], 14, 0.6, 15.5, 0.72, 17, 0.78],
       },
     },
     {
@@ -374,13 +423,15 @@ export const watercolorStyle: StyleSpecification = {
       source: "openmaptiles",
       "source-layer": "building",
       minzoom: 15,
-      paint: { "fill-pattern": "mottle", "fill-opacity": 0.55 },
+      // slight off-register like a hand-pulled print — kills the "digital
+      // texture perfectly aligned with crisp geometry" look
+      paint: { "fill-pattern": "mottle", "fill-opacity": 0.6, "fill-translate": [1, 1] },
     },
     {
       // paper grain over every wash and road, with the ink labels drawn above
       id: "paper-grain",
       type: "background",
-      paint: { "background-color": "rgba(0,0,0,0)", "background-pattern": "paper", "background-opacity": 0.6 },
+      paint: { "background-color": "rgba(0,0,0,0)", "background-pattern": "paper", "background-opacity": 0.82 },
     },
     {
       id: "water-name",

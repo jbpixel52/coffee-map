@@ -58,6 +58,18 @@ async function boot() {
 
   map.on("load", () => {
     map.addSource("shops", { type: "geojson", data: fc });
+    // soft bloom under the dots so markers read painted, not printed
+    map.addLayer({
+      id: "shops-halo",
+      type: "circle",
+      source: "shops",
+      paint: {
+        "circle-radius": ["interpolate", ["linear"], ["zoom"], 10, 6, 14, 10.5],
+        "circle-color": ["case", ["has", "instagram"], "#c2410c", "#1d4ed8"],
+        "circle-opacity": 0.25,
+        "circle-blur": 0.9,
+      },
+    });
     map.addLayer({
       id: "shops",
       type: "circle",
@@ -65,8 +77,9 @@ async function boot() {
       paint: {
         "circle-radius": ["interpolate", ["linear"], ["zoom"], 10, 3, 14, 6],
         "circle-color": ["case", ["has", "instagram"], "#c2410c", "#1d4ed8"],
+        "circle-blur": 0.12,
         "circle-stroke-color": "#ffffff",
-        "circle-stroke-width": 1.5,
+        "circle-stroke-width": 1.2,
       },
     });
     map.on("click", "shops", (e) => {

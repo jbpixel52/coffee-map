@@ -19,5 +19,19 @@
   "x": 512,
   "y": 0,
   "pixelRatio": 1
+ },
+ "drift": {
+  "width": 256,
+  "height": 256,
+  "x": 768,
+  "y": 0,
+  "pixelRatio": 1
+ },
+ "bloom": {
+  "width": 256,
+  "height": 256,
+  "x": 1024,
+  "y": 0,
+  "pixelRatio": 1
  }
 }
