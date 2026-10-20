@@ -88,7 +88,7 @@ def classify_html(html: str) -> str:
     low = html.lower()
     if PASSWORD_RE.search(html):
         return "login_required"
-    if "page not found" in low or "sorry, this page" in low:
+    if "page not found" in low or "sorry, this page" in low or "no está disponible" in low:
         return "not_found"
     if "too many requests" in low:
         return "rate_limited"

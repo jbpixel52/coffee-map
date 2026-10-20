@@ -7,7 +7,15 @@ import sys
 import time
 
 from .config import load_city
-from .store import archive_read, archive_write, connect, latest_fetch, record_fetch, upsert_place
+from .store import (
+    archive_read,
+    archive_write,
+    connect,
+    latest_fetch,
+    now_utc,
+    record_fetch,
+    upsert_place,
+)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -91,6 +99,86 @@ def main(argv: list[str] | None = None) -> int:
         con.commit()
         n = con.execute("SELECT COUNT(*) FROM places WHERE source='gmaps'").fetchone()[0]
         print(f"gmaps-parse: {n} places from {len(refs)} archived pages")
+    elif args.cmd == "ig-recon":
+        # ensure_browsers_path() MUST run before patchright is imported: it reads
+        # PLAYWRIGHT_BROWSERS_PATH once at import time and caches it.
+        from .sources.gmaps import ensure_browsers_path
+        from .sources.ig import classify_html, fetch_profile_html, parse_profile_html
+
+        ensure_browsers_path()
+        from patchright.sync_api import sync_playwright
+
+        handles = [
+            r["instagram"]
+            for r in con.execute(
+                """SELECT DISTINCT instagram FROM places
+                   WHERE instagram IS NOT NULL AND instagram <> '' LIMIT ?""",
+                (args.limit,),
+            )
+        ]
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True, args=["--no-sandbox"])
+            summary: dict[str, int] = {}
+            for i, handle in enumerate(handles):
+                # One fresh context per handle: Instagram pages are heavy and a
+                # renderer crash must cost one handle, not the whole batch.
+                ctx = browser.new_context(
+                    locale=city.locale,
+                    timezone_id=city.timezone,
+                    viewport={"width": 1366, "height": 1000},
+                )
+                page = ctx.new_page()
+                html = None
+                try:
+                    html = fetch_profile_html(page, handle)
+                except Exception as exc:  # noqa: BLE001 — a crash is a datum, not a stop
+                    summary["error"] = summary.get("error", 0) + 1
+                    print(f"ig-recon [{i + 1}/{len(handles)}] {handle}: error ({type(exc).__name__})")
+                finally:
+                    try:
+                        ctx.close()
+                    except Exception:  # noqa: BLE001 — already closing; don't mask the run
+                        pass
+                if html is None:
+                    time.sleep(random.randint(6000, 12000) / 1000)
+                    continue
+                ref = archive_write("ig", handle, html.encode("utf-8"), "html")
+                state = classify_html(html)
+                summary[state] = summary.get(state, 0) + 1
+                prof = parse_profile_html(html) if state == "public" else None
+                con.execute(
+                    """INSERT INTO ig_profiles (handle, followers, posts, last_post_at,
+                                                capture_state, fetched_at, archive_ref)
+                       VALUES (?, ?, ?, NULL, ?, ?, ?)
+                       ON CONFLICT (handle) DO UPDATE SET
+                         followers=excluded.followers, posts=excluded.posts,
+                         capture_state=excluded.capture_state,
+                         fetched_at=excluded.fetched_at, archive_ref=excluded.archive_ref""",
+                    (
+                        handle,
+                        prof["followers"] if prof else None,
+                        prof["posts"] if prof else None,
+                        state,
+                        now_utc(),
+                        ref,
+                    ),
+                )
+                con.commit()
+                print(
+                    f"ig-recon [{i + 1}/{len(handles)}] {handle}: {state} "
+                    f"followers={prof['followers'] if prof else '-'} "
+                    f"codes={len(prof['post_codes']) if prof else 0}"
+                )
+                if state == "challenge":  # terminal — never retry through a challenge
+                    print("ig-recon: challenge received — stopping cold, do not retry")
+                    break
+                if state == "rate_limited":  # a throttle is not a dead surface
+                    print("ig-recon: rate limited — backing off 15 min, one bounded retry")
+                    time.sleep(900)
+                else:
+                    time.sleep(random.randint(6000, 12000) / 1000)
+            browser.close()
+        print("ig-recon summary:", summary)
     elif args.cmd == "merge":
         from .merge import rebuild_shops
 

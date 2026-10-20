@@ -46,3 +46,9 @@ def test_classifier_has_a_real_unknown():
 def test_not_found_and_rate_limited_states():
     assert classify_html("<html><body>Sorry, this page isn't available.</body></html>") == "not_found"
     assert classify_html("<html><body>Too many requests</body></html>") == "rate_limited"
+
+
+def test_not_found_is_localized():
+    """Measured: a dead handle on an es-MX client serves a Spanish page, not the English one."""
+    html = '<html><head><title>Profile no está disponible • Instagram</title></head></html>'
+    assert classify_html(html) == "not_found"
