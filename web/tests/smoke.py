@@ -37,30 +37,36 @@ with sync_playwright() as p:
     page.click("#only-ig")
     page.wait_for_timeout(300)
 
-    # popup: pick the shop nearest the map centre (always on screen), isolate it
-    # via the search box, then click its projected position plus the container
-    # offset (map.project returns map-container coords, not viewport coords).
-    name, x, y = page.evaluate(
+    # popup: prefer a shop WITH instagram followers (proves the recon join) —
+    # recentre on it, isolate it via the search box, then click its projected
+    # position plus the container offset (map.project returns map-container
+    # coords, not viewport coords).
+    name, x, y, igf = page.evaluate(
         """() => {
-             const c = window.__map.getCenter();
-             let best = null, bestD = Infinity;
+             let best = null;
              for (const f of window.__shops) {
-               const [lon, lat] = f.geometry.coordinates;
-               const d = (lon - c.lng) ** 2 + (lat - c.lat) ** 2;
-               if (d < bestD) { bestD = d; best = f; }
+               if (f.properties.ig_followers && f.properties.ig_followers > 0) { best = f; break; }
              }
+             if (!best) return [null, 0, 0, 0];
              const [lon, lat] = best.geometry.coordinates;
+             window.__map.jumpTo({center: [lon, lat]});
              const pt = window.__map.project([lon, lat]);
              const r = document.getElementById("map").getBoundingClientRect();
-             return [best.properties.name, pt.x + r.left, pt.y + r.top];
+             return [best.properties.name, pt.x + r.left, pt.y + r.top, best.properties.ig_followers];
            }""",
         isolated_context=False,
     )
+    assert name, "no shop with ig_followers in the dataset — recon+export not joined?"
+    page.wait_for_timeout(400)
     page.fill("#q", name)
     page.wait_for_timeout(400)
     page.mouse.click(x, y)
     page.wait_for_selector(".maplibregl-popup-content", timeout=10_000)
     text = (page.text_content(".maplibregl-popup-content") or "").strip()
     assert "Google Maps" in text, text
-    print(f"OK: {n} markers, {meta['with_instagram']} with IG; popup: {text.splitlines()[0][:60]}")
+    assert "seguidores" in text and str(igf) in text, f"popup missing followers ({igf}): {text}"
+    print(
+        f"OK: {n} markers, {meta['with_instagram']} with IG; "
+        f"popup: {text.splitlines()[0][:60]} (seguidores {igf})"
+    )
     browser.close()
