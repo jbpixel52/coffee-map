@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cafés de Tijuana — mapa</title>
+  </head>
+  <body>
+    <header id="topbar">
+      <strong>Cafés de Tijuana</strong>
+      <input id="q" type="search" placeholder="Buscar café…" autocomplete="off" />
+      <label><input id="only-ig" type="checkbox" /> Con Instagram</label>
+      <span id="count"></span>
+    </header>
+    <div id="map"></div>
+    <footer id="attrib">
+      Datos: © OpenStreetMap contributors (ODbL) · Google Maps · Instagram —
+      <span id="generated"></span>
+    </footer>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+html,
+body {
+  margin: 0;
+  height: 100%;
+  font: 14px system-ui, sans-serif;
+}
+#topbar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid #ddd;
+}
+#topbar input[type="search"] {
+  flex: 0 1 240px;
+  padding: 4px 8px;
+}
+#count {
+  color: #666;
+  margin-left: auto;
+}
+#map {
+  position: absolute;
+  top: 41px;
+  bottom: 28px;
+  left: 0;
+  right: 0;
+}
+#attrib {
+  position: absolute;
+  bottom: 0;
+  height: 28px;
+  line-height: 28px;
+  padding: 0 12px;
+  font-size: 12px;
+  color: #555;
+}
