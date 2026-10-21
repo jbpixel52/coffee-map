@@ -202,7 +202,6 @@ async function boot() {
 
   const rightSidebar = document.getElementById("sidebar") as HTMLElement;
   const rightClose = document.getElementById("sidebar-close") as HTMLButtonElement;
-  const tiktokEmbed = document.getElementById("tiktok-embed") as HTMLIFrameElement;
 
   const openLeft = (details: ShopDetails) => {
     leftTitle.textContent = details.name;
@@ -366,7 +365,8 @@ async function boot() {
       const tiktokTitle = document.getElementById("sidebar-title") as HTMLElement;
       tiktokTitle.textContent = `TikTok: ${p.name || "Café"}`;
       const query = encodeURIComponent(p.name || "");
-      tiktokEmbed.src = `https://www.tiktok.com/search?q=${query}`;
+      const tiktokLink = document.getElementById("tiktok-open") as HTMLAnchorElement;
+      tiktokLink.href = `https://www.tiktok.com/search?q=${query}`;
       rightSidebar.classList.add("open");
     });
 
