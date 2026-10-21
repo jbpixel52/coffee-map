@@ -3,7 +3,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import type { Feature, FeatureCollection, Point } from "geojson";
 import { shopMatches, type ShopProps, foldName } from "./filter";
 import { popupHtml, instagramEmbedUrl, gmapsSearchUrl, escapeHtml } from "./popup";
-import { watercolorStyle, applyMapTheme } from "./watercolor";
+import { watercolorStyle, applyMapTheme, HEAT_COLORS_LIGHT } from "./watercolor";
 import "./style.css";
 
 const BASE = import.meta.env.BASE_URL;
@@ -107,6 +107,24 @@ async function boot() {
   // theme if either the user is already in dark mode or the OS prefers it.
   map.once("load", () => {
     if (dark) applyMapTheme(map, true);
+  });
+
+  // ── Heatmap toggle ──
+  const heatBtn = document.getElementById("heat-btn") as HTMLButtonElement;
+  let heatmapOn = false;
+  heatBtn.addEventListener("click", () => {
+    heatmapOn = !heatmapOn;
+    heatBtn.classList.toggle("active", heatmapOn);
+    heatBtn.setAttribute("aria-pressed", heatmapOn ? "true" : "false");
+    const heatVis = heatmapOn ? "visible" : "none";
+    const spotVis = heatmapOn ? "none" : "visible";
+    // Heatmap layer
+    if (map.getLayer("shops-heat")) {
+      map.setLayoutProperty("shops-heat", "visibility", heatVis);
+    }
+    // Point layers
+    if (map.getLayer("shops")) map.setLayoutProperty("shops", "visibility", spotVis);
+    if (map.getLayer("shops-halo")) map.setLayoutProperty("shops-halo", "visibility", spotVis);
   });
 
   // ── Shop dropdown ──
@@ -250,6 +268,23 @@ async function boot() {
         "circle-stroke-width": 1.2,
       },
     });
+    // Heatmap layer — weighted by followers; hidden by default.
+    map.addLayer({
+      id: "shops-heat",
+      type: "heatmap",
+      source: "shops",
+      layout: {
+        "visibility": "none",
+      },
+      paint: {
+        // Per-feature weight: use ig_followers if present, else 1.
+        "heatmap-weight": ["coalesce", ["to-number", ["get", "ig_followers"]], 1],
+        "heatmap-intensity": 0.7,
+        "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 10, 15, 20, 30],
+        "heatmap-color": HEAT_COLORS_LIGHT,
+        "heatmap-opacity": 0.9,
+      },
+    });
 
     map.on("click", "shops", (e) => {
       const f = e.features?.[0];
@@ -277,6 +312,10 @@ async function boot() {
         }
       }
     });
+
+    // Apply the initial theme now that user-added layers exist (the once("load")
+    // handler above ran before these were added).
+    if (dark) applyMapTheme(map, true);
   });
 
   // Dropdown list item click → open left sidebar for that shop

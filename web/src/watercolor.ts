@@ -19,6 +19,7 @@
  * buildings → paper-grain → labels.
  */
 import type { StyleSpecification } from "maplibre-gl";
+import { ExpressionSpecification } from "@maplibre/maplibre-gl-style-spec";
 
 const BASE = import.meta.env.BASE_URL;
 
@@ -110,6 +111,41 @@ export const TEXTURE_OPACITY_DARK = {
   "color-drift": 0.18,
 } as const;
 
+/** Heatmap color ramps — 5-stop `heatmap-density` interpolations. The
+ * expression below is a valid MapLibre color-ramp so it type-checks and
+ * paints a blue→white→orange→red gradient across the density range. */
+export const HEAT_COLORS_LIGHT = [
+  "interpolate",
+  ["linear"],
+  ["heatmap-density"],
+  0,
+  "rgba(33, 102, 172, 0)",
+  0.35,
+  "rgba(103, 169, 207, 0.6)",
+  0.5,
+  "rgba(209, 229, 240, 0.9)",
+  0.75,
+  "rgba(253, 174, 97, 0.95)",
+  1,
+  "rgba(239, 59, 44, 1)",
+] as unknown as ExpressionSpecification;
+
+export const HEAT_COLORS_DARK = [
+  "interpolate",
+  ["linear"],
+  ["heatmap-density"],
+  0,
+  "rgba(12, 24, 48, 0)",
+  0.35,
+  "rgba(30, 64, 120, 0.65)",
+  0.5,
+  "rgba(46, 110, 168, 0.9)",
+  0.75,
+  "rgba(240, 160, 60, 0.95)",
+  1,
+  "rgba(226, 60, 40, 1)",
+] as unknown as ExpressionSpecification;
+
 export const SPRITE_IDS = ["paper", "mottle", "wash", "drift", "bloom"] as const;
 
 /** Recursively walk a style value and swap any exact light-color match for its
@@ -144,9 +180,15 @@ export function applyMapTheme(map: MapInstance, dark: boolean): void {
   const remap = dark ? PALETTE_DARK : invertMap(PALETTE_DARK);
   const style = map.getStyle();
   if (!style || !style.layers) return;
+  const heatColors = dark ? HEAT_COLORS_DARK : HEAT_COLORS_LIGHT;
   for (const layer of style.layers) {
-    const paint = layer.paint;
+    const paint = layer.paint as Record<string, unknown>;
     if (!paint) continue;
+    // Heatmap color ramps are a fixed RGBA array, not palette constants, so
+    // swap the whole expression by layer type.
+    if (layer.type === "heatmap" && paint["heatmap-color"]) {
+      map.setPaintProperty(layer.id, "heatmap-color", heatColors);
+    }
     for (const [prop, value] of Object.entries(paint)) {
       const next = remapValue(value, remap);
       if (JSON.stringify(next) !== JSON.stringify(value)) {

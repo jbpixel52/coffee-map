@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { PALETTE, PALETTE_DARK, SPRITE_IDS, watercolorStyle, darkenStyle, remapValue, applyMapTheme, TEXTURE_OPACITY, TEXTURE_OPACITY_DARK, type MapInstance } from "./watercolor";
+import { PALETTE, PALETTE_DARK, SPRITE_IDS, watercolorStyle, darkenStyle, remapValue, applyMapTheme, TEXTURE_OPACITY, TEXTURE_OPACITY_DARK, HEAT_COLORS_LIGHT, HEAT_COLORS_DARK, type MapInstance } from "./watercolor";
 import type { StyleSpecification } from "maplibre-gl";
 
 const layers = watercolorStyle.layers as any[];
@@ -234,5 +234,82 @@ describe("applyMapTheme", () => {
     };
     applyMapTheme(map, true);
     expect(calls).toHaveLength(0);
+  });
+
+  it("swaps heatmap-color on heatmap layers between light and dark ramps", () => {
+    const calls: { layerId: string; prop: string; value: unknown }[] = [];
+    const map: MapInstance = {
+      getStyle() {
+        return {
+          version: 8,
+          layers: [
+            { id: "shops-heat", type: "heatmap", paint: { "heatmap-color": HEAT_COLORS_LIGHT, "heatmap-opacity": 0.9 } },
+            { id: "shops", type: "circle", paint: { "circle-color": PALETTE.paper } },
+          ],
+        } as unknown as StyleSpecification;
+      },
+      setPaintProperty(layerId, prop, value) {
+        calls.push({ layerId, prop, value });
+      },
+    };
+
+    applyMapTheme(map, true);
+    const heatCalls = calls.filter((c) => c.layerId === "shops-heat" && c.prop === "heatmap-color");
+    expect(heatCalls).toHaveLength(1);
+    expect(heatCalls[0].value).toBe(HEAT_COLORS_DARK);
+
+    applyMapTheme(map, false);
+    const heatCallsBack = calls.filter((c) => c.layerId === "shops-heat" && c.prop === "heatmap-color");
+    expect(heatCallsBack).toHaveLength(2);
+    expect(heatCallsBack[1].value).toBe(HEAT_COLORS_LIGHT);
+  });
+
+  it("leaves non-heatmap layers alone when they have no paint color", () => {
+    const calls: { layerId: string; prop: string; value: unknown }[] = [];
+    const map: MapInstance = {
+      getStyle() {
+        return {
+          version: 8,
+          layers: [{ id: "labels", type: "symbol", paint: { "text-color": PALETTE.ink } }],
+        } as unknown as StyleSpecification;
+      },
+      setPaintProperty(layerId, prop, value) {
+        calls.push({ layerId, prop, value });
+      },
+    };
+    applyMapTheme(map, true);
+    expect(calls).toHaveLength(1);
+    expect(calls[0]).toEqual({ layerId: "labels", prop: "text-color", value: PALETTE_DARK[PALETTE.ink] });
+  });
+});
+
+describe("HEAT_COLORS ramps", () => {
+  it("LIGHT ramp is a valid interpolate expression with 5 stops", () => {
+    expect(HEAT_COLORS_LIGHT[0]).toBe("interpolate");
+    expect(HEAT_COLORS_LIGHT[1]).toEqual(["linear"]);
+    expect(HEAT_COLORS_LIGHT[2]).toEqual(["heatmap-density"]);
+    expect(HEAT_COLORS_LIGHT.length).toBe(13); // 3 header + 5*2 stops
+    expect(HEAT_COLORS_LIGHT[3]).toBe(0);
+    expect(HEAT_COLORS_LIGHT[5]).toBe(0.35);
+    expect(HEAT_COLORS_LIGHT[11]).toBe(1);
+  });
+
+  it("DARK ramp mirrors the same stop structure with darker blues", () => {
+    expect(HEAT_COLORS_DARK[0]).toBe("interpolate");
+    expect(HEAT_COLORS_DARK[1]).toEqual(["linear"]);
+    expect(HEAT_COLORS_DARK[2]).toEqual(["heatmap-density"]);
+    expect(HEAT_COLORS_DARK.length).toBe(13);
+    expect(HEAT_COLORS_DARK[3]).toBe(0);
+    expect(HEAT_COLORS_DARK[11]).toBe(1);
+  });
+
+  it("DARK ramp starts with a near-black blue and LIGHT ramp with a transparent blue", () => {
+    expect(HEAT_COLORS_DARK[4]).toContain("rgba(12, 24, 48, 0)");
+    expect(HEAT_COLORS_LIGHT[4]).toContain("rgba(33, 102, 172, 0)");
+  });
+
+  it("both ramps end at a saturated red", () => {
+    expect(HEAT_COLORS_LIGHT[12]).toContain("rgba(239, 59, 44, 1)");
+    expect(HEAT_COLORS_DARK[12]).toContain("rgba(226, 60, 40, 1)");
   });
 });
