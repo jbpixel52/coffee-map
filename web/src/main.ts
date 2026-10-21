@@ -361,11 +361,16 @@ async function boot() {
       if (!f) return;
       const p = f.properties as Record<string, any> & ShopProps;
       openLeft(detailsFromProps(p));
-      // right sidebar: TikTok search for the same shop
+      // right sidebar: TikTok search for the same shop — use the hashtag page
+      // (embeddable) instead of the search page (blocked by X-Frame-Options).
       const tiktokTitle = document.getElementById("sidebar-title") as HTMLElement;
       tiktokTitle.textContent = `TikTok: ${p.name || "Café"}`;
+      const tag = (p.name || "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "");
       const tiktokEmbed = document.getElementById("tiktok-embed") as HTMLIFrameElement;
-      tiktokEmbed.src = `https://www.tiktok.com/embed/@${encodeURIComponent(p.name || "")}`;
+      tiktokEmbed.src = `https://www.tiktok.com/tag/${tag}`;
       rightSidebar.classList.add("open");
     });
 
