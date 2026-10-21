@@ -4,6 +4,7 @@ import type { Feature, FeatureCollection, Point } from "geojson";
 import { shopMatches, type ShopProps, foldName } from "./filter";
 import { popupHtml, instagramEmbedUrl, gmapsSearchUrl, escapeHtml } from "./popup";
 import { watercolorStyle, applyMapTheme, HEAT_COLORS_LIGHT, type MapInstance } from "./watercolor";
+import { getTikTokEmbedHtml, ensureTikTokEmbedJs } from "./tiktok";
 import "./style.css";
 
 const BASE = import.meta.env.BASE_URL;
@@ -361,16 +362,16 @@ async function boot() {
       if (!f) return;
       const p = f.properties as Record<string, any> & ShopProps;
       openLeft(detailsFromProps(p));
-      // right sidebar: TikTok search for the same shop — use the hashtag page
-      // (embeddable) instead of the search page (blocked by X-Frame-Options).
+      // right sidebar: TikTok search for the same shop — use TikTok's oEmbed API
+      // to embed a hashtag profile/story panel inside the app without iframes.
       const tiktokTitle = document.getElementById("sidebar-title") as HTMLElement;
       tiktokTitle.textContent = `TikTok: ${p.name || "Café"}`;
-      const tag = (p.name || "")
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-|-$/g, "");
-      const tiktokEmbed = document.getElementById("tiktok-embed") as HTMLIFrameElement;
-      tiktokEmbed.src = `https://www.tiktok.com/tag/${tag}`;
+      const tiktokEmbedDiv = document.getElementById("tiktok-embed") as HTMLDivElement;
+      // Load TikTok embed HTML via oEmbed API (hashtag based on shop name)
+      getTikTokEmbedHtml(p.name || "", p.instagram ?? null).then((html) => {
+        tiktokEmbedDiv.innerHTML = html;
+        ensureTikTokEmbedJs();
+      });
       rightSidebar.classList.add("open");
     });
 
