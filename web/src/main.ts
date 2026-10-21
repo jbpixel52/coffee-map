@@ -364,9 +364,8 @@ async function boot() {
       // right sidebar: TikTok search for the same shop
       const tiktokTitle = document.getElementById("sidebar-title") as HTMLElement;
       tiktokTitle.textContent = `TikTok: ${p.name || "Café"}`;
-      const query = encodeURIComponent(p.name || "");
-      const tiktokLink = document.getElementById("tiktok-open") as HTMLAnchorElement;
-      tiktokLink.href = `https://www.tiktok.com/search?q=${query}`;
+      const tiktokEmbed = document.getElementById("tiktok-embed") as HTMLIFrameElement;
+      tiktokEmbed.src = `https://www.tiktok.com/embed/@${encodeURIComponent(p.name || "")}`;
       rightSidebar.classList.add("open");
     });
 
