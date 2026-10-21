@@ -97,6 +97,19 @@ export const PALETTE_DARK: Record<string, string> = {
   "#f7e3c4": "#3c362c", // school / university / hospital
 } as const;
 
+/** Texture-sprite layers (paper grain, color drift) sit above everything as
+ * background patterns. Their sprites are LIGHT artwork, so at full strength
+ * they would bleach a dark map. Opacity is tuned per theme. */
+export const TEXTURE_OPACITY = {
+  "paper-grain": 0.82,
+  "color-drift": 0.42,
+} as const;
+
+export const TEXTURE_OPACITY_DARK = {
+  "paper-grain": 0.22,
+  "color-drift": 0.18,
+} as const;
+
 export const SPRITE_IDS = ["paper", "mottle", "wash", "drift", "bloom"] as const;
 
 /** Recursively walk a style value and swap any exact light-color match for its
@@ -138,6 +151,16 @@ export function applyMapTheme(map: MapInstance, dark: boolean): void {
       const next = remapValue(value, remap);
       if (JSON.stringify(next) !== JSON.stringify(value)) {
         map.setPaintProperty(layer.id, prop, next);
+      }
+    }
+    // Texture sprites (paper grain / color drift) are light artwork: dim them
+    // in dark mode so they don't bleach the night-wash map.
+    const tex = dark ? TEXTURE_OPACITY_DARK : TEXTURE_OPACITY;
+    const key = layer.id as keyof typeof TEXTURE_OPACITY;
+    if (key in tex) {
+      const opacity = tex[key] as number;
+      if ("background-opacity" in paint && paint["background-opacity"] !== opacity) {
+        map.setPaintProperty(layer.id, "background-opacity", opacity);
       }
     }
   }

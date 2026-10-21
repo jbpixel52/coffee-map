@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { PALETTE, PALETTE_DARK, SPRITE_IDS, watercolorStyle, darkenStyle, remapValue, applyMapTheme, type MapInstance } from "./watercolor";
+import { PALETTE, PALETTE_DARK, SPRITE_IDS, watercolorStyle, darkenStyle, remapValue, applyMapTheme, TEXTURE_OPACITY, TEXTURE_OPACITY_DARK, type MapInstance } from "./watercolor";
 import type { StyleSpecification } from "maplibre-gl";
 
 const layers = watercolorStyle.layers as any[];
@@ -169,6 +169,22 @@ describe("darkenStyle", () => {
     expect((dark.layers as any[])[0].paint["background-color"]).toBe(PALETTE_DARK[PALETTE.paper]);
     expect((dark.layers as any[])[1].paint["fill-color"]).toBe(PALETTE_DARK[PALETTE.water]);
     expect((dark.layers as any[])[1].paint["fill-opacity"]).toBe(0.9);
+  });
+});
+
+describe("TEXTURE_OPACITY", () => {
+  it("paper-grain and color-drift constants are valid numbers", () => {
+    expect(typeof TEXTURE_OPACITY["paper-grain"]).toBe("number");
+    expect(typeof TEXTURE_OPACITY["color-drift"]).toBe("number");
+    expect(TEXTURE_OPACITY["paper-grain"]).toBeGreaterThan(0);
+    expect(TEXTURE_OPACITY["color-drift"]).toBeGreaterThan(0);
+  });
+
+  it("TEXTURE_OPACITY_DARK is also valid and smaller than light version", () => {
+    expect(typeof TEXTURE_OPACITY_DARK["paper-grain"]).toBe("number");
+    expect(typeof TEXTURE_OPACITY_DARK["color-drift"]).toBe("number");
+    expect(TEXTURE_OPACITY_DARK["paper-grain"]).toBeLessThan(TEXTURE_OPACITY["paper-grain"]);
+    expect(TEXTURE_OPACITY_DARK["color-drift"]).toBeLessThan(TEXTURE_OPACITY["color-drift"]);
   });
 });
 

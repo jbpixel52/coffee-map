@@ -215,12 +215,12 @@ html.dark #topbar {
 }
 
 /* ==========================================================================
-   Map — full screen below topbar
+   Map — sits below the floating topbar (--map-top is measured at runtime)
    ========================================================================== */
 #map {
   position: fixed;
-  top: 68px; /* topbar height + margin */
-  bottom: 44px; /* footer height */
+  top: var(--map-top, 68px);
+  bottom: var(--footer-h, 44px);
   left: 0;
   right: 0;
   background: var(--map-bg);
@@ -229,8 +229,8 @@ html.dark #topbar {
 
 #paper {
   position: fixed;
-  top: 68px;
-  bottom: 44px;
+  top: var(--map-top, 68px);
+  bottom: var(--footer-h, 44px);
   left: 0;
   right: 0;
   pointer-events: none;
@@ -275,9 +275,9 @@ html.dark #topbar {
    ========================================================================== */
 .left-sidebar {
   position: fixed;
-  top: 68px;
+  top: var(--map-top, 68px);
   left: 0;
-  bottom: 44px;
+  bottom: var(--footer-h, 44px);
   width: 360px;
   max-width: 90vw;
   background: var(--sidebar-bg);
@@ -421,9 +421,9 @@ html.dark #topbar {
    ========================================================================== */
 .right-sidebar {
   position: fixed;
-  top: 68px;
+  top: var(--map-top, 68px);
   right: 0;
-  bottom: 44px;
+  bottom: var(--footer-h, 44px);
   width: 360px;
   max-width: 90vw;
   background: var(--sidebar-bg);
@@ -762,8 +762,8 @@ html.dark #topbar {
 @media (max-width: 896px) and (orientation: landscape) {
   .left-sidebar,
   .right-sidebar {
-    top: 68px;
-    bottom: 44px;
+    top: var(--map-top, 68px);
+    bottom: var(--footer-h, 44px);
     left: 0;
     right: auto;
     width: 45vw;

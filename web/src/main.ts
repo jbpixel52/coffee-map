@@ -68,6 +68,24 @@ async function boot() {
   map.on("zoomstart", () => mapEl.classList.add("moving"));
   map.on("idle", () => mapEl.classList.remove("moving"));
 
+  // Measure topbar and footer heights to position map and sidebars exactly.
+  const setLayout = () => {
+    const topbar = document.getElementById("topbar") as HTMLElement | null;
+    const footer = document.getElementById("attrib") as HTMLElement | null;
+    const topbarH = topbar?.offsetHeight ?? 68;
+    const footerH = footer?.offsetHeight ?? 44;
+    const topOffset = 12 + topbarH + 8; // top:12 + topbarH + gap
+    document.documentElement.style.setProperty("--topbar-h", `${topbarH}px`);
+    document.documentElement.style.setProperty("--footer-h", `${footerH}px`);
+    document.documentElement.style.setProperty("--map-top", `${topOffset}px`);
+  };
+
+  // Initial layout (may be called after first paint).
+  setLayout();
+  // Update on resize.
+  window.addEventListener("resize", setLayout);
+
+
   // ── Dark‑mode toggle (applies dark paint to the map itself) ──
   const darkBtn = document.getElementById("dark-btn") as HTMLButtonElement;
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -83,6 +101,12 @@ async function boot() {
     dark = e.matches;
     document.documentElement.classList.toggle("dark", dark);
     applyMapTheme(map, dark);
+  });
+
+  // When the watercolor raster/vector style finishes loading, apply the dark
+  // theme if either the user is already in dark mode or the OS prefers it.
+  map.once("load", () => {
+    if (dark) applyMapTheme(map, true);
   });
 
   // ── Shop dropdown ──
@@ -123,6 +147,7 @@ async function boot() {
   const leftContent = document.getElementById("left-sidebar-content") as HTMLElement;
 
   const rightSidebar = document.getElementById("sidebar") as HTMLElement;
+  const rightClose = document.getElementById("sidebar-close") as HTMLButtonElement;
   const tiktokEmbed = document.getElementById("tiktok-embed") as HTMLIFrameElement;
 
   const openLeft = (details: ShopDetails) => {
@@ -172,6 +197,7 @@ async function boot() {
   };
 
   leftClose.addEventListener("click", () => leftSidebar.classList.remove("open"));
+  rightClose.addEventListener("click", () => rightSidebar.classList.remove("open"));
   leftSidebar.addEventListener("click", (e) => {
     // clicking the backdrop/close area outside the content closes it; the
     // close button itself already does. We only close when target is the shell.
@@ -235,7 +261,7 @@ async function boot() {
       tiktokTitle.textContent = `TikTok: ${p.name || "Café"}`;
       const query = encodeURIComponent(p.name || "");
       tiktokEmbed.src = `https://www.tiktok.com/search?q=${query}`;
-      rightSidebar.classList.remove("hidden");
+      rightSidebar.classList.add("open");
     });
 
     map.on("click", "shops-halo", (e) => {
