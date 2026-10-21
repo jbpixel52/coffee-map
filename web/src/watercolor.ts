@@ -56,7 +56,115 @@ export const PALETTE = {
   boundary: "#a08d76",
 } as const;
 
+// Dark counterpart for every light color in the palette plus the inline hex
+// values scattered through the style (wetland, rock, ice, industrial,
+// cemetery, school/hospital/university). Keeps the watercolor texture but in
+// a night-wash register: dark paper, deep water, light roads & text.
+export const PALETTE_DARK: Record<string, string> = {
+  "#f8ead1": "#1c1a17", // paper
+  "#332b22": "#e8dcc8", // ink
+  "#3f362b": "#d8cbbf", // inkMid
+  "#463c31": "#c8b8ae", // inkSoft
+  "#5b4c3c": "#d0c0b0", // inkRoad
+  "#72cfe0": "#0a2a35", // water
+  "#2f9dc2": "#062030", // waterDeep
+  "#4fb4d4": "#2a5c70", // waterLine
+  "#2b7a97": "#6fa8c0", // waterName
+  "#b6dc9a": "#2c4a2c", // grass
+  "#9fc47a": "#3d4838", // wood
+  "#eed9a2": "#4a4230", // farmland
+  "#f0e3c2": "#3a342a", // sand
+  "#a8d488": "#2d4a2d", // park
+  "#8fbe6a": "#4a6245", // moss
+  "#f7dfc0": "#2c2822", // landuse
+  "#f3d0b4": "#3e362d", // commercial
+  "#e6c3a2": "#2e2923", // building
+  "#e9b09b": "#4a3a36", // buildingPink
+  "#f0dcb9": "#403a32", // buildingCream
+  "#fef8e4": "#2a241e", // road
+  "#fbf0d2": "#322c25", // roadMedium
+  "#f8e9be": "#362f27", // roadMinor
+  "#d6ad6a": "#484036", // roadCasing
+  "#c99a5f": "#464036", // roadShade
+  "#cbb489": "#423b33", // roadPath
+  "#b3a184": "#54504a", // rail
+  "#a08d76": "#484440", // boundary
+  "#b7d9ac": "#3c543c", // wetland
+  "#e0d4bd": "#464038", // rock
+  "#f4f0e6": "#2a2824", // ice
+  "#eedbb8": "#40382e", // industrial
+  "#b8d693": "#3e523c", // cemetery
+  "#f7e3c4": "#3c362c", // school / university / hospital
+} as const;
+
 export const SPRITE_IDS = ["paper", "mottle", "wash", "drift", "bloom"] as const;
+
+/** Recursively walk a style value and swap any exact light-color match for its
+ * dark counterpart (or back, using the inverse map). Handles match-expressions
+ * (arrays) and plain strings alike. Pure function — safe to test without a map.
+ */
+export function remapValue(value: unknown, remap: Record<string, string>): unknown {
+  if (typeof value === "string") return remap[value] ?? value;
+  if (Array.isArray(value)) return value.map((v) => remapValue(v, remap));
+  if (value && typeof value === "object") {
+    const out: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
+      out[k] = remapValue(v, remap);
+    }
+    return out;
+  }
+  return value;
+}
+
+/** Build the dark watercolor style by swapping every light color to its dark
+ * counterpart. Preserves layer ids, patterns, sprites, filters, etc. Pure.
+ */
+export function darkenStyle(style: StyleSpecification): StyleSpecification {
+  return remapValue(style, PALETTE_DARK) as StyleSpecification;
+}
+
+/** Apply (or revert) dark paint to every layer of a live map without swapping
+ * the style — so the shops source/layers and camera position survive a theme
+ * toggle. Reversible: call again with `dark = false` using the inverse map.
+ */
+export function applyMapTheme(map: MapInstance, dark: boolean): void {
+  const remap = dark ? PALETTE_DARK : invertMap(PALETTE_DARK);
+  const style = map.getStyle();
+  if (!style || !style.layers) return;
+  for (const layer of style.layers) {
+    const paint = layer.paint;
+    if (!paint) continue;
+    for (const [prop, value] of Object.entries(paint)) {
+      const next = remapValue(value, remap);
+      if (JSON.stringify(next) !== JSON.stringify(value)) {
+        map.setPaintProperty(layer.id, prop, next);
+      }
+    }
+  }
+}
+
+function invertMap(remap: Record<string, string>): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const [k, v] of Object.entries(remap)) out[v] = k;
+  return out;
+}
+
+/** Minimal interface for watercolor dark-mode helpers that avoids importing
+ * maplibregl under vitest. */
+export interface MapInstance {
+  getStyle(): StyleSpecification | null;
+  setPaintProperty(layerId: string, prop: string, value: unknown): void;
+}
+
+/** Case/diacritics-insensitive name fold for near-duplicate suppression. */
+function foldName(s: string): string {
+  return (s ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
+}
 
 const FONT = ["Noto Sans Regular"];
 const FONT_BOLD = ["Noto Sans Bold"];

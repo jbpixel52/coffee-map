@@ -3,7 +3,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f8ead1" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#111" media="(prefers-color-scheme: dark)" />
+    <meta name="description" content="Mapa de cafés de Tijuana con Instagram, Google Maps y TikTok" />
     <title>Cafés de Tijuana — mapa</title>
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Cafés TJ" />
   </head>
   <body>
     <header id="topbar">
@@ -14,12 +23,11 @@
       <label><input id="only-ig" type="checkbox" /> Con Instagram</label>
       <span id="count"></span>
     </header>
+
     <div id="map"></div>
-    <!-- screen-space paper: multiplies over the canvas so the whole map sits
-         on visible paper even between texture tiles -->
     <div id="paper" aria-hidden="true"></div>
-    <!-- painted-at-rest post-process: turbulence-displaced canvas edge so
-         vector geometry stops looking mechanically straight -->
+
+    <!-- hand-painted post-process filter -->
     <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
       <filter id="wc-paint" x="-3%" y="-3%" width="106%" height="106%" color-interpolation-filters="sRGB">
         <feTurbulence type="fractalNoise" baseFrequency="0.021 0.026" numOctaves="2" seed="7" result="n" />
@@ -27,26 +35,48 @@
         <feGaussianBlur stdDeviation="0.14" />
       </filter>
     </svg>
+
     <!-- dropdown list of all shops (compact/closed by default) -->
     <div id="shop-dd" class="shop-dd hidden">
       <input id="shop-dd-search" type="search" placeholder="Filtrar lista…" autocomplete="off" />
       <ul id="shop-dd-list"></ul>
     </div>
-    <!-- right sidebar: TikTok search for the selected shop -->
-    <aside id="sidebar" class="sidebar hidden">
+
+    <!-- LEFT sidebar: shop detail (Google Maps style) -->
+    <aside id="left-sidebar" class="left-sidebar">
+      <header class="sidebar-head">
+        <h3 id="left-sidebar-title">Café</h3>
+        <button id="left-sidebar-close" aria-label="Cerrar">×</button>
+      </header>
+      <div id="left-sidebar-content" class="sidebar-content"></div>
+    </aside>
+
+    <!-- RIGHT sidebar: TikTok search for the selected shop -->
+    <aside id="sidebar" class="right-sidebar hidden">
       <header class="sidebar-head">
         <span id="sidebar-title">TikTok</span>
         <button id="sidebar-close" aria-label="Cerrar">×</button>
       </header>
-      <div id="sidebar-content">
+      <div id="sidebar-content" class="sidebar-content">
         <iframe id="tiktok-embed" loading="lazy"></iframe>
       </div>
     </aside>
+
     <footer id="attrib">
       Datos: © OpenStreetMap contributors (ODbL) · Google Maps · Instagram —
       Mapa: acuarela (estilo propio) sobre OpenFreeMap —
       <span id="generated"></span>
     </footer>
+
+    <!-- PWA install banner -->
+    <div id="pwa-install" class="pwa-install-banner">
+      <p>Instala esta app para acceso rápido y offline</p>
+      <div class="btns">
+        <button id="pwa-install-yes">Instalar</button>
+        <button id="pwa-install-no">Ahora no</button>
+      </div>
+    </div>
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

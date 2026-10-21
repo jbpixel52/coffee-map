@@ -2,11 +2,39 @@ import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { Feature, FeatureCollection, Point } from "geojson";
 import { shopMatches, type ShopProps, foldName } from "./filter";
-import { popupHtml } from "./popup";
-import { watercolorStyle } from "./watercolor";
+import { popupHtml, instagramEmbedUrl, gmapsSearchUrl, escapeHtml } from "./popup";
+import { watercolorStyle, applyMapTheme } from "./watercolor";
 import "./style.css";
 
 const BASE = import.meta.env.BASE_URL;
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register(`${BASE}sw.js`).catch(() => {});
+}
+
+interface ShopDetails {
+  name: string;
+  fullName?: string | null;
+  handle?: string | null;
+  followers?: number | null;
+  code?: string | null;
+  lat?: number | null;
+  lon?: number | null;
+}
+
+function detailsFromProps(p: any): ShopDetails {
+  if (!p || typeof p !== "object") return { name: "Desconocido" };
+  return {
+    name: p.name || "Desconocido",
+    fullName: p.ig_full_name ?? null,
+    handle: (p.instagram || "").trim() || null,
+    followers:
+      typeof p.ig_followers === "number" && p.ig_followers > 0 ? p.ig_followers : null,
+    code: p.ig_latest_code ?? null,
+    lat: p.lat,
+    lon: p.lon,
+  };
+}
 
 async function boot() {
   const [fc, meta] = await Promise.all([
@@ -40,12 +68,21 @@ async function boot() {
   map.on("zoomstart", () => mapEl.classList.add("moving"));
   map.on("idle", () => mapEl.classList.remove("moving"));
 
-  // ── Dark‑mode toggle ──
+  // ── Dark‑mode toggle (applies dark paint to the map itself) ──
   const darkBtn = document.getElementById("dark-btn") as HTMLButtonElement;
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  if (prefersDark) document.documentElement.classList.add("dark");
+  let dark = prefersDark;
+  if (dark) document.documentElement.classList.add("dark");
   darkBtn.addEventListener("click", () => {
+    dark = !dark;
     document.documentElement.classList.toggle("dark");
+    applyMapTheme(map, dark);
+  });
+  // Honor system preference changes even after boot.
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+    dark = e.matches;
+    document.documentElement.classList.toggle("dark", dark);
+    applyMapTheme(map, dark);
   });
 
   // ── Shop dropdown ──
@@ -57,8 +94,14 @@ async function boot() {
   const buildList = (filter = "") => {
     const normalized = foldName(filter);
     ddList.innerHTML = shops
-      .filter((name: string) => foldName(name).includes(normalized) || name.toLowerCase().includes(filter.toLowerCase()))
-      .map((name: string) => `<li${name === (ddSearch.defaultValue ?? "") ? " class='selected'" : ""}>${name}</li>`)
+      .filter(
+        (name: string) =>
+          foldName(name).includes(normalized) || name.toLowerCase().includes(filter.toLowerCase())
+      )
+      .map(
+        (name: string) =>
+          `<li${name === (ddSearch.defaultValue ?? "") ? " class='selected'" : ""}>${name}</li>`
+      )
       .join("");
   };
   ddBtn.addEventListener("click", () => ddMenu.classList.toggle("hidden"));
@@ -73,12 +116,74 @@ async function boot() {
     }
   });
 
+  // ── Left sidebar: shop detail (Google Maps style) ──
+  const leftSidebar = document.getElementById("left-sidebar") as HTMLElement;
+  const leftClose = document.getElementById("left-sidebar-close") as HTMLButtonElement;
+  const leftTitle = document.getElementById("left-sidebar-title") as HTMLElement;
+  const leftContent = document.getElementById("left-sidebar-content") as HTMLElement;
+
+  const rightSidebar = document.getElementById("sidebar") as HTMLElement;
+  const tiktokEmbed = document.getElementById("tiktok-embed") as HTMLIFrameElement;
+
+  const openLeft = (details: ShopDetails) => {
+    leftTitle.textContent = details.name;
+    const html: string[] = [];
+    html.push(`<div class="shop-header">`);
+    html.push(`<div class="shop-name">${escapeHtml(details.name)}</div>`);
+    if (details.fullName && foldName(details.fullName) !== foldName(details.name)) {
+      html.push(`<div class="shop-fullname">${escapeHtml(details.fullName)}</div>`);
+    }
+    html.push(`</div>`);
+
+    if (details.handle) {
+      const followers = details.followers
+        ? ` <span class="shop-followers">· ${details.followers} seguidores</span>`
+        : "";
+      html.push(`<span class="shop-handle">@${escapeHtml(details.handle)}${followers}</span>`);
+      html.push(
+        `<div class="shop-links">` +
+          `<a class="shop-link ig" href="https://www.instagram.com/${encodeURIComponent(
+            details.handle
+          )}/" target="_blank" rel="noopener">Instagram ↗</a>` +
+          `<a class="shop-link gmaps" href="${gmapsSearchUrl(
+            details.name,
+            details.lat,
+            details.lon
+          )}" target="_blank" rel="noopener">Google Maps ↗</a>` +
+          `</div>`
+      );
+      const embed = instagramEmbedUrl(details.code);
+      if (embed) {
+        html.push(`<iframe class="shop-embed" src="${embed}" loading="lazy" allowfullscreen scrolling="no"></iframe>`);
+      }
+    } else {
+      html.push(`<span class="shop-no-ig">Sin Instagram conocido</span>`);
+      html.push(
+        `<a class="shop-link gmaps" href="${gmapsSearchUrl(details.name, details.lat, details.lon)}" target="_blank" rel="noopener">Google Maps ↗</a>`
+      );
+    }
+    leftContent.innerHTML = html.join("");
+    leftSidebar.classList.add("open");
+  };
+
+  const closeSidebars = () => {
+    leftSidebar.classList.remove("open");
+    rightSidebar.classList.remove("open");
+  };
+
+  leftClose.addEventListener("click", () => leftSidebar.classList.remove("open"));
+  leftSidebar.addEventListener("click", (e) => {
+    // clicking the backdrop/close area outside the content closes it; the
+    // close button itself already does. We only close when target is the shell.
+    if (e.target === leftSidebar) leftSidebar.classList.remove("open");
+  });
+
   const popupFor = (f: Feature<Point>) => {
     const p = f.properties as Record<string, any> & ShopProps;
     const [lon, lat] = f.geometry.coordinates;
     return new maplibregl.Popup({ maxWidth: "340px" })
       .setLngLat([lon, lat])
-      .setHTML(popupHtml({ ...(p as any), lat, lon }));
+      .setHTML(popupHtml({ ...p, lat, lon }));
   };
 
   const applyFilters = () => {
@@ -93,12 +198,6 @@ async function boot() {
     return shown.length;
   };
   (window as any).__applyFilters = applyFilters;
-
-  // ── Right sidebar: TikTok search ──
-  const sidebar = document.getElementById("sidebar") as HTMLElement;
-  const sidebarClose = document.getElementById("sidebar-close") as HTMLButtonElement;
-  const sidebarTitle = document.getElementById("sidebar-title") as HTMLElement;
-  const tiktokEmbed = document.getElementById("tiktok-embed") as HTMLIFrameElement;
 
   map.on("load", () => {
     map.addSource("shops", { type: "geojson", data: fc });
@@ -125,29 +224,79 @@ async function boot() {
         "circle-stroke-width": 1.2,
       },
     });
-    map.on("click", "shops", (e) => {
-      const f = e.features?.[0];
-      if (f) popupFor(f as unknown as Feature<Point>).addTo(map);
-    });
 
-    // TikTok sidebar handlers
     map.on("click", "shops", (e) => {
       const f = e.features?.[0];
       if (!f) return;
       const p = f.properties as Record<string, any> & ShopProps;
-      sidebarTitle.textContent = `TikTok: ${p.name || "Café"}`;
+      openLeft(detailsFromProps(p));
+      // right sidebar: TikTok search for the same shop
+      const tiktokTitle = document.getElementById("sidebar-title") as HTMLElement;
+      tiktokTitle.textContent = `TikTok: ${p.name || "Café"}`;
       const query = encodeURIComponent(p.name || "");
       tiktokEmbed.src = `https://www.tiktok.com/search?q=${query}`;
-      sidebar.classList.remove("hidden");
+      rightSidebar.classList.remove("hidden");
     });
-    sidebarClose.addEventListener("click", () => {
-      sidebar.classList.add("hidden");
+
+    map.on("click", "shops-halo", (e) => {
+      // let the shops layer handle it
     });
-    document.addEventListener("click", (e) => {
-      if (!sidebar.contains(e.target as Node) && e.target !== ddBtn) {
-        sidebar.classList.add("hidden");
+
+    map.on("click", (e) => {
+      // Clicking empty map space closes the sidebars.
+      const tgt = e.originalEvent?.target as Element | null | undefined;
+      if (tgt && typeof tgt.closest === "function") {
+        if (!tgt.closest(".left-sidebar") && !tgt.closest(".right-sidebar")) {
+          closeSidebars();
+        }
       }
     });
+  });
+
+  // Dropdown list item click → open left sidebar for that shop
+  ddList.addEventListener("click", (e) => {
+    const li = (e.target as Element).closest?.("li") as HTMLLIElement | null;
+    if (!li) return;
+    const name = li.textContent?.trim();
+    if (!name) return;
+    const f = fc.features.find((feat: any) => (feat.properties.name ?? "") === name);
+    if (f) openLeft(detailsFromProps(f.properties));
+    ddMenu.classList.add("hidden");
+  });
+
+  document.addEventListener("click", (e) => {
+    const target = e.target as Node | null;
+    if (!ddBtn.contains(target) && !ddList.contains(target)) {
+      ddMenu.classList.add("hidden");
+    }
+  });
+
+  // ── PWA install banner ──
+  let deferredPrompt: any = null;
+  const banner = document.getElementById("pwa-install") as HTMLElement | null;
+  const installBtn = document.getElementById("pwa-install-yes") as HTMLButtonElement | null;
+  const dismissBtn = document.getElementById("pwa-install-no") as HTMLButtonElement | null;
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (banner && !localStorage.getItem("pwa-dismissed")) {
+      banner.classList.add("show");
+    }
+  });
+  installBtn?.addEventListener("click", async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === "accepted") {
+        banner?.classList.remove("show");
+        localStorage.setItem("pwa-dismissed", "1");
+      }
+      deferredPrompt = null;
+    }
+  });
+  dismissBtn?.addEventListener("click", () => {
+    banner?.classList.remove("show");
+    localStorage.setItem("pwa-dismissed", "1");
   });
 
   applyFilters();

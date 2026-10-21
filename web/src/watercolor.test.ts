@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { PALETTE, SPRITE_IDS, watercolorStyle } from "./watercolor";
+import { PALETTE, PALETTE_DARK, SPRITE_IDS, watercolorStyle, darkenStyle, remapValue, applyMapTheme, type MapInstance } from "./watercolor";
+import type { StyleSpecification } from "maplibre-gl";
 
 const layers = watercolorStyle.layers as any[];
 const sources = Object.keys(watercolorStyle.sources as Record<string, unknown>);
@@ -9,8 +10,6 @@ describe("watercolor style", () => {
     expect(watercolorStyle.version).toBe(8);
     expect(watercolorStyle.glyphs).toContain("{fontstack}/{range}.pbf");
     expect(watercolorStyle.sprite).toMatch(/styles\/sprite$/);
-    // MapLibre feeds the sprite URL to `new URL()`: a relative path throws
-    // there and the sprite silently never loads (learned the hard way).
     expect(() => new URL(watercolorStyle.sprite as string)).not.toThrow();
   });
 
@@ -28,7 +27,6 @@ describe("watercolor style", () => {
     const water = layers.find((l) => l.id === "water");
     expect(water.paint["fill-color"]).toBe(PALETTE.water);
     expect(layers.find((l) => l.id === "water-bleed").paint["line-blur"]).toBeGreaterThan(0);
-    // pooled blotches ride above the plain fill (color+pattern can't share a layer)
     expect(layers.find((l) => l.id === "water-wash").paint["fill-pattern"]).toBe("bloom");
   });
 
@@ -48,7 +46,6 @@ describe("watercolor style", () => {
     expect(mottle.paint["fill-pattern"]).toBe("mottle");
     expect(mottle.paint["fill-color"]).toBeUndefined();
   });
-
   it("varies building tints per feature id (painted blocks)", () => {
     const wash = layers.find((l) => l.id === "building");
     const expr = wash.paint["fill-color"];
@@ -65,7 +62,6 @@ describe("watercolor style", () => {
     expect(drift.paint["background-pattern"]).toBe("drift");
     expect(drift.paint["background-opacity"]).toBeLessThan(1);
   });
-
   it("only references sprite images that the generated sprite ships", () => {
     for (const l of layers) {
       for (const key of ["background-pattern", "fill-pattern"]) {
@@ -82,7 +78,6 @@ describe("watercolor style", () => {
       expect(l.layout["text-font"]?.length, l.id).toBeGreaterThan(0);
     }
   });
-
   it("keeps roads legible: white core over a casing over a blurred shade", () => {
     const shade = layers.find((l) => l.id === "road-shade");
     const casing = layers.find((l) => l.id === "road-casing");
@@ -90,8 +85,138 @@ describe("watercolor style", () => {
     expect(shade.paint["line-blur"]).toBeGreaterThan(0);
     expect(casing.paint["line-color"]).toBe(PALETTE.roadCasing);
     expect(major.paint["line-color"]).toBe(PALETTE.road);
-    // order matters: shade, then casing, then the white core
     const order = ["road-shade", "road-casing", "road-major"].map((id) => layers.findIndex((l) => l.id === id));
     expect(order).toEqual([...order].sort((a, b) => a - b));
+  });
+});
+
+describe("PALETTE_DARK", () => {
+  it("maps every light palette color to a dark counterpart", () => {
+    for (const color of Object.values(PALETTE)) {
+      expect(PALETTE_DARK[color]).toBeTruthy();
+    }
+  });
+
+  it("maps paper → near-black and ink → near-white", () => {
+    expect(PALETTE_DARK[PALETTE.paper]).toBe("#1c1a17");
+    expect(PALETTE_DARK[PALETTE.ink]).toBe("#e8dcc8");
+  });
+
+  it("maps inline hex values used in the style (wetland, rock, ice…)", () => {
+    expect(PALETTE_DARK["#b7d9ac"]).toBe("#3c543c");
+    expect(PALETTE_DARK["#e0d4bd"]).toBe("#464038");
+    expect(PALETTE_DARK["#f4f0e6"]).toBe("#2a2824");
+    expect(PALETTE_DARK["#eedbb8"]).toBe("#40382e");
+    expect(PALETTE_DARK["#f7e3c4"]).toBe("#3c362c");
+  });
+
+  it("is reversible — the inverse map sends dark back to light", () => {
+    const inv: Record<string, string> = {};
+    for (const [k, v] of Object.entries(PALETTE_DARK)) inv[v] = k;
+    for (const color of Object.values(PALETTE)) {
+      expect(inv[PALETTE_DARK[color]]).toBe(color);
+    }
+  });
+});
+
+describe("remapValue", () => {
+  it("swaps a plain string color", () => {
+    expect(remapValue(PALETTE.paper, PALETTE_DARK)).toBe("#1c1a17");
+  });
+
+  it("leaves unknown strings alone", () => {
+    expect(remapValue("#deadbeef", PALETTE_DARK)).toBe("#deadbeef");
+  });
+
+  it("walks a match-expression array and swaps every color leaf", () => {
+    const expr = ["match", ["get", "class"], "wood", PALETTE.wood, PALETTE.grass];
+    const out = remapValue(expr, PALETTE_DARK) as any[];
+    expect(out[2]).toBe("wood");
+    expect(out[3]).toBe(PALETTE_DARK[PALETTE.wood]);
+    expect(out[4]).toBe(PALETTE_DARK[PALETTE.grass]);
+  });
+
+  it("recurses into nested paint objects", () => {
+    const paint = {
+      "fill-color": PALETTE.water,
+      "fill-opacity": 0.9,
+      "line-color": PALETTE.boundary,
+    };
+    const out = remapValue(paint, PALETTE_DARK) as Record<string, unknown>;
+    expect(out["fill-color"]).toBe(PALETTE_DARK[PALETTE.water]);
+    expect(out["fill-opacity"]).toBe(0.9);
+    expect(out["line-color"]).toBe(PALETTE_DARK[PALETTE.boundary]);
+  });
+
+  it("passes through non-color values unchanged", () => {
+    expect(remapValue(0.9, PALETTE_DARK)).toBe(0.9);
+    expect(remapValue(null, PALETTE_DARK)).toBe(null);
+    expect(remapValue(undefined, PALETTE_DARK)).toBe(undefined);
+  });
+});
+
+describe("darkenStyle", () => {
+  it("returns a valid v8 style with swapped colors and same layers", () => {
+    const dark = darkenStyle({
+      version: 8,
+      layers: [
+        { id: "background", type: "background", paint: { "background-color": PALETTE.paper } },
+        { id: "water", type: "fill", paint: { "fill-color": PALETTE.water, "fill-opacity": 0.9 } },
+      ],
+    } as unknown as StyleSpecification);
+    expect(dark.version).toBe(8);
+    expect(dark.layers).toHaveLength(2);
+    expect((dark.layers as any[])[0].paint["background-color"]).toBe(PALETTE_DARK[PALETTE.paper]);
+    expect((dark.layers as any[])[1].paint["fill-color"]).toBe(PALETTE_DARK[PALETTE.water]);
+    expect((dark.layers as any[])[1].paint["fill-opacity"]).toBe(0.9);
+  });
+});
+
+describe("applyMapTheme", () => {
+  it("swaps every paint color on every layer and is reversible", () => {
+    const calls: { layerId: string; prop: string; value: unknown }[] = [];
+    const map: MapInstance = {
+      getStyle() {
+        return {
+          version: 8,
+          layers: [
+            { id: "background", type: "background", paint: { "background-color": PALETTE.paper } },
+            { id: "water", type: "fill", paint: { "fill-color": PALETTE.water, "fill-opacity": 0.9 } },
+            { id: "roads", type: "line", paint: { "line-color": PALETTE.road, "line-width": 2 } },
+          ],
+        } as unknown as StyleSpecification;
+      },
+      setPaintProperty(layerId, prop, value) {
+        calls.push({ layerId, prop, value });
+      },
+    };
+
+    applyMapTheme(map, true);
+    expect(calls).toHaveLength(3);
+    expect(calls[0]).toEqual({ layerId: "background", prop: "background-color", value: PALETTE_DARK[PALETTE.paper] });
+    expect(calls[1]).toEqual({ layerId: "water", prop: "fill-color", value: PALETTE_DARK[PALETTE.water] });
+    expect(calls[2]).toEqual({ layerId: "roads", prop: "line-color", value: PALETTE_DARK[PALETTE.road] });
+
+    const before = calls.length;
+    applyMapTheme(map, false);
+    expect(calls.length).toBe(before);
+  });
+
+  it("skips layers without paint and is a no-op when no color matches", () => {
+    const calls: { layerId: string; prop: string; value: unknown }[] = [];
+    const map: MapInstance = {
+      getStyle() {
+        return {
+          version: 8,
+          layers: [
+            { id: "grain", type: "background", paint: { "background-color": "rgba(0,0,0,0)" } },
+            { id: "drift", type: "background", paint: { "background-pattern": "drift" } },
+          ],
+        } as unknown as StyleSpecification;
+      },
+      setPaintProperty(_layerId, _prop, _value) {},
+    };
+    applyMapTheme(map, true);
+    expect(calls).toHaveLength(0);
   });
 });
