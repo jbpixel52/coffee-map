@@ -3,7 +3,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import type { Feature, FeatureCollection, Point } from "geojson";
 import { shopMatches, type ShopProps, foldName } from "./filter";
 import { popupHtml, instagramEmbedUrl, gmapsSearchUrl, escapeHtml } from "./popup";
-import { watercolorStyle, applyMapTheme, HEAT_COLORS_LIGHT } from "./watercolor";
+import { watercolorStyle, applyMapTheme, HEAT_COLORS_LIGHT, type MapInstance } from "./watercolor";
 import "./style.css";
 
 const BASE = import.meta.env.BASE_URL;
@@ -34,6 +34,34 @@ function detailsFromProps(p: any): ShopDetails {
     lat: p.lat,
     lon: p.lon,
   };
+}
+
+/** Cluster shops into zones by simple grid bucketing. Returns zone centroids
+ * with aggregate follower counts so the heatmap can be weighted per-zone. */
+function buildZones(fc: FeatureCollection<Point>): FeatureCollection<Point> {
+  const ZONE_SIZE = 0.018; // ~2 km at this latitude
+  const buckets = new Map<string, { lon: number; lat: number; followers: number; count: number }>();
+  for (const f of fc.features) {
+    if (!f.geometry || f.geometry.type !== "Point") continue;
+    const [lon, lat] = f.geometry.coordinates;
+    const key = `${Math.floor(lon / ZONE_SIZE)},${Math.floor(lat / ZONE_SIZE)}`;
+    const b = buckets.get(key) ?? { lon: 0, lat: 0, followers: 0, count: 0 };
+    b.lon += lon;
+    b.lat += lat;
+    b.followers += (f.properties as any)?.ig_followers ?? 0;
+    b.count += 1;
+    buckets.set(key, b);
+  }
+  const features: Feature<Point>[] = [];
+  for (const b of buckets.values()) {
+    const followers = b.followers;
+    features.push({
+      type: "Feature",
+      geometry: { type: "Point", coordinates: [b.lon / b.count, b.lat / b.count] },
+      properties: { zone_followers: followers, zone_shops: b.count },
+    });
+  }
+  return { type: "FeatureCollection", features };
 }
 
 async function boot() {
@@ -123,8 +151,16 @@ async function boot() {
       map.setLayoutProperty("shops-heat", "visibility", heatVis);
     }
     // Point layers
-    if (map.getLayer("shops")) map.setLayoutProperty("shops", "visibility", spotVis);
-    if (map.getLayer("shops-halo")) map.setLayoutProperty("shops-halo", "visibility", spotVis);
+    if (map.getLayer("shops")) {
+      map.setLayoutProperty("shops", "visibility", spotVis);
+    }
+    if (map.getLayer("shops-halo")) {
+      map.setLayoutProperty("shops-halo", "visibility", spotVis);
+    }
+    // Zone cluster layer — shown with the heatmap
+    if (map.getLayer("zones-heat")) {
+      map.setLayoutProperty("zones-heat", "visibility", heatVis);
+    }
   });
 
   // ── Shop dropdown ──
@@ -282,7 +318,42 @@ async function boot() {
         "heatmap-intensity": 0.7,
         "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 10, 15, 20, 30],
         "heatmap-color": HEAT_COLORS_LIGHT,
-        "heatmap-opacity": 0.9,
+        "heatmap-opacity": 0.7,
+      },
+    });
+
+    // Zone cluster layer — discrete circles at zone centroids, sized by
+    // aggregate followers, colored cold→hot. Hidden by default; shown when
+    // heatmap is ON to give a per-zone gradient view.
+    const zonesFc = buildZones(fc);
+    map.addSource("zones", { type: "geojson", data: zonesFc });
+    map.addLayer({
+      id: "zones-heat",
+      type: "circle",
+      source: "zones",
+      layout: { visibility: "none" },
+      paint: {
+        // Radius scales with follower count in zone.
+        "circle-radius": ["interpolate", ["linear"], ["zoom"], 10, 8, 14, 16],
+        // Color gradient from cold (blue) to hot (red) based on zone_followers.
+        "circle-color": [
+          "interpolate",
+          ["linear"],
+          ["get", "zone_followers"],
+          0,
+          "rgba(33,102,172,0.4)",
+          100,
+          "rgba(103,169,207,0.5)",
+          500,
+          "rgba(209,229,240,0.6)",
+          2000,
+          "rgba(253,174,97,0.7)",
+          5000,
+          "rgba(239,59,44,0.85)",
+        ],
+        "circle-opacity": 0.85,
+        "circle-stroke-color": "#fff",
+        "circle-stroke-width": 1,
       },
     });
 
