@@ -375,11 +375,16 @@ async function boot() {
     });
 
     map.on("click", (e) => {
-      // Clicking empty map space closes the sidebars.
+      // Clicking empty map space closes the sidebars — but only if the click
+      // didn't land on a shop feature (which opens the sidebar).
       const tgt = e.originalEvent?.target as Element | null | undefined;
       if (tgt && typeof tgt.closest === "function") {
         if (!tgt.closest(".left-sidebar") && !tgt.closest(".right-sidebar")) {
-          closeSidebars();
+          // Check if we clicked on a shop feature
+          const feats = map.queryRenderedFeatures(e.point, { layers: ["shops"] });
+          if (feats.length === 0) {
+            closeSidebars();
+          }
         }
       }
     });
