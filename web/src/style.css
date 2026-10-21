@@ -9,14 +9,44 @@ body {
   gap: 12px;
   align-items: center;
   padding: 8px 12px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--border);
+  background: var(--bar-bg);
+  border-radius: 999px;
+  margin: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
+#dark-btn {
+  background: none;
+  border: none;
+  color: var(--muted-foreground);
+  font-size: 16px;
+  padding: 4px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+#dark-btn:hover { color: var(--foreground); }
+#shop-dd-btn {
+  background: none;
+  border: none;
+  color: var(--muted-foreground);
+  font-size: 16px;
+  padding: 4px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+#shop-dd-btn:hover { color: var(--foreground); }
 #topbar input[type="search"] {
   flex: 0 1 240px;
   padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--input-bg);
+  color: var(--foreground);
 }
 #count {
-  color: #666;
+  color: var(--muted-foreground);
   margin-left: auto;
 }
 #map {
@@ -25,7 +55,7 @@ body {
   bottom: 28px;
   left: 0;
   right: 0;
-  background: #f8ead1; /* shows through the displaced filter's soft edges */
+  background: var(--map-bg);
 }
 #paper {
   position: absolute;
@@ -54,67 +84,245 @@ body {
   line-height: 28px;
   padding: 0 12px;
   font-size: 12px;
-  color: #555;
+  color: var(--muted-foreground);
 }
 /* café click-preview popup: paper card with an inline Instagram post embed */
 .maplibregl-popup-content {
   border-radius: 10px;
-  padding: 12px 12px 10px;
-  background: #fbf3e2;
-  border: 1px solid rgba(122, 90, 58, 0.35);
-  box-shadow: 0 6px 22px rgba(90, 60, 30, 0.28);
+  padding: 10px 8px 6px;
+  background: var(--popup-bg);
+  border: 1px solid var(--popup-border);
+  box-shadow: var(--popup-shadow);
+  max-width: 300px;
 }
 .maplibregl-popup-close-button {
-  color: #7a5a3a;
+  color: var(--popup-close);
   font-size: 16px;
   padding: 2px 6px;
 }
 .popup {
-  width: 316px;
+  width: auto;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  font: 13px/1.35 system-ui, sans-serif;
-  color: #3d2c1e;
+  gap: 4px;
+  font: 12px/1.25 system-ui, sans-serif;
+  color: var(--popup-color);
 }
 .popup-name {
-  font-size: 15px;
+  font-size: 14px;
+  font-weight: 600;
 }
 .popup-fullname {
-  color: #7a5a3a;
-  font-size: 12px;
+  color: var(--popup-fullname);
+  font-size: 11px;
 }
 .popup-handle {
-  color: #c2410c;
+  color: var(--popup-handle);
   font-weight: 600;
 }
 .popup-followers {
-  color: #8a6a4a;
+  color: var(--popup-followers);
   font-weight: 400;
-  font-size: 12px;
+  font-size: 11px;
 }
 .popup-embed {
   width: 100%;
-  height: 605px;
+  height: 440px;
   border: 0;
-  border-radius: 8px;
-  background: #fff;
+  border-radius: 6px;
+  background: var(--embed-bg);
 }
 .popup-links {
   display: flex;
-  gap: 14px;
-  margin: 1px 0 4px;
+  gap: 10px;
+  margin: 2px 0 3px;
 }
 .popup-links .popup-link:last-child {
   margin-left: auto;
 }
 .popup-no-ig {
-  color: #8a6a4a;
+  color: var(--popup-no-ig);
   font-style: italic;
 }
 .popup-link {
-  color: #c2410c;
+  color: var(--popup-link);
 }
 .popup-gmaps {
-  color: #1d4ed8;
+  color: var(--popup-gmaps);
 }
+/* --- Dark mode overrides --- */
+@media (prefers-color-scheme: dark) {
+  html, body { background: #111; color: #eaeaea; }
+  #topbar { border-color: #444; background: #1a1a1a; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+  #topbar input[type="search"] { border-color: #666; background: #2a2a2a; color: #eaeaea; }
+  #count { color: #aaa; }
+  #map { background: #0a0a0a; }
+  #paper { opacity: 0.3; }
+  #attrib { color: #666; }
+  .maplibregl-popup-content { background: #222; border-color: #444; box-shadow: 0 4px 16px rgba(0,0,0,0.5); }
+  .maplibregl-popup-close-button { color: #888; }
+  .popup { color: #ddd; }
+  .popup-name { color: #fff; }
+  .popup-handle { color: #c2410c; }
+  .popup-followers { color: #8a6a4a; }
+  .popup-embed { background: #fff; }
+  .popup-links .popup-link { color: #1d4ed8; }
+  .popup-gmaps { color: #3b82f6; }
+}
+/* --- Colorful accent mode --- */
+.popup-link.accent {
+  color: var(--accent, #3b82f6);
+}
+.popup-gmaps.accent {
+  color: var(--accent2, #a78bfa);
+}
+
+/* --- Dropdown list of all shops (compact/closed by default) --- */
+.shop-dd {
+  position: absolute;
+  top: 54px;
+  right: 12px;
+  width: 280px;
+  max-height: calc(100vh - 80px);
+  background: var(--dd-bg, #fff);
+  border: 1px solid var(--dd-border, #ddd);
+  border-radius: 10px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.15);
+  overflow: hidden;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+.shop-dd.hidden { display: none; }
+.shop-dd input[type="search"] {
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  border-bottom: 1px solid var(--dd-border, #ddd);
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+}
+#shop-dd-list {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  overflow-y: auto;
+  flex: 1;
+}
+#shop-dd-list li {
+  padding: 6px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
+  color: var(--dd-text, #333);
+}
+#shop-dd-list li:hover,
+#shop-dd-list li.selected {
+  background: var(--dd-hover, #f0f0f0);
+}
+
+/* --- Right sidebar: TikTok search --- */
+.sidebar {
+  position: absolute;
+  top: 54px;
+  right: 0;
+  bottom: 28px;
+  width: 360px;
+  max-width: 90vw;
+  background: var(--sidebar-bg, #fff);
+  border-left: 1px solid var(--sidebar-border, #ddd);
+  border-radius: 10px 0 0 0;
+  box-shadow: -4px 0 24px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  overflow: hidden;
+}
+.sidebar.hidden { display: none; }
+.sidebar-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--sidebar-border, #ddd);
+  background: var(--sidebar-head-bg, #fafafa);
+}
+.sidebar-head span {
+  font-weight: 600;
+  color: var(--sidebar-title, #333);
+}
+#sidebar-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+#sidebar-close:hover { color: var(--foreground); }
+#sidebar-content {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+#tiktok-embed {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #fff;
+}
+
+/* --- Dark mode for new components --- */
+@media (prefers-color-scheme: dark) {
+  .shop-dd {
+    --dd-bg: #222;
+    --dd-border: #444;
+    --dd-text: #ddd;
+    --dd-hover: #333;
+  }
+  .sidebar {
+    --sidebar-bg: #1a1a1a;
+    --sidebar-border: #444;
+    --sidebar-head-bg: #111;
+    --sidebar-title: #fff;
+  }
+  #tiktok-embed { background: #000; }
+}
+/* Dark mode forced by the 🌓 button (overrides prefers-color-scheme) */
+html.dark {
+  background: #111;
+  color: #eaeaea;
+}
+html.dark body { background: #111; color: #eaeaea; }
+html.dark #topbar { border-color: #444; background: #1a1a1a; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+html.dark #topbar input[type="search"] { border-color: #666; background: #2a2a2a; color: #eaeaea; }
+html.dark #count { color: #aaa; }
+html.dark #map { background: #0a0a0a; }
+html.dark #paper { opacity: 0.3; }
+html.dark #attrib { color: #666; }
+html.dark .maplibregl-popup-content { background: #222; border-color: #444; box-shadow: 0 4px 16px rgba(0,0,0,0.5); }
+html.dark .maplibregl-popup-close-button { color: #888; }
+html.dark .popup { color: #ddd; }
+html.dark .popup-name { color: #fff; }
+html.dark .popup-handle { color: #c2410c; }
+html.dark .popup-followers { color: #8a6a4a; }
+html.dark .popup-embed { background: #fff; }
+html.dark .popup-links .popup-link { color: #1d4ed8; }
+html.dark .popup-gmaps { color: #3b82f6; }
+html.dark .shop-dd {
+  --dd-bg: #222;
+  --dd-border: #444;
+  --dd-text: #ddd;
+  --dd-hover: #333;
+}
+html.dark .sidebar {
+  --sidebar-bg: #1a1a1a;
+  --sidebar-border: #444;
+  --sidebar-head-bg: #111;
+  --sidebar-title: #fff;
+}
+html.dark #tiktok-embed { background: #000; }

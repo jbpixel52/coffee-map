@@ -7,7 +7,9 @@
   </head>
   <body>
     <header id="topbar">
+      <button id="dark-btn" title="Cambiar tema" aria-label="Cambiar tema">🌓</button>
       <strong>Cafés de Tijuana</strong>
+      <button id="shop-dd-btn" title="Lista de cafés" aria-label="Lista de cafés">☰</button>
       <input id="q" type="search" placeholder="Buscar café…" autocomplete="off" />
       <label><input id="only-ig" type="checkbox" /> Con Instagram</label>
       <span id="count"></span>
@@ -25,6 +27,21 @@
         <feGaussianBlur stdDeviation="0.14" />
       </filter>
     </svg>
+    <!-- dropdown list of all shops (compact/closed by default) -->
+    <div id="shop-dd" class="shop-dd hidden">
+      <input id="shop-dd-search" type="search" placeholder="Filtrar lista…" autocomplete="off" />
+      <ul id="shop-dd-list"></ul>
+    </div>
+    <!-- right sidebar: TikTok search for the selected shop -->
+    <aside id="sidebar" class="sidebar hidden">
+      <header class="sidebar-head">
+        <span id="sidebar-title">TikTok</span>
+        <button id="sidebar-close" aria-label="Cerrar">×</button>
+      </header>
+      <div id="sidebar-content">
+        <iframe id="tiktok-embed" loading="lazy"></iframe>
+      </div>
+    </aside>
     <footer id="attrib">
       Datos: © OpenStreetMap contributors (ODbL) · Google Maps · Instagram —
       Mapa: acuarela (estilo propio) sobre OpenFreeMap —

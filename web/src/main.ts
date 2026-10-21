@@ -1,7 +1,7 @@
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { Feature, FeatureCollection, Point } from "geojson";
-import { shopMatches, type ShopProps } from "./filter";
+import { shopMatches, type ShopProps, foldName } from "./filter";
 import { popupHtml } from "./popup";
 import { watercolorStyle } from "./watercolor";
 import "./style.css";
@@ -14,9 +14,6 @@ async function boot() {
     fetch(`${BASE}data/meta.json`).then((r) => r.json()),
   ]);
 
-  // QA/screenshot hook: ?z=<zoom>&ll=<lon>,<lat> sets the initial camera
-  // (lets headless shots skip a mid-run jumpTo, which is crash-prone under
-  // software GL in constrained environments)
   const params = new URLSearchParams(location.search);
   const ll = (params.get("ll") ?? "").split(",").map(Number);
   const zq = Number(params.get("z"));
@@ -27,34 +24,58 @@ async function boot() {
 
   const map = new maplibregl.Map({
     container: "map",
-    // Our own watercolor theme over OpenFreeMap vector tiles (OSM data):
-    // free, keyless, no external style service. See src/watercolor.ts.
     style: watercolorStyle,
     center: cam.center,
     zoom: cam.zoom,
   });
 
-  // hooks the smoke test drives
   (window as any).__map = map;
   (window as any).__shops = fc.features;
 
-  // paper overlay asset + painted-at-rest filter toggling
   const paperEl = document.getElementById("paper") as HTMLElement;
   paperEl.style.backgroundImage = `url(${BASE}styles/paper.png)`;
   const mapEl = document.getElementById("map") as HTMLElement;
-  // start crisp: the first paint loop loads tiles and repaints constantly,
-  // and re-running the SVG filter per frame is the expensive case. The
-  // painted look kicks in on the first idle and returns whenever motion stops.
   mapEl.classList.add("moving");
   map.on("movestart", () => mapEl.classList.add("moving"));
   map.on("zoomstart", () => mapEl.classList.add("moving"));
   map.on("idle", () => mapEl.classList.remove("moving"));
 
+  // ── Dark‑mode toggle ──
+  const darkBtn = document.getElementById("dark-btn") as HTMLButtonElement;
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  if (prefersDark) document.documentElement.classList.add("dark");
+  darkBtn.addEventListener("click", () => {
+    document.documentElement.classList.toggle("dark");
+  });
+
+  // ── Shop dropdown ──
+  const ddBtn = document.getElementById("shop-dd-btn") as HTMLButtonElement;
+  const ddList = document.getElementById("shop-dd-list") as HTMLUListElement;
+  const ddSearch = document.getElementById("shop-dd-search") as HTMLInputElement;
+  const ddMenu = document.getElementById("shop-dd") as HTMLElement;
+  const shops = fc.features.map((f: any) => f.properties.name ?? "Desconocido");
+  const buildList = (filter = "") => {
+    const normalized = foldName(filter);
+    ddList.innerHTML = shops
+      .filter((name: string) => foldName(name).includes(normalized) || name.toLowerCase().includes(filter.toLowerCase()))
+      .map((name: string) => `<li${name === (ddSearch.defaultValue ?? "") ? " class='selected'" : ""}>${name}</li>`)
+      .join("");
+  };
+  ddBtn.addEventListener("click", () => ddMenu.classList.toggle("hidden"));
+  ddSearch.addEventListener("input", (e) => {
+    const target = e.target as HTMLInputElement | null;
+    if (target) buildList(target.value);
+  });
+  document.addEventListener("click", (e) => {
+    const target = e.target as Node | null;
+    if (!ddBtn.contains(target) && !ddList.contains(target)) {
+      ddMenu.classList.add("hidden");
+    }
+  });
+
   const popupFor = (f: Feature<Point>) => {
     const p = f.properties as Record<string, any> & ShopProps;
     const [lon, lat] = f.geometry.coordinates;
-    // Rich click-preview: name + Instagram embed of the shop's latest post
-    // (falls back to a profile link, then to a plain no-IG note).
     return new maplibregl.Popup({ maxWidth: "340px" })
       .setLngLat([lon, lat])
       .setHTML(popupHtml({ ...(p as any), lat, lon }));
@@ -64,8 +85,7 @@ async function boot() {
     const q = (document.getElementById("q") as HTMLInputElement).value;
     const onlyIg = (document.getElementById("only-ig") as HTMLInputElement).checked;
     const shown = fc.features.filter((f) => shopMatches(f.properties as ShopProps, q, onlyIg));
-    (document.getElementById("count") as HTMLElement).textContent =
-      `${shown.length} de ${fc.features.length} cafés`;
+    (document.getElementById("count") as HTMLElement).textContent = `${shown.length} de ${fc.features.length} cafés`;
     (map.getSource("shops") as maplibregl.GeoJSONSource | undefined)?.setData({
       type: "FeatureCollection",
       features: shown,
@@ -74,9 +94,14 @@ async function boot() {
   };
   (window as any).__applyFilters = applyFilters;
 
+  // ── Right sidebar: TikTok search ──
+  const sidebar = document.getElementById("sidebar") as HTMLElement;
+  const sidebarClose = document.getElementById("sidebar-close") as HTMLButtonElement;
+  const sidebarTitle = document.getElementById("sidebar-title") as HTMLElement;
+  const tiktokEmbed = document.getElementById("tiktok-embed") as HTMLIFrameElement;
+
   map.on("load", () => {
     map.addSource("shops", { type: "geojson", data: fc });
-    // soft bloom under the dots so markers read painted, not printed
     map.addLayer({
       id: "shops-halo",
       type: "circle",
@@ -101,15 +126,32 @@ async function boot() {
       },
     });
     map.on("click", "shops", (e) => {
-      if (e.features?.[0]) popupFor(e.features[0] as unknown as Feature<Point>).addTo(map);
+      const f = e.features?.[0];
+      if (f) popupFor(f as unknown as Feature<Point>).addTo(map);
     });
-    applyFilters();
+
+    // TikTok sidebar handlers
+    map.on("click", "shops", (e) => {
+      const f = e.features?.[0];
+      if (!f) return;
+      const p = f.properties as Record<string, any> & ShopProps;
+      sidebarTitle.textContent = `TikTok: ${p.name || "Café"}`;
+      const query = encodeURIComponent(p.name || "");
+      tiktokEmbed.src = `https://www.tiktok.com/search?q=${query}`;
+      sidebar.classList.remove("hidden");
+    });
+    sidebarClose.addEventListener("click", () => {
+      sidebar.classList.add("hidden");
+    });
+    document.addEventListener("click", (e) => {
+      if (!sidebar.contains(e.target as Node) && e.target !== ddBtn) {
+        sidebar.classList.add("hidden");
+      }
+    });
   });
 
-  document.getElementById("q")!.addEventListener("input", applyFilters);
-  document.getElementById("only-ig")!.addEventListener("change", applyFilters);
-  (document.getElementById("generated") as HTMLElement).textContent =
-    `actualizado ${meta.generated_at}`;
+  applyFilters();
+  (document.getElementById("generated") as HTMLElement).textContent = `actualizado ${meta.generated_at}`;
 }
 
 boot();

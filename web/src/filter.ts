@@ -10,6 +10,9 @@ const fold = (s: string) =>
     .replace(/\p{Diacritic}/gu, "")
     .toLowerCase();
 
+/** Public fold helper: accent/case-insensitive name matching. */
+export const foldName = fold;
+
 export function shopMatches(p: ShopProps, query: string, onlyInstagram: boolean): boolean {
   if (onlyInstagram && !p.instagram) return false;
   const q = fold(query.trim());

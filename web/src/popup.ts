@@ -65,7 +65,7 @@ export function popupHtml(p: ShopPreview): string {
     // links stay ABOVE the embed: a tall iframe must not push them off-screen
     parts.push(
       `<span class="popup-links">` +
-        `<a class="popup-link" href="https://www.instagram.com/${encodeURIComponent(handle)}/" ` +
+        `<a class="popup-link" href="https://www.instagram.com/${encodeURIComponent(handle)}/"` +
         `target="_blank" rel="noopener">Instagram ↗</a>` +
         gmaps +
         `</span>`,
@@ -73,8 +73,10 @@ export function popupHtml(p: ShopPreview): string {
     const embed = instagramEmbedUrl(p.ig_latest_code);
     if (embed) {
       parts.push(
-        `<iframe class="popup-embed" src="${embed}" loading="lazy" ` +
-          `allowtransparency="true" allowfullscreen scrolling="no"></iframe>`,
+        `<div class="popup-embed-wrapper">` +
+          `<iframe class="popup-embed" src="${embed}" loading="lazy" ` +
+            `allowtransparency="true" allowfullscreen scrolling="no"></iframe>` +
+          `</div>`,
       );
     }
   } else {
