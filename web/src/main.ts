@@ -4,7 +4,7 @@ import type { Feature, FeatureCollection, Point } from "geojson";
 import { shopMatches, type ShopProps, foldName } from "./filter";
 import { popupHtml, instagramEmbedUrl, gmapsSearchUrl, escapeHtml } from "./popup";
 import { watercolorStyle, applyMapTheme, HEAT_COLORS_LIGHT, type MapInstance } from "./watercolor";
-import { getTikTokEmbedHtml, ensureTikTokEmbedJs } from "./tiktok";
+import { tiktokSearchUrl, renderTikTokSearch } from "./tiktok";
 import "./style.css";
 
 const BASE = import.meta.env.BASE_URL;
@@ -358,22 +358,28 @@ async function boot() {
     });
 
     map.on("click", "shops", (e) => {
-      const f = e.features?.[0];
-      if (!f) return;
-      const p = f.properties as Record<string, any> & ShopProps;
-      openLeft(detailsFromProps(p));
-      // right sidebar: TikTok search for the same shop — use TikTok's oEmbed API
-      // to embed a hashtag profile/story panel inside the app without iframes.
-      const tiktokTitle = document.getElementById("sidebar-title") as HTMLElement;
-      tiktokTitle.textContent = `TikTok: ${p.name || "Café"}`;
-      const tiktokEmbedDiv = document.getElementById("tiktok-embed") as HTMLDivElement;
-      // Load TikTok embed HTML via oEmbed API (hashtag based on shop name)
-      getTikTokEmbedHtml(p.name || "", p.instagram ?? null).then((html) => {
-        tiktokEmbedDiv.innerHTML = html;
-        ensureTikTokEmbedJs();
-      });
-      rightSidebar.classList.add("open");
-    });
+          const f = e.features?.[0];
+          if (!f) return;
+          const p = f.properties as Record<string, any> & ShopProps;
+          openLeft(detailsFromProps(p));
+          // right sidebar: TikTok search for the same shop — render TikTok content
+          // inside the app using TikTok's embed.js widget, which handles X-Frame-Options.
+          const tiktokTitle = document.getElementById("sidebar-title") as HTMLElement;
+          tiktokTitle.textContent = `TikTok: ${p.name || "Café"}`;
+          const tiktokContainer = document.getElementById("tiktok-embed") as HTMLElement;
+          // Start loading TikTok embed.js and then render search content
+          renderTikTokSearch(tiktokContainer, p.name || "").catch(() => {
+            // Fallback: show search link
+            tiktokContainer.innerHTML = `
+              <p class="tiktok-fallback">
+                <a href="${tiktokSearchUrl(p.name || "")}" target="_blank" rel="noopener">
+                  Ver en TikTok
+                </a>
+              </p>
+            `;
+          });
+          rightSidebar.classList.add("open");
+        });
 
     map.on("click", "shops-halo", (e) => {
       // let the shops layer handle it
