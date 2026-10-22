@@ -19,16 +19,16 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: web/package-lock.json
+          cache-dependency-path: web-astro/package-lock.json
       - run: npm ci
-        working-directory: web
+        working-directory: web-astro
       - run: npm test
-        working-directory: web
+        working-directory: web-astro
       - run: npm run build
-        working-directory: web
+        working-directory: web-astro
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: web/dist
+          path: web-astro/dist
   deploy:
     needs: build
     environment:

@@ -1,0 +1,29 @@
+{
+  "name": "Cafés de Tijuana",
+  "short_name": "Cafés TJ",
+  "description": "Mapa de cafés de Tijuana con Instagram, Google Maps y TikTok",
+  "start_url": "/coffee-map/",
+  "scope": "/coffee-map/",
+  "display": "standalone",
+  "background_color": "#f8ead1",
+  "theme_color": "#f8ead1",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["food", "travel", "lifestyle"],
+  "lang": "es-MX",
+  "dir": "ltr",
+  "prefer_related_applications": false
+}

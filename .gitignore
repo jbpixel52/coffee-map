@@ -2,8 +2,11 @@
 __pycache__/
 .pytest_cache/
 /data/
+cache/
 .browsers/
 node_modules/
 web/dist/
+web-astro/dist/
+.astro/
 .hermes/
 .vercel/

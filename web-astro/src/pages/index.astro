@@ -1,0 +1,45 @@
+---
+import MapApp from "../components/MapApp";
+import "../styles/global.css";
+
+const base = import.meta.env.BASE_URL;
+---
+
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f8ead1" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#111" media="(prefers-color-scheme: dark)" />
+    <meta
+      name="description"
+      content="Mapa de cafés de Tijuana con Instagram, Google Maps y TikTok"
+    />
+    <title>Cafés de Tijuana — mapa</title>
+    <link rel="manifest" href={`${base}manifest.webmanifest`} />
+    <link rel="icon" type="image/svg+xml" href={`${base}icon.svg`} />
+    <link rel="apple-touch-icon" href={`${base}icon-192.png`} />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Cafés TJ" />
+  </head>
+  <body>
+    <!-- hand-painted post-process filter (applied to the map canvas at rest) -->
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
+      <filter id="wc-paint" x="-3%" y="-3%" width="106%" height="106%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.021 0.026" numOctaves="2" seed="7" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G" />
+        <feGaussianBlur stdDeviation="0.14" />
+      </filter>
+    </svg>
+
+    <MapApp client:only="react" />
+
+    <script is:inline define:vars={{ base }}>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register(`${base}sw.js`).catch(() => {});
+      }
+    </script>
+  </body>
+</html>

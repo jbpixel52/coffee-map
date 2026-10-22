@@ -8,13 +8,13 @@ from three scraped sources with an archive-first pipeline. Live at
 |---|---|---|
 | Backbone | OpenStreetMap (Overpass, ODbL) | the full café census — node/way coordinates, names, tags |
 | Enrichment | Google Maps search (logged-out scrape) | shops OSM misses, with coordinates + place ids |
-| Social | Instagram profiles (logged-out recon) | handle + follower count per shop (53 profiles fetched, 71 shops linked today) |
+| Social | Instagram profiles (logged-out recon) | handle + follower count per shop (119 profiles fetched) |
 
 Map UI: MapLibre GL over **OpenFreeMap** vector tiles (OSM data), re-styled
 with a **custom watercolor theme** — warm paper with fiber + grain, saturated
 turquoise water with pooling blooms, apple-green and peach washes, blurred
-edges, multi-color pigment drift (`web/src/watercolor.ts`, sprite in
-`web/public/styles/`). On top of the style, a **painted-at-rest pass**:
+edges, multi-color pigment drift (`web-astro/src/lib/watercolor.ts`, sprite in
+`web-astro/public/styles/`). On top of the style, a **painted-at-rest pass**:
 an SVG turbulence displacement + soft blur over the canvas (disengaged while
 panning/zooming so motion stays smooth) and a screen-space paper overlay with
 `mix-blend-mode: multiply`, so the vector geometry stops reading as
@@ -45,18 +45,18 @@ uv run coffeemap ig-enrich             # offline: full_name + latest post code f
 uv run coffeemap classify-candidates --kinds ig
 uv run coffeemap ig-attach             # link IG profiles to places (name/handle match)
 uv run coffeemap merge                 # canonical shops (100 m + name≥0.80 dedupe)
-uv run coffeemap export                # web/public/data/{shops.geojson,meta.json}
+uv run coffeemap export                # web-astro/public/data/{shops.geojson,meta.json}
 uv run coffeemap status                # row counts per table
 ```
 
 Or the whole chain: `scripts/refresh.sh`.
 
-Web app:
+Web app (Astro + React + Tamagui + MapLibre):
 
 ```bash
-cd web && npm ci && npm test && npm run build
-npx vite preview --port 5199 --strictPort       # http://localhost:5199/coffee-map/
-uv run python web/tests/smoke.py http://localhost:5199/coffee-map/   # headless smoke
+cd web-astro && npm ci && npm test && npm run build
+npx astro preview --port 4321                    # http://localhost:4321/coffee-map/
+uv run python web-astro/tests/smoke.py http://localhost:4321/coffee-map/   # headless smoke
 ```
 
 ## Rules of the pipeline
@@ -69,7 +69,7 @@ uv run python web/tests/smoke.py http://localhost:5199/coffee-map/   # headless 
   discovery is a documented **no-go** while logged out
   (`docs/ig-discovery-spike.md`).
 - **Ignore lists are anchored:** `data/` (not `/data/`) would swallow
-  `web/public/data/` — the shipped data. Don't un-anchor it.
+  `web-astro/public/data/` — the shipped data. Don't un-anchor it.
 - **`ensure_browsers_path()` before `import patchright`** — patchright caches
   `PLAYWRIGHT_BROWSERS_PATH` at import time; the agent runtime's inherited
   value points at browsers this driver never installed.
@@ -100,9 +100,9 @@ San Diego is one config + one refresh away. The UI strings are Spanish for now.
   from instagram.com.
 - Map tiles — **OpenFreeMap** vector tiles from OpenStreetMap data (free,
   keyless, no attribution requirement beyond OSM's). The watercolor look is
-  our own MapLibre style (`web/src/watercolor.ts`): palette + a self-hosted
+  our own MapLibre style (`web-astro/src/lib/watercolor.ts`): palette + a self-hosted
   sprite with paper/mottle/wash/drift/bloom tiles and a `paper.png` overlay
-  (`web/public/styles/`, regenerate with
+  (`web-astro/public/styles/`, regenerate with
   `uv run --with pillow python scripts/make_sprite.py`). No external tile
   service, no API keys; footer keeps the OSM (ODbL) credit.
 
@@ -113,9 +113,9 @@ config/city.toml            the city (only file to edit for a new one)
 src/coffeemap/              pipeline: sources/{osm,gmaps,ig,web}.py, classify, store, merge, export, cli
 scripts/                    refresh.sh, fixture captures, IG discovery probe
 tests/                      pytest suite (fixtures = real captured bytes)
-web/                        Vite + MapLibre app; web/public/data holds the export
+web-astro/                  Astro + React + Tamagui + MapLibre app; public/data holds the export
 data/                       local only (gitignored): SQLite db + gzip archive
-.github/workflows/deploy.yml  build web/ -> GitHub Pages on push to main
+.github/workflows/deploy.yml  build web-astro/ -> GitHub Pages on push to main
 ```
 
 Full build plan: `.hermes/plans/2026-10-19_212930-coffee-map.md`.

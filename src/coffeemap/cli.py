@@ -44,7 +44,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--limit", type=int, default=1500)
     sub.add_parser("candidates-apply", help="promote café-verdict candidates to places (dedupe vs existing)")
     sub.add_parser("merge", help="rebuild canonical shops from places")
-    sub.add_parser("export", help="write web/public/data (geojson + meta)")
+    sub.add_parser("export", help="write web-astro/public/data (geojson + meta)")
     sub.add_parser("status", help="print row counts")
 
     args = ap.parse_args(argv)

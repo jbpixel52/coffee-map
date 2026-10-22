@@ -1,4 +1,4 @@
-"""Export canonical shops to web/public/data (GeoJSON + meta)."""
+"""Export canonical shops to web-astro/public/data (GeoJSON + meta)."""
 from __future__ import annotations
 
 import json
@@ -8,7 +8,7 @@ from pathlib import Path
 from .config import ROOT, City
 from .store import now_utc
 
-OUT_DIR = ROOT / "web" / "public" / "data"
+OUT_DIR = ROOT / "web-astro" / "public" / "data"
 
 
 def export(con: sqlite3.Connection, city: City) -> dict:

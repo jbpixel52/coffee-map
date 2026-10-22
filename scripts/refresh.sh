@@ -21,4 +21,4 @@ uv run coffeemap ig-attach
 uv run coffeemap merge
 uv run coffeemap export
 uv run coffeemap status
-echo "Next: git add web/public/data && git commit -m 'data: refresh' && git push"
+echo "Next: git add web-astro/public/data && git commit -m 'data: refresh' && git push"
