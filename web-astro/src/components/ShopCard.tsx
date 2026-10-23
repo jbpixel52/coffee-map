@@ -18,6 +18,18 @@ interface Props {
 
 export default function ShopCard({ details, onClose }: Props) {
   const open = details !== null;
+  const tag = details ? tiktokTagSlug(details.name) : "";
+  const tiktokLink = details ? (
+    <a
+      className="shop-link tiktok"
+      href={tiktokSearchUrl(details.name)}
+      title={`Buscar #${tag} en TikTok`}
+      target="_blank"
+      rel="noopener"
+    >
+      TikTok #{tag} ↗
+    </a>
+  ) : null;
   return (
     <div className={`left-sidebar${open ? " open" : ""}`} aria-hidden={!open}>
       <XStack className="sidebar-head" alignItems="center" justifyContent="space-between">
@@ -68,15 +80,7 @@ export default function ShopCard({ details, onClose }: Props) {
                   >
                     Google Maps ↗
                   </a>
-                  <a
-                    className="shop-link tiktok"
-                    href={tiktokSearchUrl(details.name)}
-                    title={`Buscar #${tiktokTagSlug(details.name)} en TikTok`}
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    TikTok #{tiktokTagSlug(details.name)} ↗
-                  </a>
+                  {tiktokLink}
                 </XStack>
                 {(() => {
                   const embed = instagramEmbedUrl(details.code);
@@ -106,15 +110,7 @@ export default function ShopCard({ details, onClose }: Props) {
                   >
                     Google Maps ↗
                   </a>
-                  <a
-                    className="shop-link tiktok"
-                    href={tiktokSearchUrl(details.name)}
-                    title={`Buscar #${tiktokTagSlug(details.name)} en TikTok`}
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    TikTok #{tiktokTagSlug(details.name)} ↗
-                  </a>
+                  {tiktokLink}
                 </XStack>
               </>
             )}

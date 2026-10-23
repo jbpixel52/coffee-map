@@ -63,12 +63,6 @@ export function tiktokSearchUrl(name: string): string {
   return `https://www.tiktok.com/search?q=${encodeURIComponent(q)}`;
 }
 
-/** TikTok tag page for a shop (hashtag feed without the search chrome). */
-export function tiktokTagUrl(name: string): string | null {
-  const slug = tiktokTagSlug(name);
-  return slug ? `https://www.tiktok.com/tag/${slug}` : null;
-}
-
 export function popupHtml(p: ShopPreview): string {
   const parts: string[] = [
     `<strong class="popup-name">${escapeHtml(p.name || "Café")}</strong>`,

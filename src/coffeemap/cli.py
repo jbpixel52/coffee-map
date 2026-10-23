@@ -365,66 +365,10 @@ def main(argv: list[str] | None = None) -> int:
             print(f"  [{i}/{len(rows)}] {row['kind']:5s} {label[:48]!r} -> {verdict}")
         print("verdicts:", counts)
     elif args.cmd == "ig-discover":
-        # Offline discovery: logged-out profile HTML embeds the profile's own
-        # username plus a handful of related accounts. Mine the archive for
-        # those, drop anything already known, and queue the rest as IG
-        # candidates for the normal recon -> classify -> attach chain.
-        import gzip
-        import re
-        from pathlib import Path
+        from .discover import discover
 
-        from .config import ARCHIVE
-
-        name_re = re.compile(r"^ig\.(.+)\.([0-9a-f]{10})\.html\.gz$")
-        user_re = re.compile(r'"username":"([A-Za-z0-9._]{2,32})"')
-
-        known = {r["handle"].lower() for r in con.execute("SELECT handle FROM ig_profiles")}
-        known |= {
-            (r["instagram"] or "").strip().lower()
-            for r in con.execute("SELECT instagram FROM places WHERE instagram IS NOT NULL")
-        }
-        known |= {
-            r["key"].lstrip("@").lower()
-            for r in con.execute("SELECT key FROM candidates WHERE kind='ig'")
-        }
-        known.discard("")
-
-        suggested: dict[str, set[str]] = {}
-        pages = 0
-        for path in sorted(Path(ARCHIVE).glob("**/ig.*.html.gz")):
-            m = name_re.match(path.name)
-            if not m:
-                continue
-            own = m.group(1).lower()
-            pages += 1
-            try:
-                html = gzip.decompress(path.read_bytes()).decode("utf-8", "replace")
-            except (OSError, EOFError):
-                continue  # truncated archive: skip, do not fail the run
-            for handle in set(user_re.findall(html)):
-                h = handle.lower()
-                if h == own or h in known or len(h) < 4:
-                    continue
-                suggested.setdefault(h, set()).add(own)
-
-        ranked = sorted(
-            ((h, srcs) for h, srcs in suggested.items() if len(srcs) >= args.min_from),
-            key=lambda kv: (-len(kv[1]), kv[0]),
-        )[: args.limit]
-
-        for handle, srcs in ranked:
-            upsert_candidate(
-                con,
-                kind="ig",
-                key=handle,
-                name=handle,
-                evidence={"source": "ig-suggested", "from": sorted(srcs)[:5]},
-            )
-        con.commit()
-        print(
-            f"ig-discover: {pages} archived pages -> {len(suggested)} unseen handles, "
-            f"{len(ranked)} queued"
-        )
+        found, queued = discover(con, limit=args.limit, min_from=args.min_from)
+        print(f"ig-discover: {found} unseen handles -> {queued} queued")
         print("next: ig-recon --limit N; ig-enrich; classify-candidates --kinds ig; ig-attach")
     elif args.cmd == "ig-enrich":
         from .sources.ig import classify_html, parse_profile_html

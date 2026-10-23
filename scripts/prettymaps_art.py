@@ -112,7 +112,7 @@ def render(center, radius, figsize, out_path, circle=True):
             )
             if attempt > 1:
                 print(f"    (succeeded on retry with radius={r} m)")
-            write_meta(out_path, center, r, figsize, circle)
+            write_meta(out_path, center, r, circle)
             soften(out_path)
             return out_path
         except Exception as exc:  # Overpass/osmnx/network failures land here
@@ -122,14 +122,15 @@ def render(center, radius, figsize, out_path, circle=True):
     return out_path
 
 
-def write_meta(out_path, center, radius, figsize, circle):
-    """Persist georeferencing next to the PNG: center, radius, pixel size."""
-    dpi = 300
+def write_meta(out_path, center, radius, circle):
+    """Persist georeferencing next to the PNG: center, radius, actual pixel size."""
+    from PIL import Image  # pillow ships with matplotlib
+
     meta = {
         "image": out_path.name,
         "center": [center[0], center[1]],
         "radius_m": radius,
-        "px": [round(figsize[0] * dpi), round(figsize[1] * dpi)],
+        "px": list(Image.open(out_path).size),
         "circle": circle,
         "source": "prettymaps + OpenStreetMap contributors (ODbL)",
         "generated_by": "scripts/prettymaps_art.py",

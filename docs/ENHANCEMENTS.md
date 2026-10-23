@@ -12,8 +12,8 @@ hour; the first block is already shipped, the rest is proposed.
 - **Translucent heat** — `heatmap-opacity` 0.7 → 0.28, intensity 0.7 → 0.55,
   zone circles 0.85 → 0.55, so the map stays readable under the heat.
 - **TikTok hashtag search** — `tiktokSearchUrl()` now searches
-  `#<shop-slug>` (`Granate Café` → `#granatecafe`); `tiktokTagUrl()` exposes
-  the tag feed. No TikTok iframe/sidebar (X-Frame-Options makes it impossible).
+  `#<shop-slug>` (`Granate Café` → `#granatecafe`). No TikTok iframe/sidebar
+  (X-Frame-Options makes it impossible).
 - **Profile discovery** — new offline `coffeemap ig-discover` mines archived
   profile HTML for suggested handles and queues them as IG candidates; wired
   into `scripts/refresh.sh` before `ig-recon`.

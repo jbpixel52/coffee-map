@@ -22,6 +22,8 @@ const BASE = import.meta.env.BASE_URL;
 const HEAT_OPACITY = 0.28;
 /** Transition layer ends here; above it the vector style takes over. */
 const ART_VISIBLE_TO = 15;
+/** MapLibre id for the prettymaps raster layer + its image source. */
+const ART_LAYER = "pretty-art";
 
 interface Meta {
   generated_at?: string;
@@ -36,8 +38,8 @@ export default function MapApp() {
   const fcRef = useRef<FeatureCollection<Point> | null>(null);
   const artMetaRef = useRef<ArtMeta | null>(null);
 
-  const [mapReady, setMapReady] = useState(false);
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
+  const mapReady = status === "ready";
   const [art, setArt] = useState(true);
   const [total, setTotal] = useState(0);
   const [shown, setShown] = useState(0);
@@ -51,6 +53,14 @@ export default function MapApp() {
   const [onlyIg, setOnlyIg] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [selected, setSelected] = useState<ShopDetails | null>(null);
+
+  /** Close the detail card, the shop menu and the map popup together. */
+  const closeAll = useCallback(() => {
+    setSelected(null);
+    setMenuOpen(false);
+    popupRef.current?.remove();
+    popupRef.current = null;
+  }, []);
 
   // ── Boot: fetch data, create map, wire layers + events (once) ──
   useEffect(() => {
@@ -103,15 +113,15 @@ export default function MapApp() {
         const artMeta = artMetaRef.current;
         if (artMeta) {
           const bb = bboxFromCircle(artMeta.center[0], artMeta.center[1], artMeta.radius_m);
-          map.addSource("pretty-art", {
+          map.addSource(ART_LAYER, {
             type: "image",
             url: `${BASE}art/${artMeta.image}`,
             coordinates: imageCoordinates(bb),
           });
           map.addLayer({
-            id: "pretty-art",
+            id: ART_LAYER,
             type: "raster",
-            source: "pretty-art",
+            source: ART_LAYER,
             paint: {
               "raster-opacity": [
                 "interpolate",
@@ -211,13 +221,10 @@ export default function MapApp() {
           if (!map) return;
           const feats = map.queryRenderedFeatures(e.point, { layers: ["shops"] });
           if (feats.length === 0) {
-            setSelected(null);
-            popupRef.current?.remove();
-            popupRef.current = null;
+            closeAll();
           }
         });
 
-        setMapReady(true);
         setStatus("ready");
       });
     }
@@ -242,9 +249,9 @@ export default function MapApp() {
     if (map && mapReady) {
       applyMapTheme(map, dark);
       // the prettymaps poster is a light print — dim it instead of hiding it
-      if (map.getLayer("pretty-art")) {
-        map.setPaintProperty("pretty-art", "raster-brightness-max", dark ? 0.55 : 1);
-        map.setPaintProperty("pretty-art", "raster-saturation", dark ? -0.2 : 0);
+      if (map.getLayer(ART_LAYER)) {
+        map.setPaintProperty(ART_LAYER, "raster-brightness-max", dark ? 0.55 : 1);
+        map.setPaintProperty(ART_LAYER, "raster-saturation", dark ? -0.2 : 0);
       }
     }
   }, [dark, mapReady]);
@@ -252,8 +259,8 @@ export default function MapApp() {
   // ── prettymaps art toggle ──
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !mapReady || !map.getLayer("pretty-art")) return;
-    map.setLayoutProperty("pretty-art", "visibility", art ? "visible" : "none");
+    if (!map || !mapReady || !map.getLayer(ART_LAYER)) return;
+    map.setLayoutProperty(ART_LAYER, "visibility", art ? "visible" : "none");
   }, [art, mapReady]);
 
   // ── Shareable view: keep ?ll=&z= in the URL as the map moves ──
@@ -276,15 +283,11 @@ export default function MapApp() {
   // ── Escape closes the card and the shop menu ──
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key !== "Escape") return;
-      setSelected(null);
-      setMenuOpen(false);
-      popupRef.current?.remove();
-      popupRef.current = null;
+      if (e.key === "Escape") closeAll();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [closeAll]);
 
   // Follow OS theme changes until the user overrides (toggle always wins later).
   useEffect(() => {
@@ -381,7 +384,7 @@ export default function MapApp() {
       />
       <div id="map" ref={mapEl} />
       <div id="paper" style={{ backgroundImage: `url(${BASE}styles/paper.png)` }} />
-      <ShopCard details={selected} onClose={() => setSelected(null)} />
+      <ShopCard details={selected} onClose={closeAll} />
       <ShopMenu
         open={menuOpen}
         names={names}

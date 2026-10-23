@@ -47,3 +47,15 @@ step (`instagram-scraping` skill: hashtags reachable with a session, metrics
 require one). Building that tier means owning a session's lifecycle
 (mint → health-check → scrape → stop-on-challenge), which v1 deliberately does
 not do.
+
+## Addendum (2026-10-23): `ig-discover`, a different tier
+
+A narrow, session-free discovery tier shipped later under the name
+`coffeemap ig-discover`. It does **not** contradict the no-go above: it never
+touches hashtag, location or explore surfaces, and it makes no new requests.
+It re-reads profile pages that `ig-recon` already archived and extracts the
+`"username":"…"` accounts those pages co-mention, queues them as
+`candidates(kind='ig')`, and leaves them to `ig-recon → classify → attach`.
+The no-go still stands for hashtag/location discovery; this tier is
+enrichment-of-the-enrichment, and every suggested handle is recon'd and gated
+exactly like any other candidate.

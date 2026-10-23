@@ -55,10 +55,8 @@ describe("parseArtMeta", () => {
     expect(parseArtMeta({ ...good, image: "" })).toBeNull();
   });
 
-  it("keeps pixel size and circle flag when present", () => {
-    expect(parseArtMeta({ ...good, px: [1650, 1650], circle: true })).toMatchObject({
-      px: [1650, 1650],
-      circle: true,
-    });
+  it("ignores provenance fields it does not need", () => {
+    const meta = parseArtMeta({ ...good, px: [1650, 1650], circle: true, source: "OSM" });
+    expect(meta).toEqual({ image: "hero.png", center: [32.5, -117.0], radius_m: 1500 });
   });
 });

@@ -322,17 +322,25 @@ html.dark #topbar {
 
 #shop-dd-list .shop-dd-item {
   display: block;
+  width: 100%;
   padding: 10px 14px;
+  border: none;
+  background: transparent;
+  text-align: left;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font: inherit;
   font-size: 14px;
   color: var(--dd-text);
+  cursor: pointer;
   transition: background 0.1s;
 }
 
-#shop-dd-list .shop-dd-item:hover {
+#shop-dd-list .shop-dd-item:hover,
+#shop-dd-list .shop-dd-item:focus-visible {
   background: var(--dd-hover);
+  outline: none;
 }
 
 /* ==========================================================================

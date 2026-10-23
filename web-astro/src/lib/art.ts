@@ -14,10 +14,6 @@ export interface ArtMeta {
   center: [number, number];
   /** Half-extent of the rendered square, in meters. */
   radius_m: number;
-  /** Rendered pixel size [width, height]. */
-  px?: [number, number];
-  /** True when prettymaps cropped the map to a disc. */
-  circle?: boolean;
 }
 
 export interface BBox {
@@ -63,8 +59,6 @@ export function parseArtMeta(raw: unknown): ArtMeta | null {
     image: m.image,
     center: [lat, lon],
     radius_m: m.radius_m as number,
-    px: Array.isArray(m.px) && m.px.length === 2 ? (m.px as [number, number]) : undefined,
-    circle: m.circle === true,
   };
 }
 

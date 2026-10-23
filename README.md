@@ -104,7 +104,10 @@ San Diego is one config + one refresh away. The UI strings are Spanish for now.
 - Instagram — public profile fields (handle, follower count, full name) and
   the latest post's shortcode, embedded on the map via Instagram's official
   post-embed iframe. Nothing is mirrored: the click-preview loads directly
-  from instagram.com.
+  from instagram.com. Handles for **other** accounts co-mentioned on those
+  archived pages are mined offline (`ig-discover`) and only ever become
+  candidates; they reach a shop after recon + classification, like any other
+  handle.
 - Map tiles — **OpenFreeMap** vector tiles from OpenStreetMap data (free,
   keyless, no attribution requirement beyond OSM's). The watercolor look is
   our own MapLibre style (`web-astro/src/lib/watercolor.ts`): palette + a self-hosted

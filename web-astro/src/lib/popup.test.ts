@@ -6,7 +6,6 @@ import {
   popupHtml,
   tiktokSearchUrl,
   tiktokTagSlug,
-  tiktokTagUrl,
 } from "./popup";
 
 describe("escapeHtml", () => {
@@ -42,10 +41,6 @@ describe("tiktokSearchUrl", () => {
   });
   it("empty name yields an empty query", () => {
     expect(tiktokSearchUrl("")).toBe("https://www.tiktok.com/search?q=");
-    expect(tiktokTagUrl("")).toBeNull();
-  });
-  it("builds the tag page URL", () => {
-    expect(tiktokTagUrl("Granate Café")).toBe("https://www.tiktok.com/tag/granatecafe");
   });
 });
 

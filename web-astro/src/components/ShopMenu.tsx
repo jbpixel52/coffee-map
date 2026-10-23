@@ -19,15 +19,20 @@ export default function ShopMenu({ open, names, onSelect, onClose }: Props) {
   const [filter, setFilter] = useState("");
   const rootRef = useRef<HTMLDivElement | null>(null);
 
-  // Close on outside click.
+  // Close on outside click. Attach on the next tick: the click that opened the
+  // menu is still bubbling when this effect runs, so an immediate listener
+  // would see it and close the menu in the same tick.
   useEffect(() => {
     if (!open) return;
     const onDocClick = (e: MouseEvent) => {
       const t = e.target as Node | null;
       if (rootRef.current && t && !rootRef.current.contains(t)) onClose();
     };
-    document.addEventListener("click", onDocClick);
-    return () => document.removeEventListener("click", onDocClick);
+    const id = window.setTimeout(() => document.addEventListener("click", onDocClick), 0);
+    return () => {
+      window.clearTimeout(id);
+      document.removeEventListener("click", onDocClick);
+    };
   }, [open, onClose]);
 
   const shown = useMemo(() => filterShopNames(names, filter), [names, filter]);
@@ -47,8 +52,10 @@ export default function ShopMenu({ open, names, onSelect, onClose }: Props) {
       />
       <ul id="shop-dd-list">
         {shown.map((name) => (
-          <li key={name} className="shop-dd-item" onClick={() => onSelect(name)}>
-            {name}
+          <li key={name}>
+            <button type="button" className="shop-dd-item" onClick={() => onSelect(name)}>
+              {name}
+            </button>
           </li>
         ))}
       </ul>
