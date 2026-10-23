@@ -2,7 +2,7 @@
 """Generate static prettymaps (OSM) art for the coffee-map site.
 
 Outputs (under web-astro/public/art/):
-  - hero.png     : central Tijuana, ~2500 m radius, ~2000 px long edge
+  - hero.png     : central Tijuana, 1500 m radius, 1650 px square
   - zone-<n>.png : posters for the top-N densest cafe grid cells (1200 m radius)
   - card.png     : portrait card of the densest cafe neighborhood
 

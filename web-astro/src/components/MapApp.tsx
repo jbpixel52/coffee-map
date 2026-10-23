@@ -18,7 +18,7 @@ import PwaBanner from "./PwaBanner";
 
 const BASE = import.meta.env.BASE_URL;
 
-/** More translucent than the old 0.7 — heat should tint the map, not paint over it. */
+/** More translucent than the old 0.4 — heat should tint the map, not paint over it. */
 const HEAT_OPACITY = 0.28;
 /** Transition layer ends here; above it the vector style takes over. */
 const ART_VISIBLE_TO = 15;

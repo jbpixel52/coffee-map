@@ -22,7 +22,7 @@ machine-straight. Both degrade gracefully to a clean map if unsupported.
 Over Zona Centro the map drapes a **prettymaps** poster
 (`scripts/prettymaps_art.py` → `web-astro/public/art/hero.png` +
 `hero.json`): the static OSM artwork is georeferenced as a MapLibre raster
-layer, fully opaque at city zoom, fading out by zoom 15 where the vector
+layer, fully opaque below zoom 13.5, fading out by zoom 15 where the vector
 watercolor takes over; the 🖼️ topbar button toggles it. The visual reference
 is Stamen Watercolor, but no Stadia/Stamen service is used. Spanish (es-MX)
 strings, marker popups with an inline Instagram post embed (official iframe,

@@ -2,7 +2,6 @@
 import React from "react";
 import { Button, H4, Paragraph, XStack, YStack } from "tamagui";
 import {
-  escapeHtml,
   gmapsSearchUrl,
   instagramEmbedUrl,
   tiktokSearchUrl,
@@ -91,7 +90,7 @@ export default function ShopCard({ details, onClose }: Props) {
                       loading="lazy"
                       allowFullScreen
                       scrolling="no"
-                      title={`Instagram de ${escapeHtml(details.name)}`}
+                      title={`Instagram de ${details.name}`}
                     />
                   ) : null;
                 })()}

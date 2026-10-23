@@ -9,7 +9,7 @@ hour; the first block is already shipped, the rest is proposed.
   draped as a raster over the watercolor style, alpha ramp so its square edges
   fade into the paper instead of reading as a pasted card; 🖼️ toggle in the
   topbar; dimmed in dark mode; hidden above zoom 15 where vectors stay crisp.
-- **Translucent heat** — `heatmap-opacity` 0.7 → 0.28, intensity 0.7 → 0.55,
+- **Translucent heat** — `heatmap-opacity` 0.4 → 0.28, intensity 0.7 → 0.55,
   zone circles 0.85 → 0.55, so the map stays readable under the heat.
 - **TikTok hashtag search** — `tiktokSearchUrl()` now searches
   `#<shop-slug>` (`Granate Café` → `#granatecafe`). No TikTok iframe/sidebar
@@ -30,9 +30,9 @@ hour; the first block is already shipped, the rest is proposed.
 
 ## Next (small)
 
-1. **Zone posters in the card** — `prettymaps_art.py` already knows how to
-   render `zone-N.png` / `card.png`; show the poster for the clicked zone in
-   the detail card (great for sharing a shop).
+1. **Zone posters in the card** — `prettymaps_art.py` can render `zone-N.png` /
+   `card.png` (not committed yet: generate them, then show the poster for the
+   clicked zone in the detail card — great for sharing a shop).
 2. **Palette lock-step** — sample the poster's dominant colours and assert the
    watercolor palette stays within a small ΔE so the raster → vector handoff at
    zoom 15 is invisible.
@@ -56,5 +56,5 @@ hour; the first block is already shipped, the rest is proposed.
 9. **Typed export contract** — share one schema between `export.py` and
    `lib/details.ts` (JSON Schema → generated TS types) so a renamed property
    fails at build time, not as a blank card.
-10. **Tile budget** — the bundle is one ~1 MB chunk (MapLibre + Tamagui);
+10. **Tile budget** — the bundle is one ~1.3 MB chunk (MapLibre + Tamagui);
     lazy-load the detail card and split vendors once the app grows past this.

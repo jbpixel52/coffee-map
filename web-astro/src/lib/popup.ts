@@ -1,4 +1,5 @@
 /** Click-preview popup for a café: name, Instagram embed, and outbound links. */
+import { foldName } from "./filter";
 
 export interface ShopPreview {
   name: string;
@@ -13,16 +14,6 @@ export interface ShopPreview {
 // Instagram shortcodes are [A-Za-z0-9_-]; anything else (quotes, slashes,
 // angle brackets) is a URL-injection attempt and must be rejected.
 const CODE_RE = /^[A-Za-z0-9_-]{5,24}$/;
-
-/** Case/diacritics-insensitive name fold for near-duplicate suppression. */
-function foldName(s: string): string {
-  return (s ?? "")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/\s+/g, " ")
-    .trim();
-}
 
 export function escapeHtml(value: string): string {
   return (value ?? "")

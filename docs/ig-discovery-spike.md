@@ -59,3 +59,23 @@ It re-reads profile pages that `ig-recon` already archived and extracts the
 The no-go still stands for hashtag/location discovery; this tier is
 enrichment-of-the-enrichment, and every suggested handle is recon'd and gated
 exactly like any other candidate.
+
+### First run (2026-10-23)
+
+| step | result |
+|---|---|
+| `ig-discover` | 125 unseen handles queued (122 archived pages) |
+| `ig-recon --limit 25` | 25 public profiles captured, 0 challenges |
+| `ig-enrich` | 144 archived profiles re-parsed offline |
+| `classify-candidates --kinds ig` | 124 `not_cafe`, 1 `cafe` (1.5B quirk: bare handles read as non-cafés) |
+| `ig-attach` | 166 pairs, **+1 new link** on a shop (~1 per 100 suggestions) |
+| `export` | `with_instagram` 119 → 120 of 608 (`web-astro/public/data/meta.json`) |
+
+A second `ig-discover` immediately afterwards queued 26 more handles — those
+come from the 25 profiles just fetched, so the loop keeps producing candidates
+as the archive grows. The SQLite rows live in `data/` (gitignored by design);
+`meta.json` is the committed witness of the effect.
+
+No SERP/Google-Maps discovery ran that day: the local `fastCRW` search service
+(`:3000`) was unreachable, so `web-search` / `web-scrape` / `gmaps-fetch` were
+skipped and only the offline path was exercised.
