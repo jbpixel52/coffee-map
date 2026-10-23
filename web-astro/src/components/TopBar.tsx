@@ -7,6 +7,8 @@ interface Props {
   onToggleDark: () => void;
   heat: boolean;
   onToggleHeat: () => void;
+  art: boolean;
+  onToggleArt: () => void;
   query: string;
   onQuery: (q: string) => void;
   onlyIg: boolean;
@@ -16,7 +18,20 @@ interface Props {
 }
 
 const TopBar = forwardRef<HTMLDivElement, Props>(function TopBar(
-  { dark, onToggleDark, heat, onToggleHeat, query, onQuery, onlyIg, onOnlyIg, count, onOpenMenu },
+  {
+    dark,
+    onToggleDark,
+    heat,
+    onToggleHeat,
+    art,
+    onToggleArt,
+    query,
+    onQuery,
+    onlyIg,
+    onOnlyIg,
+    count,
+    onOpenMenu,
+  },
   ref,
 ) {
   return (
@@ -50,6 +65,18 @@ const TopBar = forwardRef<HTMLDivElement, Props>(function TopBar(
         onPress={onToggleHeat}
       >
         🔥
+      </Button>
+      <Button
+        chromeless
+        circular
+        size="$3"
+        title={art ? "Ocultar arte prettymaps" : "Mostrar arte prettymaps"}
+        aria-label="Arte prettymaps"
+        aria-pressed={art}
+        opacity={art ? 1 : 0.45}
+        onPress={onToggleArt}
+      >
+        🖼️
       </Button>
       <Text fontWeight="600" fontSize={15} color="$fg" whiteSpace="nowrap">
         Cafés de Tijuana
@@ -92,7 +119,13 @@ const TopBar = forwardRef<HTMLDivElement, Props>(function TopBar(
         />
         Con Instagram
       </Label>
-      <Text marginLeft="auto" fontSize={12} color="$mutedFg" whiteSpace="nowrap">
+      <Text
+        marginLeft="auto"
+        fontSize={12}
+        color="$mutedFg"
+        whiteSpace="nowrap"
+        aria-live="polite"
+      >
         {count}
       </Text>
     </XStack>

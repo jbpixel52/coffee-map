@@ -6,6 +6,7 @@ import {
   gmapsSearchUrl,
   instagramEmbedUrl,
   tiktokSearchUrl,
+  tiktokTagSlug,
 } from "../lib/popup";
 import { foldName } from "../lib/filter";
 import type { ShopDetails } from "../lib/details";
@@ -18,10 +19,7 @@ interface Props {
 export default function ShopCard({ details, onClose }: Props) {
   const open = details !== null;
   return (
-    <YStack
-      className={`left-sidebar${open ? " open" : ""}`}
-      aria-hidden={!open}
-    >
+    <div className={`left-sidebar${open ? " open" : ""}`} aria-hidden={!open}>
       <XStack className="sidebar-head" alignItems="center" justifyContent="space-between">
         <H4 size="$5" color="$sidebarTitle" numberOfLines={1} flex={1}>
           {details?.name ?? "Café"}
@@ -73,10 +71,11 @@ export default function ShopCard({ details, onClose }: Props) {
                   <a
                     className="shop-link tiktok"
                     href={tiktokSearchUrl(details.name)}
+                    title={`Buscar #${tiktokTagSlug(details.name)} en TikTok`}
                     target="_blank"
                     rel="noopener"
                   >
-                    TikTok ↗
+                    TikTok #{tiktokTagSlug(details.name)} ↗
                   </a>
                 </XStack>
                 {(() => {
@@ -110,10 +109,11 @@ export default function ShopCard({ details, onClose }: Props) {
                   <a
                     className="shop-link tiktok"
                     href={tiktokSearchUrl(details.name)}
+                    title={`Buscar #${tiktokTagSlug(details.name)} en TikTok`}
                     target="_blank"
                     rel="noopener"
                   >
-                    TikTok ↗
+                    TikTok #{tiktokTagSlug(details.name)} ↗
                   </a>
                 </XStack>
               </>
@@ -121,6 +121,6 @@ export default function ShopCard({ details, onClose }: Props) {
           </>
         )}
       </YStack>
-    </YStack>
+    </div>
   );
 }

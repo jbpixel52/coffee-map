@@ -520,6 +520,38 @@ html.dark #topbar {
   flex-direction: column;
 }
 
+.pwa-install-banner .pwa-install-text {
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: var(--fg);
+}
+
+.pwa-install-banner .pwa-install-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.pwa-install-banner .pwa-install-btns button {
+  flex: 1;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border);
+}
+
+.pwa-install-banner .pwa-install-yes {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.pwa-install-banner .pwa-install-no {
+  background: transparent;
+  color: var(--fg);
+}
+
 @keyframes slideUp {
   from {
     opacity: 0;

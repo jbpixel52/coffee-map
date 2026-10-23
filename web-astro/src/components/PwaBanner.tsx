@@ -1,6 +1,5 @@
 /** PWA install banner: appears on beforeinstallprompt unless dismissed. */
 import React, { useEffect, useState } from "react";
-import { Button, Paragraph, XStack, YStack } from "tamagui";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -38,18 +37,16 @@ export default function PwaBanner() {
   };
 
   return (
-    <YStack className={`pwa-install-banner${show ? " show" : ""}`} gap="$2.5">
-      <Paragraph margin={0} fontSize={14} color="$fg">
-        Instala esta app para acceso rápido y offline
-      </Paragraph>
-      <XStack gap="$2">
-        <Button flex={1} backgroundColor="$accent" color="white" fontWeight="600" onPress={install}>
+    <div className={`pwa-install-banner${show ? " show" : ""}`}>
+      <p className="pwa-install-text">Instala esta app para acceso rápido y offline</p>
+      <div className="pwa-install-btns">
+        <button type="button" className="pwa-install-yes" onClick={install}>
           Instalar
-        </Button>
-        <Button flex={1} variant="outlined" borderColor="$border" onPress={dismiss}>
+        </button>
+        <button type="button" className="pwa-install-no" onClick={dismiss}>
           Ahora no
-        </Button>
-      </XStack>
-    </YStack>
+        </button>
+      </div>
+    </div>
   );
 }

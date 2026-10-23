@@ -92,7 +92,11 @@ CREDIT = {
 
 
 def render(center, radius, figsize, out_path, circle=True):
-    """Render one prettymaps figure; retry once with a smaller radius on failure."""
+    """Render one prettymaps figure; retry once with a smaller radius on failure.
+
+    Writes a sibling `<name>.json` with the georeferencing the web map needs
+    (center, radius, pixel size) so the poster can be draped as a raster layer.
+    """
     for attempt, r in enumerate((radius, round(radius * 0.7)), start=1):
         try:
             np.random.seed(7)  # deterministic building palette picks
@@ -108,12 +112,58 @@ def render(center, radius, figsize, out_path, circle=True):
             )
             if attempt > 1:
                 print(f"    (succeeded on retry with radius={r} m)")
+            write_meta(out_path, center, r, figsize, circle)
+            soften(out_path)
             return out_path
         except Exception as exc:  # Overpass/osmnx/network failures land here
             if attempt == 2:
                 raise
             print(f"    attempt 1 failed ({type(exc).__name__}: {exc}); retrying smaller")
     return out_path
+
+
+def write_meta(out_path, center, radius, figsize, circle):
+    """Persist georeferencing next to the PNG: center, radius, pixel size."""
+    dpi = 300
+    meta = {
+        "image": out_path.name,
+        "center": [center[0], center[1]],
+        "radius_m": radius,
+        "px": [round(figsize[0] * dpi), round(figsize[1] * dpi)],
+        "circle": circle,
+        "source": "prettymaps + OpenStreetMap contributors (ODbL)",
+        "generated_by": "scripts/prettymaps_art.py",
+    }
+    out_path.with_suffix(".json").write_text(json.dumps(meta, indent=2) + "\n")
+
+
+def soften(path, inner=0.62, outer=0.98):
+    """Fade the poster's square edges into transparency.
+
+    The raw figure is a square with a thin black frame and a credit box in the
+    corner; draped over the map it reads as a pasted card. A radial alpha ramp
+    turns it into a soft disc that blends into the cream map paper (the frame
+    and credit box sit outside `outer` and disappear with it).
+    """
+    from PIL import Image, ImageDraw  # pillow ships with matplotlib
+
+    im = Image.open(path).convert("RGBA")
+    w, h = im.size
+    mask = Image.new("L", (w, h), 0)
+    draw = ImageDraw.Draw(mask)
+    r_in, r_out = inner * w / 2, outer * w / 2
+    steps = 96
+    for i in range(steps):
+        t = i / (steps - 1)
+        r = r_out - t * (r_out - r_in)
+        alpha = int(255 * t**1.6)  # smallest (innermost) ring is opaque
+        draw.ellipse(
+            [w / 2 - r, h / 2 - r, w / 2 + r, h / 2 + r],
+            fill=alpha,
+        )
+    im.putalpha(mask)
+    im.save(path)
+    print(f"    softened -> {path.name} (alpha {inner:.2f}..{outer:.2f} of width)")
 
 
 def load_shop_points():

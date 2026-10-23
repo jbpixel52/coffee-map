@@ -14,6 +14,7 @@ uv run coffeemap classify-validate
 uv run coffeemap classify-candidates --kinds place,name
 uv run coffeemap classify-places
 uv run coffeemap candidates-apply
+uv run coffeemap ig-discover
 uv run coffeemap ig-recon --limit 60 || echo "ig-recon: partial — see output above"
 uv run coffeemap ig-enrich
 uv run coffeemap classify-candidates --kinds ig

@@ -44,10 +44,29 @@ export function gmapsSearchUrl(name: string, lat?: number | null, lon?: number |
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 }
 
-/** TikTok search URL for a shop name (search tag = the shop's name). */
+/**
+ * TikTok hashtag slug for a shop name: "Granate Café" → "granatecafe".
+ * TikTok tags carry no spaces or punctuation, so strip accents and non-alnum.
+ */
+export function tiktokTagSlug(name: string): string {
+  return (name ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "");
+}
+
+/** TikTok search URL for a shop, using the shop's hashtag as the search tag. */
 export function tiktokSearchUrl(name: string): string {
-  const q = (name ?? "").trim();
+  const slug = tiktokTagSlug(name);
+  const q = slug ? `#${slug}` : (name ?? "").trim();
   return `https://www.tiktok.com/search?q=${encodeURIComponent(q)}`;
+}
+
+/** TikTok tag page for a shop (hashtag feed without the search chrome). */
+export function tiktokTagUrl(name: string): string | null {
+  const slug = tiktokTagSlug(name);
+  return slug ? `https://www.tiktok.com/tag/${slug}` : null;
 }
 
 export function popupHtml(p: ShopPreview): string {

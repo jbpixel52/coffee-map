@@ -10,6 +10,7 @@ import { popupHtml } from "../lib/popup";
 import { watercolorStyle, applyMapTheme, HEAT_COLORS_LIGHT } from "../lib/watercolor";
 import { buildZones } from "../lib/zones";
 import { detailsFromProps, type ShopDetails } from "../lib/details";
+import { bboxFromCircle, imageCoordinates, loadArtMeta, type ArtMeta } from "../lib/art";
 import TopBar from "./TopBar";
 import ShopCard from "./ShopCard";
 import ShopMenu from "./ShopMenu";
@@ -18,7 +19,9 @@ import PwaBanner from "./PwaBanner";
 const BASE = import.meta.env.BASE_URL;
 
 /** More translucent than the old 0.7 — heat should tint the map, not paint over it. */
-const HEAT_OPACITY = 0.4;
+const HEAT_OPACITY = 0.28;
+/** Transition layer ends here; above it the vector style takes over. */
+const ART_VISIBLE_TO = 15;
 
 interface Meta {
   generated_at?: string;
@@ -31,8 +34,11 @@ export default function MapApp() {
   const mapRef = useRef<maplibregl.Map | null>(null);
   const popupRef = useRef<maplibregl.Popup | null>(null);
   const fcRef = useRef<FeatureCollection<Point> | null>(null);
+  const artMetaRef = useRef<ArtMeta | null>(null);
 
   const [mapReady, setMapReady] = useState(false);
+  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
+  const [art, setArt] = useState(true);
   const [total, setTotal] = useState(0);
   const [shown, setShown] = useState(0);
   const [generated, setGenerated] = useState("");
@@ -52,14 +58,16 @@ export default function MapApp() {
     let map: maplibregl.Map | null = null;
 
     async function boot() {
-      const [fc, meta] = await Promise.all([
+      const [fc, meta, artMeta] = await Promise.all([
         fetch(`${BASE}data/shops.geojson`).then(
           (r) => r.json() as Promise<FeatureCollection<Point>>,
         ),
         fetch(`${BASE}data/meta.json`).then((r) => r.json() as Promise<Meta>),
+        loadArtMeta(BASE),
       ]);
       if (cancelled || !mapEl.current) return;
       fcRef.current = fc;
+      artMetaRef.current = artMeta;
       setTotal(fc.features.length);
       setNames(fc.features.map((f) => (f.properties as ShopProps)?.name ?? "Desconocido"));
       if (meta.generated_at) setGenerated(`actualizado ${meta.generated_at}`);
@@ -90,6 +98,36 @@ export default function MapApp() {
 
       map.on("load", () => {
         if (!map) return;
+        // prettymaps poster as the base map: a georeferenced raster draped over
+        // the watercolor style inside its bbox, fading out as you zoom in.
+        const artMeta = artMetaRef.current;
+        if (artMeta) {
+          const bb = bboxFromCircle(artMeta.center[0], artMeta.center[1], artMeta.radius_m);
+          map.addSource("pretty-art", {
+            type: "image",
+            url: `${BASE}art/${artMeta.image}`,
+            coordinates: imageCoordinates(bb),
+          });
+          map.addLayer({
+            id: "pretty-art",
+            type: "raster",
+            source: "pretty-art",
+            paint: {
+              "raster-opacity": [
+                "interpolate",
+                ["linear"],
+                ["zoom"],
+                11,
+                1,
+                13.5,
+                0.9,
+                ART_VISIBLE_TO,
+                0,
+              ],
+              "raster-fade-duration": 400,
+            },
+          });
+        }
         map.addSource("shops", { type: "geojson", data: fc });
         map.addLayer({
           id: "shops-halo",
@@ -122,7 +160,7 @@ export default function MapApp() {
           layout: { visibility: "none" },
           paint: {
             "heatmap-weight": ["coalesce", ["to-number", ["get", "ig_followers"]], 1],
-            "heatmap-intensity": 0.7,
+            "heatmap-intensity": 0.55,
             "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 10, 15, 20, 30],
             "heatmap-color": HEAT_COLORS_LIGHT,
             "heatmap-opacity": HEAT_OPACITY,
@@ -147,7 +185,7 @@ export default function MapApp() {
               2000, "rgba(253,174,97,0.7)",
               5000, "rgba(239,59,44,0.85)",
             ],
-            "circle-opacity": 0.85,
+            "circle-opacity": 0.55,
             "circle-stroke-color": "#fff",
             "circle-stroke-width": 1,
           },
@@ -180,10 +218,14 @@ export default function MapApp() {
         });
 
         setMapReady(true);
+        setStatus("ready");
       });
     }
 
-    boot().catch((err) => console.error("boot failed", err));
+    boot().catch((err) => {
+      console.error("boot failed", err);
+      setStatus("error");
+    });
     return () => {
       cancelled = true;
       popupRef.current?.remove();
@@ -197,8 +239,52 @@ export default function MapApp() {
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
     const map = mapRef.current;
-    if (map && mapReady) applyMapTheme(map, dark);
+    if (map && mapReady) {
+      applyMapTheme(map, dark);
+      // the prettymaps poster is a light print — dim it instead of hiding it
+      if (map.getLayer("pretty-art")) {
+        map.setPaintProperty("pretty-art", "raster-brightness-max", dark ? 0.55 : 1);
+        map.setPaintProperty("pretty-art", "raster-saturation", dark ? -0.2 : 0);
+      }
+    }
   }, [dark, mapReady]);
+
+  // ── prettymaps art toggle ──
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !mapReady || !map.getLayer("pretty-art")) return;
+    map.setLayoutProperty("pretty-art", "visibility", art ? "visible" : "none");
+  }, [art, mapReady]);
+
+  // ── Shareable view: keep ?ll=&z= in the URL as the map moves ──
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !mapReady) return;
+    const sync = () => {
+      const c = map.getCenter();
+      const url = new URL(location.href);
+      url.searchParams.set("ll", `${c.lng.toFixed(4)},${c.lat.toFixed(4)}`);
+      url.searchParams.set("z", map.getZoom().toFixed(2));
+      history.replaceState(null, "", url);
+    };
+    map.on("moveend", sync);
+    return () => {
+      map.off("moveend", sync);
+    };
+  }, [mapReady]);
+
+  // ── Escape closes the card and the shop menu ──
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setSelected(null);
+      setMenuOpen(false);
+      popupRef.current?.remove();
+      popupRef.current = null;
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   // Follow OS theme changes until the user overrides (toggle always wins later).
   useEffect(() => {
@@ -262,7 +348,8 @@ export default function MapApp() {
       if (f) {
         setSelected(detailsFromProps(f.properties as Record<string, unknown>));
         const [lon, lat] = f.geometry.coordinates;
-        mapRef.current?.flyTo({ center: [lon, lat], zoom: 15 });
+        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        mapRef.current?.flyTo({ center: [lon, lat], zoom: 15, duration: reduce ? 0 : 700 });
       }
       setMenuOpen(false);
     },
@@ -277,11 +364,19 @@ export default function MapApp() {
         onToggleDark={() => setDark((d) => !d)}
         heat={heat}
         onToggleHeat={() => setHeat((h) => !h)}
+        art={art}
+        onToggleArt={() => setArt((a) => !a)}
         query={query}
         onQuery={setQuery}
         onlyIg={onlyIg}
         onOnlyIg={setOnlyIg}
-        count={mapReady ? `${shown} de ${total} cafés` : ""}
+        count={
+          mapReady
+            ? `${shown} de ${total} cafés`
+            : status === "error"
+              ? "sin datos"
+              : "cargando…"
+        }
         onOpenMenu={() => setMenuOpen((o) => !o)}
       />
       <div id="map" ref={mapEl} />

@@ -1,6 +1,11 @@
-/** Dropdown menu listing every café, filterable; select flies to + opens the card. */
-import React, { useEffect, useRef, useState } from "react";
-import { Input, YStack, Text } from "tamagui";
+/** Dropdown menu listing every café, filterable; select flies to + opens the card.
+ *
+ * Plain HTML on purpose: this overlay is positioned by `global.css`
+ * (`.shop-dd`, fixed top-right). A Tamagui `YStack` here injects inline
+ * `display`/`position` styles that override the stylesheet, which left the
+ * panel visible and clipped off-screen when "closed".
+ */
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { filterShopNames } from "../lib/filter";
 
 interface Props {
@@ -25,31 +30,28 @@ export default function ShopMenu({ open, names, onSelect, onClose }: Props) {
     return () => document.removeEventListener("click", onDocClick);
   }, [open, onClose]);
 
-  const shown = filterShopNames(names, filter);
+  const shown = useMemo(() => filterShopNames(names, filter), [names, filter]);
+
+  if (!open) return null;
 
   return (
-    <YStack ref={rootRef} className={`shop-dd${open ? "" : " hidden"}`}>
-      <Input
-        unstyled
+    <div ref={rootRef} className="shop-dd">
+      <input
         className="shop-dd-search"
+        type="search"
         placeholder="Filtrar lista…"
+        autoComplete="off"
         value={filter}
-        onChangeText={setFilter}
+        onChange={(e) => setFilter(e.target.value)}
         aria-label="Filtrar lista"
       />
-      <YStack tag="ul" id="shop-dd-list" overflowY="auto" flex={1} paddingVertical="$2">
+      <ul id="shop-dd-list">
         {shown.map((name) => (
-          <Text
-            tag="li"
-            key={name}
-            className="shop-dd-item"
-            onPress={() => onSelect(name)}
-            cursor="pointer"
-          >
+          <li key={name} className="shop-dd-item" onClick={() => onSelect(name)}>
             {name}
-          </Text>
+          </li>
         ))}
-      </YStack>
-    </YStack>
+      </ul>
+    </div>
   );
 }

@@ -5,6 +5,8 @@ import {
   instagramEmbedUrl,
   popupHtml,
   tiktokSearchUrl,
+  tiktokTagSlug,
+  tiktokTagUrl,
 } from "./popup";
 
 describe("escapeHtml", () => {
@@ -28,14 +30,22 @@ describe("instagramEmbedUrl", () => {
 });
 
 describe("tiktokSearchUrl", () => {
-  it("creates a search URL from the shop name", () => {
-    expect(tiktokSearchUrl("cafe")).toBe("https://www.tiktok.com/search?q=cafe");
+  it("searches with the shop's hashtag", () => {
+    expect(tiktokSearchUrl("cafe")).toBe("https://www.tiktok.com/search?q=%23cafe");
     expect(tiktokSearchUrl("Granate Café")).toBe(
-      "https://www.tiktok.com/search?q=Granate%20Caf%C3%A9",
+      "https://www.tiktok.com/search?q=%23granatecafe",
     );
+  });
+  it("strips punctuation, spaces and accents from the tag", () => {
+    expect(tiktokTagSlug("Lux Coffee Bar & Roasters")).toBe("luxcoffeebarroasters");
+    expect(tiktokTagSlug("  Ñoño-café #2 ")).toBe("nonocafe2");
   });
   it("empty name yields an empty query", () => {
     expect(tiktokSearchUrl("")).toBe("https://www.tiktok.com/search?q=");
+    expect(tiktokTagUrl("")).toBeNull();
+  });
+  it("builds the tag page URL", () => {
+    expect(tiktokTagUrl("Granate Café")).toBe("https://www.tiktok.com/tag/granatecafe");
   });
 });
 
@@ -88,14 +98,13 @@ describe("popupHtml", () => {
     expect(url).toContain("Caf%C3%A9%20X%2032.5%2C-117");
   });
 
-  it("always includes a TikTok search link for the shop name", () => {
+  it("always includes a TikTok hashtag search link for the shop", () => {
     const withIg = popupHtml({ ...base, instagram: "luxcoffeebar" });
     const noIg = popupHtml(base);
     for (const html of [withIg, noIg]) {
       expect(html).toContain("popup-tiktok");
-      expect(html).toContain(
-        `href="https://www.tiktok.com/search?q=${encodeURIComponent(base.name)}"`,
-      );
+      expect(html).toContain(`href="${tiktokSearchUrl(base.name)}"`);
+      expect(html).toContain(encodeURIComponent(`#${tiktokTagSlug(base.name)}`));
     }
   });
 

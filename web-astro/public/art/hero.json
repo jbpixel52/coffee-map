@@ -1,0 +1,9 @@
+{
+  "image": "hero.png",
+  "center": [32.5149, -117.0382],
+  "radius_m": 1500,
+  "px": [1650, 1650],
+  "circle": true,
+  "source": "prettymaps + OpenStreetMap contributors (ODbL)",
+  "generated_by": "scripts/prettymaps_art.py"
+}

@@ -19,9 +19,15 @@ an SVG turbulence displacement + soft blur over the canvas (disengaged while
 panning/zooming so motion stays smooth) and a screen-space paper overlay with
 `mix-blend-mode: multiply`, so the vector geometry stops reading as
 machine-straight. Both degrade gracefully to a clean map if unsupported.
-The visual reference is Stamen Watercolor, but no Stadia/Stamen service is
-used. Spanish (es-MX) strings, marker popups with an inline Instagram post
-embed (official iframe, latest post) plus a Google Maps search link.
+Over Zona Centro the map drapes a **prettymaps** poster
+(`scripts/prettymaps_art.py` → `web-astro/public/art/hero.png` +
+`hero.json`): the static OSM artwork is georeferenced as a MapLibre raster
+layer, fully opaque at city zoom, fading out by zoom 15 where the vector
+watercolor takes over; the 🖼️ topbar button toggles it. The visual reference
+is Stamen Watercolor, but no Stadia/Stamen service is used. Spanish (es-MX)
+strings, marker popups with an inline Instagram post embed (official iframe,
+latest post), a Google Maps search link, and a **TikTok hashtag search** built
+from the shop name (`tiktokSearchUrl` → `tiktok.com/search?q=%23<slug>`).
 Data is refreshed by local scrape runs; GitHub Actions only builds and deploys
 the committed data.
 
@@ -37,9 +43,10 @@ uv run coffeemap web-search --limit 12 # local search service (fastCRW) SERPs ->
 uv run coffeemap web-scrape --per-query 5      # directory/blog listicles -> archive
 uv run coffeemap web-candidates        # extract café candidates (gmaps links, lists, IG handles)
 uv run coffeemap classify-validate     # sanity battery on the local model
-uv run coffeemap classify-candidates   # Kev tier: café-or-not for candidates (place,name)
+uv run coffeemap classify-candidates --kinds place,name   # Kev tier: café-or-not for candidates (place,name)
 uv run coffeemap classify-places       # same gate for scraped gmaps/web places
 uv run coffeemap candidates-apply      # promote café verdicts to places (dedupe 120 m + name)
+uv run coffeemap ig-discover           # offline: mine archived IG pages for suggested handles
 uv run coffeemap ig-recon --limit 60   # logged-out IG profile recon (places + candidates)
 uv run coffeemap ig-enrich             # offline: full_name + latest post code from archive
 uv run coffeemap classify-candidates --kinds ig
@@ -105,13 +112,17 @@ San Diego is one config + one refresh away. The UI strings are Spanish for now.
   (`web-astro/public/styles/`, regenerate with
   `uv run --with pillow python scripts/make_sprite.py`). No external tile
   service, no API keys; footer keeps the OSM (ODbL) credit.
+- prettymaps art — `prettymaps` (AGPL-3.0) draws the Zona Centro poster from
+  OpenStreetMap data (`uv run python scripts/prettymaps_art.py`); every figure
+  keeps prettymaps' own OSM + prettymaps credit line. The PNG is georeferenced
+  by the `hero.json` written next to it.
 
 ## Repo layout
 
 ```
 config/city.toml            the city (only file to edit for a new one)
 src/coffeemap/              pipeline: sources/{osm,gmaps,ig,web}.py, classify, store, merge, export, cli
-scripts/                    refresh.sh, fixture captures, IG discovery probe
+scripts/                    refresh.sh, fixture captures, IG discovery probe, prettymaps_art.py
 tests/                      pytest suite (fixtures = real captured bytes)
 web-astro/                  Astro + React + Tamagui + MapLibre app; public/data holds the export
 data/                       local only (gitignored): SQLite db + gzip archive

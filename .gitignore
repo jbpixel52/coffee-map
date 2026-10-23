@@ -5,7 +5,6 @@ __pycache__/
 cache/
 .browsers/
 node_modules/
-web/dist/
 web-astro/dist/
 .astro/
 .hermes/

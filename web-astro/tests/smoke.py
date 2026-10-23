@@ -14,11 +14,14 @@ with sync_playwright() as p:
     browser = p.chromium.launch(headless=True, args=["--no-sandbox"])
     page = browser.new_context(viewport={"width": 1280, "height": 900}).new_page()
     tiles = {"ok": 0, "err": 0}
+    art = {"ok": 0, "err": 0}
     errors = []
 
     def on_resp(r):
         if "tiles.openfreemap.org" in r.url:
             tiles["ok" if r.status == 200 else "err"] += 1
+        if "/art/hero" in r.url:
+            art["ok" if r.status == 200 else "err"] += 1
 
     def on_err(e):
         errors.append(e)
@@ -34,6 +37,23 @@ with sync_playwright() as p:
     assert page.evaluate("window.__map.hasImage('paper')", isolated_context=False), "sprite 'paper' missing"
     assert page.evaluate("!!window.__map.getLayer('background')", isolated_context=False), "background layer missing"
     assert tiles["ok"] >= 1 and tiles["err"] == 0, f"vector tiles: {tiles}"
+    # prettymaps poster: metadata + raster layer, and it is georeferenced
+    assert art["ok"] >= 2 and art["err"] == 0, f"prettymaps art requests: {art}"
+    assert page.evaluate("!!window.__map.getLayer('pretty-art')", isolated_context=False), (
+        "prettymaps art layer missing"
+    )
+    assert page.evaluate("!!window.__map.getSource('pretty-art')", isolated_context=False), (
+        "prettymaps art source missing"
+    )
+    # heat must stay translucent
+    heat_op = page.evaluate(
+        "window.__map.getPaintProperty('shops-heat','heatmap-opacity')",
+        isolated_context=False,
+    )
+    assert isinstance(heat_op, float) and heat_op <= 0.35, f"heatmap opacity too strong: {heat_op}"
     assert not errors, f"page errors: {errors}"
-    print(f"OK: {n} markers, {tiles['ok']} vector tiles, sprite+style present, 0 page errors")
+    print(
+        f"OK: {n} markers, {tiles['ok']} vector tiles, art poster + translucent heat "
+        f"({heat_op}), sprite+style present, 0 page errors"
+    )
     browser.close()
