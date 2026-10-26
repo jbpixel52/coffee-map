@@ -20,9 +20,10 @@ panels — a **shops list** as a stacked list with a drawn avatar per café and 
 Instagram badge, and **settings** (night mode, heatmap). Picking a café lifts its
 row and opens its *ficha* as a card (Instagram embed, followers, Google Maps,
 TikTok) plus a tag on the map itself. Filtering **dims** the census instead of
-hiding it. Colour is **Pantone's NYFW Spring/Summer 2027 report** — seasonless
-shades as ground and ink, seasonal colours on avatars and states, heat running
-Anise Flower → Arrowwood → Langoustino → Chili Pepper. Night inverts sheet and
+hiding it. Colour is **Pantone's NYFW Spring/Summer 2027 report** — seasonless shades as
+ground and ink, **Chili Pepper** as the single accent (tabs, primary buttons,
+selected row, dots), seasonal hues on avatars, heat running Anise Flower →
+Arrowwood → Langoustino → Chili Pepper. Night inverts sheet and
 shell. Spanish (es-MX) strings, PWA-installable, shareable `?ll=&z=` view,
 `prefers-reduced-motion` honoured. Tokens and rules: `DESIGN.md`.
 Data is refreshed by local scrape runs; GitHub Actions only builds and deploys

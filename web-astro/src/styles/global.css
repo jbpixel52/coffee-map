@@ -22,7 +22,7 @@
   --dolphin: #9a9699; /* 16-2901  borders, recessive marks */
   --blue-indigo: #49516d; /* 19-3928  ink, primary */
   --tarragon: #a4ae77; /* 15-0326  parks, success */
-  --waterfall: #3ab0a2; /* 15-5516  accent, water, has-Instagram */
+  --waterfall: #3ab0a2; /* 15-5516  water, one avatar hue */
   --arrowwood: #bc8d1f; /* 16-0954  heat mid, figures */
   --langoustino: #ca6c56; /* 16-1440  heat mid-high */
   --chili-pepper: #9b1b30; /* 19-1557  warning, "sin Instagram" */
@@ -44,9 +44,10 @@
   --fg-muted: #606479;
   --primary: var(--blue-indigo);
   --primary-fg: #f7f3eb;
-  --accent: var(--waterfall);
-  --accent-fg: #0d3b35;
-  --accent-soft: #d9ece7;
+  --accent: var(--chili-pepper); /* 19-1557 */
+  --accent-fg: #fbf3ee;
+  --accent-soft: #e2c7bb;
+  --accent-text: var(--chili-pepper);
   --warn: var(--chili-pepper);
   --ring: var(--waterfall);
 
@@ -79,8 +80,9 @@ html.night {
   --fg-muted: #d3ccc0;
   --primary: #eee5d3;
   --primary-fg: #191c27;
-  --accent-fg: #0d2420;
-  --accent-soft: #22343a;
+  --accent-fg: #fbf3ee;
+  --accent-soft: #361c29;
+  --accent-text: var(--rosy-future);
   --warn: var(--rosy-future);
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.4);
   --shadow: 0 8px 26px -6px rgb(0 0 0 / 0.6), 0 2px 8px -2px rgb(0 0 0 / 0.45);
@@ -202,7 +204,7 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .titlebar-sub {
@@ -533,7 +535,7 @@ body {
   white-space: nowrap;
 }
 .stack-row.on .stack-handle {
-  color: var(--accent-fg);
+  color: var(--accent-text);
 }
 .stack-fig {
   font-size: var(--step-2);
@@ -542,7 +544,7 @@ body {
   color: var(--arrowwood);
 }
 .stack-row.on .stack-fig {
-  color: var(--accent-fg);
+  color: var(--accent-text);
 }
 
 .list-empty {
@@ -678,7 +680,7 @@ body {
   margin-top: 4px;
   font-size: var(--step-3);
   font-weight: 500;
-  color: var(--accent-fg);
+  color: var(--accent-text);
 }
 .slip .handle.muted {
   color: var(--warn);

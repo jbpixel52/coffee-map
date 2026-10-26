@@ -18,11 +18,11 @@ Hex values: W3Schools' 2027 list, codes matched to Pantone's report.
 | Dolphin | 16-2901 | `#9a9699` | borders (mixed), recessive marks |
 | Blue Indigo | 19-3928 | `#49516d` | ink, primary, road hairlines |
 | Tarragon | 15-0326 | `#a4ae77` | parks, landcover |
-| Waterfall | 15-5516 | `#3ab0a2` | accent, water, has-Instagram dots, focus ring |
+| Waterfall | 15-5516 | `#3ab0a2` | water, one avatar hue (no longer the accent) |
 | Anise Flower | 12-0717 | `#f4e3b5` | heat floor |
 | Arrowwood | 16-0954 | `#bc8d1f` | heat mid |
 | Langoustino | 16-1440 | `#ca6c56` | heat mid-high, zone bloom |
-| Chili Pepper | 19-1557 | `#9b1b30` | heat peak, warning, "sin Instagram" |
+| Chili Pepper | 19-1557 | `#9b1b30` | **the accent**: open tab, primary buttons, selected row, focus ring, has-Instagram dots, heat peak, warning |
 | Lavender Oil | 15-3615 | `#c3a6cd` | night heat, secondary |
 | Rosy Future | 15-1910 | `#f37e9b` | night warning |
 | Princess Blue | 19-4150 | `#00539c` | reserved (no role yet) |
@@ -41,13 +41,16 @@ Tokens (`global.css`), all derived from those:
 | `--fg` | `#49516d` (6.26:1 on ground) | `#f2eada` (13.6:1) |
 | `--fg-muted` | `#606479` (4.67:1) | `#d3ccc0` (10.7:1) |
 | `--primary` / `--primary-fg` | `#49516d` / `#f7f3eb` | `#eee5d3` / `#191c27` |
-| `--accent` / `--ring` | `#3ab0a2` | `#3ab0a2` |
+| `--accent` / `--ring` | `#9b1b30` | `#9b1b30` |
+| `--accent-text` (accent as text) | `#9b1b30` | `#f37e9b` |
 | `--warn` | `#9b1b30` | `#f37e9b` |
 
 Rules the palette has to respect:
 
-- **Chrome is neutral; colour is data.** Waterfall marks what we can show you
-  (Instagram), Tarragon is land, Waterfall tints water, the warm four are heat.
+- **One accent owns the actions.** Chili Pepper fills the open tab, primary
+  buttons, the selected row, the focus ring and the has-Instagram dots; as text
+  on a light ground it clears 6.47:1, and at night `--accent-text` switches to
+  Rosy Future because the deep red dies on a near-black sheet.
   Nothing decorative gets a seasonal colour.
 - **Waterfall never carries white text** (2.1:1). It is a fill, a ring, water and
   a dot — the dot's Blue Indigo stroke is what makes it visible (6.26:1).

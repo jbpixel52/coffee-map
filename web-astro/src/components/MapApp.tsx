@@ -62,7 +62,7 @@ export default function MapApp() {
   const paintDots = useCallback((map: maplibregl.Map, isNight: boolean) => {
     // Waterfall marks what we can show; a neutral Dolphin/Indigo mix is the
     // rest of the census; the stroke carries the contrast on both grounds.
-    const hasIg = "#3ab0a2";
+    const hasIg = "#9b1b30"; // Chili Pepper, the accent
     const plain = isNight ? "#a6a093" : PLAN.inkFaint;
     const stroke = isNight ? "#f2eada" : PLAN.ink;
     if (map.getLayer(SHOPS_GHOST)) {
@@ -163,7 +163,7 @@ export default function MapApp() {
           filter: ["!=", ["get", "dim"], true],
           paint: {
             "circle-radius": ["interpolate", ["linear"], ["zoom"], 10, 3.2, 16, 6],
-            "circle-color": "#3ab0a2",
+            "circle-color": "#9b1b30",
             "circle-stroke-width": 1.3,
             "circle-stroke-color": PLAN.ink,
           },
