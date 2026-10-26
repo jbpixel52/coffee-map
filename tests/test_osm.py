@@ -35,3 +35,14 @@ def test_norm_instagram_cases():
     assert norm_instagram("@Patio17Cafe") == "Patio17Cafe"
     assert norm_instagram("instagram.com/x?hl=es") == "x"
     assert norm_instagram("") == ""
+
+def test_format_address():
+    from coffeemap.sources.osm import format_address
+
+    full = {"addr:street": "Av. Revolución", "addr:housenumber": "123", "addr:city": "Tijuana", "addr:postcode": "22000"}
+    assert format_address(full) == "123 Av. Revolución, Tijuana, 22000"  # number first, one convention for both countries
+    # no addr:city: fall back to the configured city rather than a bare postcode
+    no_city = {"addr:street": "Brazos Street", "addr:housenumber": "604", "addr:postcode": "78701"}
+    assert format_address(no_city, "Austin") == "604 Brazos Street, Austin, 78701"
+    assert format_address({}) is None
+    assert format_address({"addr:postcode": "22000"}, "Tijuana") is None  # a postcode is not a street address

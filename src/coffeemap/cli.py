@@ -76,7 +76,7 @@ def main(argv: list[str] | None = None) -> int:
         if not ref:
             print("osm-parse: nothing fetched yet — run `coffeemap osm-fetch`", file=sys.stderr)
             return 1
-        items = osm.parse_elements(archive_read(ref))
+        items = osm.parse_elements(archive_read(ref), city.name)
         for it in items:
             upsert_place(con, source="osm", archive_ref=ref, **it)
         con.commit()

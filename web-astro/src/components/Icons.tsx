@@ -87,10 +87,11 @@ export function Moon({ size = 17 }: Props) {
 }
 
 export function Gear({ size = 17 }: Props) {
+  // A cog: toothed outline plus a bore. A circle with radial spokes reads as a sun.
   return (
     <svg {...base(size)}>
-      <circle cx="12" cy="12" r="3.2" />
-      <path d="M12 2.8v2.4M12 18.8v2.4M4.5 12H2.1M21.9 12h-2.4M6.7 6.7 5 5M19 19l-1.7-1.7M17.3 6.7 19 5M5 19l1.7-1.7" />
+      <path d="M12 2.6l1.9 2.1 2.8-.6.6 2.8 2.1 1.9-1.3 2.5 1.3 2.5-2.1 1.9-.6 2.8-2.8-.6L12 20.4l-1.9-2.1-2.8.6-.6-2.8-2.1-1.9 1.3-2.5-1.3-2.5 2.1-1.9.6-2.8 2.8.6z" />
+      <circle cx="12" cy="11.5" r="2.9" />
     </svg>
   );
 }
@@ -107,6 +108,25 @@ export function Rows({ size = 15 }: Props) {
   return (
     <svg {...base(size)}>
       <path d="M4 7h16M4 12h16M4 17h16" />
+    </svg>
+  );
+}
+
+export function Instagram({ size = 15 }: Props) {
+  return (
+    <svg {...base(size)}>
+      <rect x="3" y="3" width="18" height="18" rx="5.5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function TikTok({ size = 15 }: Props) {
+  return (
+    <svg {...base(size)}>
+      <path d="M14 3v10.5a3.5 3.5 0 1 1-3-3.46" />
+      <path d="M14 5.5c1 1.6 2.4 2.4 4.5 2.5" />
     </svg>
   );
 }

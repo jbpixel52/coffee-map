@@ -2,7 +2,8 @@
 import React, { useMemo } from "react";
 import { Close, Search } from "./Icons";
 import StackedList, { type ListShop } from "./StackedList";
-import { filterShopNames } from "../lib/filter";
+import { shopMatches } from "../lib/filter";
+import { format, localeFor, t, type Lang } from "../lib/i18n";
 
 /** Rendering every row of eleven cities janks the list; the map still holds them all. */
 const LIST_CAP = 200;
@@ -18,9 +19,10 @@ interface Props {
   onOnlyIg: () => void;
   shown: number;
   total: number;
-  selected: string | null;
-  onSelect: (name: string) => void;
+  selected: number | null;
+  onSelect: (id: number) => void;
   onClose: () => void;
+  lang: Lang;
 }
 
 export default function ShopsPanel({
@@ -37,24 +39,39 @@ export default function ShopsPanel({
   selected,
   onSelect,
   onClose,
+  lang,
 }: Props) {
-  const rows = useMemo(() => {
-    let pool = city ? shops.filter((s) => s.city === city) : shops;
-    if (onlyIg) pool = pool.filter((s) => s.handle);
-    const keep = new Set(filterShopNames(pool.map((s) => s.name), query));
-    return pool
-      .filter((s) => keep.has(s.name))
-      .sort((a, b) => (b.followers ?? -1) - (a.followers ?? -1));
-  }, [shops, query, onlyIg, city]);
+  const locale = localeFor(lang);
+  // One rule for the map and the list: each row is fed to shopMatches as the
+  // same shape the GeoJSON features use.
+  const rows = useMemo(
+    () =>
+      shops
+        .filter((s) =>
+          shopMatches(
+            { name: s.name, instagram: s.handle, ig_followers: s.followers, city: s.city },
+            query,
+            onlyIg,
+            city,
+          ),
+        )
+        .sort((a, b) => (b.followers ?? -1) - (a.followers ?? -1)),
+    [shops, query, onlyIg, city],
+  );
 
   return (
     <section className="panel" id="panel-shops" role="tabpanel" aria-labelledby="tab-shops">
       <header className="panel-head">
-        <h2>Cafés</h2>
+        <h2>{t(lang, "shopsTab")}</h2>
         <span className="panel-count">
-          {shown.toLocaleString("es-MX")} / {total.toLocaleString("es-MX")}
+          {shown.toLocaleString(locale)} / {total.toLocaleString(locale)}
         </span>
-        <button type="button" className="icon-btn ghost" onClick={onClose} aria-label="Cerrar lista">
+        <button
+          type="button"
+          className="icon-btn ghost"
+          onClick={onClose}
+          aria-label={t(lang, "closeListAria")}
+        >
           <Close />
         </button>
       </header>
@@ -68,8 +85,8 @@ export default function ShopsPanel({
             type="search"
             value={query}
             onChange={(e) => onQuery(e.target.value)}
-            placeholder="Nombre o @handle"
-            aria-label="Buscar café"
+            placeholder={t(lang, "searchPlaceholder")}
+            aria-label={t(lang, "searchAria")}
             autoComplete="off"
           />
         </label>
@@ -78,16 +95,16 @@ export default function ShopsPanel({
           className="chip"
           aria-pressed={onlyIg}
           onClick={onOnlyIg}
-          title="Sólo cafés con Instagram conocido"
+          title={t(lang, "withInstagramTitle")}
         >
-          Con Instagram
+          {t(lang, "withInstagram")}
         </button>
       </div>
 
       {cities.length > 1 && (
-        <div className="panel-cities" role="group" aria-label="Ciudad">
+        <div className="panel-cities" role="group" aria-label={t(lang, "cityAria")}>
           <button type="button" className="chip" aria-pressed={city === null} onClick={() => onCity(null)}>
-            Todas
+            {t(lang, "allCities")}
           </button>
           {cities.map((c) => (
             <button
@@ -108,16 +125,15 @@ export default function ShopsPanel({
           shops={rows.slice(0, LIST_CAP)}
           selected={selected}
           onSelect={onSelect}
-          emptyNote={
-            <>
-              Ningún café coincide con «{query}». Prueba otra palabra o quita el filtro de Instagram.
-            </>
-          }
+          lang={lang}
+          emptyNote={format(t(lang, "emptySearch"), { query })}
         />
         {rows.length > LIST_CAP && (
           <p className="list-note">
-            Mostrando los {LIST_CAP} primeros de {rows.length.toLocaleString("es-MX")}. Busca por
-            nombre para llegar al resto.
+            {format(t(lang, "listCapNote"), {
+              cap: LIST_CAP.toLocaleString(locale),
+              n: rows.length.toLocaleString(locale),
+            })}
           </p>
         )}
       </div>

@@ -1,12 +1,13 @@
 /** PWA install banner: appears on beforeinstallprompt unless dismissed. */
 import React, { useEffect, useState } from "react";
+import { t, type Lang } from "../lib/i18n";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 }
 
-export default function PwaBanner() {
+export default function PwaBanner({ lang }: { lang: Lang }) {
   const [deferred, setDeferred] = useState<BeforeInstallPromptEvent | null>(null);
   const [show, setShow] = useState(false);
 
@@ -38,12 +39,12 @@ export default function PwaBanner() {
 
   return (
     <div className={`pwa${show ? " show" : ""}`}>
-      <p>Instala el mapa para llevarlo sin señal</p>
+      <p>{t(lang, "pwaInstall")}</p>
       <button type="button" className="yes" onClick={install}>
-        Instalar
+        {t(lang, "pwaInstallBtn")}
       </button>
       <button type="button" onClick={dismiss}>
-        Ahora no
+        {t(lang, "pwaNotNow")}
       </button>
     </div>
   );

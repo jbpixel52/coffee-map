@@ -19,6 +19,7 @@ def export(con: sqlite3.Connection, city: City) -> dict:
         SELECT s.id, s.name, s.lat, s.lon,
                MAX(p.instagram) AS instagram,
                MAX(p.website)   AS website,
+               MAX(p.address)   AS address,
                GROUP_CONCAT(DISTINCT p.source) AS sources
         FROM shops s
         JOIN shop_places sp ON sp.shop_id = s.id
@@ -44,6 +45,7 @@ def export(con: sqlite3.Connection, city: City) -> dict:
                 "ig_latest_code": igp["latest_code"] if igp else None,
                 "ig_last_post_at": igp["last_post_at"] if igp else None,
                 "website": r["website"],
+                "address": r["address"],
                 "sources": (r["sources"] or "").split(","),
             },
         })

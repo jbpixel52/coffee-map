@@ -1,7 +1,7 @@
 {
-  "name": "Cafés de Tijuana",
-  "short_name": "Cafés TJ",
-  "description": "Mapa de cafés de Tijuana con Instagram, Google Maps y TikTok",
+  "name": "Coffee Map",
+  "short_name": "Coffee Map",
+  "description": "Coffee shops with Instagram, Google Maps and TikTok",
   "start_url": "/coffee-map/",
   "scope": "/coffee-map/",
   "display": "standalone",
@@ -23,7 +23,7 @@
     }
   ],
   "categories": ["food", "travel", "lifestyle"],
-  "lang": "es-MX",
+  "lang": "en",
   "dir": "ltr",
   "prefer_related_applications": false
 }

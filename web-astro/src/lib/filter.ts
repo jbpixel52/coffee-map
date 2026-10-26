@@ -24,17 +24,10 @@ export function shopMatches(
 ): boolean {
   if (city && p.city !== city) return false;
   if (onlyInstagram && !p.instagram) return false;
-  const q = fold(query.trim());
-  if (!q) return true;
-  return fold(`${p.name} ${p.instagram ?? ""}`).includes(q);
-}
-
-/**
- * Filter a list of shop names by a free-text query (all-shops menu).
- * Accent- and case-insensitive, so "barilo" matches "Barilo Café".
- */
-export function filterShopNames(names: string[], query: string): string[] {
-  const q = fold((query ?? "").trim());
-  if (!q) return names.slice();
-  return names.filter((n) => fold(n).includes(q));
+  const raw = fold(query.trim());
+  if (!raw) return true;
+  // An explicit @handle searches the handle only, so "@lumi" does not pull in
+  // shops merely named "Lumi".
+  if (raw.startsWith("@")) return fold(p.instagram ?? "").includes(raw.slice(1));
+  return fold(`${p.name} ${p.instagram ?? ""}`).includes(raw);
 }

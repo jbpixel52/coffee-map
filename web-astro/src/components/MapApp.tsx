@@ -7,6 +7,8 @@ import { shopMatches, type ShopProps } from "../lib/filter";
 import { applyPlanTheme, planStyle, HEAT_LIGHT, HEAT_NIGHT, PLAN } from "../lib/plan";
 import { buildZones } from "../lib/zones";
 import { detailsFromProps, type ShopDetails } from "../lib/details";
+import { format, localeFor, t, type Lang } from "../lib/i18n";
+import { cityInView } from "../lib/viewport";
 import TitleBar from "./TitleBar";
 import ExpandableTabs from "./ExpandableTabs";
 import ShopsPanel from "./ShopsPanel";
@@ -26,6 +28,7 @@ const HEAT = "shops-heat";
 const ZONES = "zones-heat";
 const HEAT_OPACITY = 0.32;
 const STORE_KEY = "coffee-map-night";
+const LANG_KEY = "coffee.language";
 
 interface Meta {
   city?: string;
@@ -35,7 +38,8 @@ interface Meta {
 
 type Selected = ShopDetails & { lon: number; lat: number };
 
-const fmt = (n: number | null | undefined) => (n == null ? "—" : n.toLocaleString("es-MX"));
+const fmt = (n: number | null | undefined, lang: Lang) =>
+  n == null ? "—" : n.toLocaleString(localeFor(lang));
 
 export default function MapApp() {
   const mapEl = useRef<HTMLDivElement | null>(null);
@@ -46,9 +50,14 @@ export default function MapApp() {
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const [total, setTotal] = useState(0);
   const [shown, setShown] = useState(0);
-  const [cities, setCities] = useState<string[]>(["Tijuana"]);
+  const [cities, setCities] = useState<string[]>([]);
+  const [cityCounts, setCityCounts] = useState<Record<string, number>>({});
+  const [viewCity, setViewCity] = useState<string | null>(null);
   const [city, setCity] = useState<string | null>(null); // null = all cities
   const [generated, setGenerated] = useState("");
+  const [lang, setLang] = useState<Lang>(() =>
+    localStorage.getItem(LANG_KEY) === "es" ? "es" : "en",
+  );
   const [query, setQuery] = useState("");
   const [onlyIg, setOnlyIg] = useState(false);
   const [heat, setHeat] = useState(false);
@@ -100,16 +109,14 @@ export default function MapApp() {
       fcRef.current = fc;
       setTotal(fc.features.length);
       setShown(fc.features.length);
-      setCities((meta.cities?.map((c) => c.name) ?? [meta.city ?? "Tijuana"]));
-      if (meta.generated_at) {
-        setGenerated(
-          new Date(meta.generated_at).toLocaleDateString("es-MX", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
-          }),
-        );
+      setCities(meta.cities?.map((c) => c.name) ?? (meta.city ? [meta.city] : []));
+      const counts: Record<string, number> = {};
+      for (const f of fc.features) {
+        const c = (f.properties as ShopProps | null)?.city;
+        if (c) counts[c] = (counts[c] ?? 0) + 1;
       }
+      setCityCounts(counts);
+      if (meta.generated_at) setGenerated(meta.generated_at);
 
       const params = new URLSearchParams(location.search);
       const ll = (params.get("ll") ?? "").split(",").map(Number);
@@ -321,6 +328,44 @@ export default function MapApp() {
     });
   }, [city, status]);
 
+  // ── the city in view, for the title ──────────────────────────────────
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || status !== "ready") return;
+    let timer: number | undefined;
+    const update = () => {
+      const b = map.getBounds();
+      setViewCity(
+        cityInView(fcRef.current?.features ?? [], {
+          west: b.getWest(),
+          south: b.getSouth(),
+          east: b.getEast(),
+          north: b.getNorth(),
+        }),
+      );
+    };
+    const onMoveEnd = () => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(update, 250);
+    };
+    map.on("moveend", onMoveEnd);
+    update();
+    return () => {
+      window.clearTimeout(timer);
+      map.off("moveend", onMoveEnd);
+    };
+  }, [status]);
+
+  // ── language, applied without a reload ────────────────────────────────
+  useEffect(() => {
+    document.documentElement.lang = lang;
+    localStorage.setItem(LANG_KEY, lang);
+    document.title = t(lang, "pageTitle");
+    document
+      .querySelector('meta[name="description"]')
+      ?.setAttribute("content", t(lang, "pageDescription"));
+  }, [lang]);
+
   // ── the tag on the map ────────────────────────────────────────────────
   useEffect(() => {
     const map = mapRef.current;
@@ -332,19 +377,26 @@ export default function MapApp() {
     el.className = "tag";
     el.setAttribute("role", "button");
     el.setAttribute("tabindex", "0");
-    el.setAttribute("aria-label", `${selected.name}, ${fmt(selected.followers)} seguidores`);
+    el.setAttribute(
+      "aria-label",
+      selected.followers != null
+        ? format(t(lang, "markerAria"), { name: selected.name, n: fmt(selected.followers, lang) })
+        : format(t(lang, "markerNoInstagramAria"), { name: selected.name }),
+    );
     // static markup only — the name and count are filled with textContent below
     el.innerHTML = `<b></b><span></span>`;
     (el.querySelector("b") as HTMLElement).textContent = selected.name;
     (el.querySelector("span") as HTMLElement).textContent =
-      selected.followers != null ? `${fmt(selected.followers)} seguidores` : "sin Instagram";
+      selected.followers != null
+        ? format(t(lang, "markerFollowers"), { n: fmt(selected.followers, lang) })
+        : t(lang, "markerNoInstagram");
     el.addEventListener("click", (ev) => {
       ev.stopPropagation();
     });
     markerRef.current = new maplibregl.Marker({ element: el, anchor: "bottom", offset: [0, -10] })
       .setLngLat([selected.lon, selected.lat])
       .addTo(map);
-  }, [selected, status]);
+  }, [selected, status, lang]);
 
   // ── shareable view ────────────────────────────────────────────────────
   useEffect(() => {
@@ -393,9 +445,11 @@ export default function MapApp() {
     };
   });
 
-  const selectByName = useCallback((name: string) => {
+  const selectById = useCallback((id: number) => {
     const fc = fcRef.current;
-    const f = fc?.features.find((feat) => ((feat.properties as ShopProps)?.name ?? "") === name);
+    const f = fc?.features.find(
+      (feat) => (feat.properties as { id?: number } | null)?.id === id,
+    );
     if (!f) return;
     const [lon, lat] = (f.geometry as Point).coordinates;
     setSelected({ ...detailsFromProps({ ...(f.properties as object), lat, lon }), lon, lat });
@@ -404,17 +458,43 @@ export default function MapApp() {
   }, []);
 
   const tabs = [
-    { id: "shops", label: "Cafés", icon: <Rows />, meta: `${total}` },
-    { id: "settings", label: "Ajustes", icon: <Gear /> },
+    {
+      id: "shops",
+      label: t(lang, "shopsTab"),
+      icon: <Rows />,
+      meta: total.toLocaleString(localeFor(lang)),
+    },
+    { id: "settings", label: t(lang, "settingsTab"), icon: <Gear /> },
   ];
+
+  const titleCity = city ?? viewCity ?? cities[0] ?? "";
+  const titleCount = cityCounts[titleCity] ?? 0;
+  const generatedLabel = generated
+    ? new Date(generated).toLocaleDateString(localeFor(lang), {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      })
+    : "";
 
   return (
     <>
       <div id="map" ref={mapEl} />
 
       <div className="top-layer">
-        <TitleBar cities={city ? [city] : cities} shown={shown} total={total} status={status} />
-        <ExpandableTabs tabs={tabs} openId={tab} onOpen={setTab} />
+        <TitleBar
+          city={titleCity}
+          count={titleCount}
+          cityTotal={cities.length}
+          status={status}
+          lang={lang}
+        />
+        <ExpandableTabs
+          tabs={tabs}
+          openId={tab}
+          onOpen={setTab}
+          ariaLabel={t(lang, "panelsAria")}
+        />
       </div>
 
       {tab === "shops" && (
@@ -429,9 +509,10 @@ export default function MapApp() {
           onOnlyIg={() => setOnlyIg((v) => !v)}
           shown={shown}
           total={total}
-          selected={selected?.name ?? null}
-          onSelect={selectByName}
+          selected={selected?.id ?? null}
+          onSelect={selectById}
           onClose={() => setTab(null)}
+          lang={lang}
         />
       )}
 
@@ -442,26 +523,32 @@ export default function MapApp() {
           heat={heat}
           onHeat={() => setHeat((h) => !h)}
           onClose={() => setTab(null)}
-          generated={generated}
+          generated={generatedLabel}
+          lang={lang}
+          onLang={setLang}
         />
       )}
 
       {selected && (
-        <aside className="ficha-card" aria-label="Ficha del café">
-          <Ficha details={selected} onClose={closeFicha} />
+        <aside className="ficha-card" aria-label={t(lang, "shopCardAria")}>
+          <Ficha details={selected} onClose={closeFicha} lang={lang} />
         </aside>
       )}
 
       <div className="credit-strip">
-        <b>Datos</b> © OpenStreetMap ODbL · Google Maps · Instagram
-        {generated ? <span>· {generated}</span> : null}
+        <b>{t(lang, "creditData")}</b> © OpenStreetMap ODbL · Google Maps · Instagram
+        {generatedLabel ? <span>· {generatedLabel}</span> : null}
       </div>
-      <PwaBanner />
+      <PwaBanner lang={lang} />
       {status !== "ready" && (
         <div className={`loading${status === "error" ? " err" : ""}`} role="status">
           <div>
-            <b>{status === "error" ? "Sin datos" : "Cafés de Tijuana"}</b>
-            {status === "loading" ? <i /> : <p style={{ margin: 0, fontSize: 12 }}>Revisa tu conexión y recarga.</p>}
+            <b>{status === "error" ? t(lang, "errorTitle") : t(lang, "loadingTitle")}</b>
+            {status === "loading" ? (
+              <i />
+            ) : (
+              <p style={{ margin: 0, fontSize: 12 }}>{t(lang, "errorBody")}</p>
+            )}
           </div>
         </div>
       )}

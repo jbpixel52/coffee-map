@@ -1,8 +1,13 @@
 # Coffee Map
 
-A web map of **every coffee shop in Tijuana and San Diego** — 1,339 shops (665 in Tijuana, 674 in San Diego) — built
-from three scraped sources with an archive-first pipeline. Live at
+A web map of **8,719 coffee shops across 11 cities** — built from three
+scraped sources with an archive-first pipeline. Live at
 **https://jbpixel52.github.io/coffee-map/**.
+
+Cities: Austin (317), Ensenada (27), Guadalajara (201), Los Angeles (1,170), Mexico City (1,051), New York City (2,670), Oakland (385), San Diego (674), San Francisco (786), Seattle (773), Tijuana (665).
+
+623 shops carry an Instagram handle, and about two thirds have a street address
+(OSM `addr:*`, plus the Google Maps card text for Tijuana and San Diego).
 
 | Layer | Source | What it contributes |
 |---|---|---|
@@ -29,7 +34,7 @@ shell. Spanish (es-MX) strings, PWA-installable, shareable `?ll=&z=` view,
 Data is refreshed by local scrape runs; GitHub Actions only builds and deploys
 the committed data.
 
-## Two cities
+## Cities
 
 One city per pipeline run; `config/city.toml` is Tijuana, `config/city.san-diego.toml`
 is San Diego. Point the whole chain at the second city with env vars and stitch the

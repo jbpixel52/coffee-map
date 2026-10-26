@@ -16,9 +16,10 @@ interface Props {
   tabs: TabDef[];
   openId: string | null;
   onOpen: (id: string | null) => void;
+  ariaLabel: string;
 }
 
-export default function ExpandableTabs({ tabs, openId, onOpen }: Props) {
+export default function ExpandableTabs({ tabs, openId, onOpen, ariaLabel }: Props) {
   const root = useRef<HTMLDivElement | null>(null);
 
   // Collapse on an outside click. Attach on the next tick: the click that
@@ -39,7 +40,7 @@ export default function ExpandableTabs({ tabs, openId, onOpen }: Props) {
   }, [openId, onOpen]);
 
   return (
-    <div className="tabs" role="tablist" aria-label="Paneles" ref={root}>
+    <div className="tabs" role="tablist" aria-label={ariaLabel} ref={root}>
       {tabs.map((tab) => {
         const open = tab.id === openId;
         return (

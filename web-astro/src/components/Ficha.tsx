@@ -7,20 +7,23 @@ import {
   tiktokTagSlug,
 } from "../lib/popup";
 import { foldName } from "../lib/filter";
+import { format, localeFor, t, type Lang } from "../lib/i18n";
 import type { ShopDetails } from "../lib/details";
-import { Close, Out } from "./Icons";
+import { Close, Instagram, Out, Pin, TikTok } from "./Icons";
 
 interface Props {
   details: ShopDetails | null;
   onClose: () => void;
+  lang: Lang;
 }
 
-export default function Ficha({ details, onClose }: Props) {
+export default function Ficha({ details, onClose, lang }: Props) {
   if (!details) return null;
-  const { name, handle, followers, code, fullName, lat, lon } = details;
+  const { name, handle, followers, code, fullName, lat, lon, address, city } = details;
   const embed = instagramEmbedUrl(code);
   const tag = tiktokTagSlug(name);
   const showFullName = Boolean(fullName) && foldName(fullName!) !== foldName(name);
+  const addressLine = address || [t(lang, "noAddress"), city].filter(Boolean).join(" · ");
 
   return (
     <div className="slip">
@@ -31,22 +34,37 @@ export default function Ficha({ details, onClose }: Props) {
             {handle ? (
               <div className="handle">@{handle}</div>
             ) : (
-              <div className="handle muted">sin Instagram conocido</div>
+              <div className="handle muted">{t(lang, "instagramUnknown")}</div>
             )}
           </div>
-          <button type="button" className="icon-btn ghost" onClick={onClose} aria-label="Cerrar ficha">
+          <button
+            type="button"
+            className="icon-btn ghost"
+            onClick={onClose}
+            aria-label={t(lang, "closeCardAria")}
+          >
             <Close />
           </button>
         </div>
 
         <div className="figs">
           <div>
-            <b>{followers ? followers.toLocaleString("es-MX") : "—"}</b>
-            <span>Seguidores</span>
+            <b>{followers ? followers.toLocaleString(localeFor(lang)) : "—"}</b>
+            <span>{t(lang, "followers")}</span>
           </div>
           <div>
-            <b>{lat != null && lon != null ? `${lat.toFixed(3)}, ${lon.toFixed(3)}` : "—"}</b>
-            <span>Coordenadas</span>
+            <b className="addr">
+              <a
+                href={gmapsSearchUrl(name, lat, lon)}
+                target="_blank"
+                rel="noopener"
+                aria-label={`${t(lang, "googleMaps")}: ${addressLine}`}
+              >
+                <Pin size={13} />
+                <span className="addr-text">{addressLine}</span>
+              </a>
+            </b>
+            <span>{t(lang, "address")}</span>
           </div>
         </div>
 
@@ -57,13 +75,11 @@ export default function Ficha({ details, onClose }: Props) {
             loading="lazy"
             allowFullScreen
             scrolling="no"
-            title={`Último post de ${name} en Instagram`}
+            title={format(t(lang, "latestPostTitle"), { name })}
           />
         ) : (
           <p className="no-ig">
-            {handle
-              ? "Este café no tiene un post reciente archivado. Abre su perfil para ver qué publica."
-              : "Este café salió del censo de OpenStreetMap o Google Maps; no tiene Instagram vinculado."}
+            {handle ? t(lang, "noRecentPost") : t(lang, "noInstagramLinked")}
           </p>
         )}
 
@@ -75,14 +91,19 @@ export default function Ficha({ details, onClose }: Props) {
               target="_blank"
               rel="noopener"
             >
-              Instagram <Out />
+              <Instagram /> <span className="lbl">{t(lang, "instagram")}</span>
             </a>
           )}
           <a href={gmapsSearchUrl(name, lat, lon)} target="_blank" rel="noopener">
-            Google Maps <Out />
+            <span className="lbl">{t(lang, "googleMaps")}</span> <Out />
           </a>
-          <a href={tiktokSearchUrl(name)} target="_blank" rel="noopener" title={`#${tag} en TikTok`}>
-            TikTok #{tag}
+          <a
+            href={tiktokSearchUrl(name)}
+            target="_blank"
+            rel="noopener"
+            title={format(t(lang, "tiktokTitle"), { tag })}
+          >
+            <TikTok /> <span className="lbl">TikTok #{tag}</span>
           </a>
         </div>
 

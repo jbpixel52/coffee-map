@@ -42,8 +42,25 @@ def fetch(city: City) -> bytes:
     raise RuntimeError(f"all Overpass mirrors failed: {last_err}")
 
 
-def parse_elements(raw: bytes) -> list[dict]:
-    """Overpass JSON -> [{source_id, name, lat, lon, website, instagram}, ...]."""
+def format_address(tags: dict, city_fallback: str | None = None) -> str | None:
+    """addr:* tags -> "Av. Revolución 123, Tijuana, 22000" (tolerant of gaps).
+
+    Every shop already belongs to a city, so fall back to it when the place has
+    no addr:city — otherwise the card reads "604 Brazos Street, 78701".
+    """
+    street = (tags.get("addr:street") or "").strip()
+    number = (tags.get("addr:housenumber") or "").strip()
+    city = (tags.get("addr:city") or city_fallback or "").strip()
+    postcode = (tags.get("addr:postcode") or "").strip()
+    line = " ".join(part for part in (number, street) if part)
+    if not line:  # a lone postcode or city is not a street address
+        return None
+    parts = [part for part in (line, city, postcode) if part]
+    return ", ".join(parts)
+
+
+def parse_elements(raw: bytes, city_name: str | None = None) -> list[dict]:
+    """Overpass JSON -> [{source_id, name, lat, lon, website, instagram, address}, ...]."""
     doc = json.loads(raw)
     out: list[dict] = []
     for el in doc.get("elements", []):
@@ -64,6 +81,7 @@ def parse_elements(raw: bytes) -> list[dict]:
             "lon": float(lon),
             "website": website or None,
             "instagram": instagram or None,
+            "address": format_address(tags, city_name),
         })
     return out
 

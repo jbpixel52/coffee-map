@@ -37,3 +37,13 @@ def test_ids_unique_and_coords_in_tijuana():
 
 def test_ignores_non_card_links():
     assert parse_html("<html><body>no maps links</body></html>") == []
+
+def test_format_gmaps_address():
+    from coffeemap.sources.gmaps import format_gmaps_address
+
+    lines = ["4.5", "Cafetería", "· Av. Lázaro Cárdenas Nte. 606", "Abierto · Cierra 22:00", "$$"]
+    assert format_gmaps_address(lines) == "Av. Lázaro Cárdenas Nte. 606"
+    # US style, number first
+    assert format_gmaps_address(["Coffee shop", "1234 W Main St, Austin"]) == "1234 W Main St, Austin"
+    # nothing address-shaped: no digit, a bare rating, a postcode-only line
+    assert format_gmaps_address(["Café", "4.5", "Zona Centro 22000", "Cerrado"]) is None

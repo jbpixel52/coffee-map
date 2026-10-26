@@ -57,6 +57,16 @@ def main() -> int:
         unique.append(f)
     features = unique
     features.sort(key=lambda f: (f["properties"]["city"], f["properties"]["name"].lower()))
+    # Ids restart at 1 in every per-city export; the merged file needs one
+    # namespace so React can key rows without reusing the wrong DOM node.
+    for i, f in enumerate(features, start=1):
+        f["properties"]["id"] = i
+    # Per-city counts follow the de-duplicated merged features, not the
+    # pre-dedupe per-tile totals.
+    for entry in cities:
+        in_city = [f for f in features if f["properties"]["city"] == entry["name"]]
+        entry["shop_count"] = len(in_city)
+        entry["with_instagram"] = sum(1 for f in in_city if f["properties"]["instagram"])
     cities.sort(key=lambda c: c["name"].lower())
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     (OUT_DIR / "shops.geojson").write_text(

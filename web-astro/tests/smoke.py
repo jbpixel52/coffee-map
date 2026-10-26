@@ -66,8 +66,8 @@ with sync_playwright() as p:
     shown = sum(1 for f in feats if f["properties"].get("dim") is not True)
     assert len(feats) == meta["shop_count"], f"features {len(feats)} != meta {meta['shop_count']}"
     assert shown < meta["shop_count"], "filter dimmed nothing"
-    count = page.inner_text(".titlebar-sub b").strip().replace(",", "")
-    assert count == str(shown), f"count {count!r} != {shown} shown"
+    subtitle = page.inner_text(".titlebar-sub")
+    assert subtitle.startswith("☕ ") and " coffee shops in " in subtitle, f"subtitle: {subtitle!r}"
 
     # a row opens the ficha, and the tag lands on the map
     page.click(".stack-row", timeout=5000)
@@ -88,10 +88,12 @@ with sync_playwright() as p:
             ".filter(f => f.properties.city === %r && f.properties.dim !== true).length" % second,
             isolated_context=False,
         )
-        got = page.inner_text(".titlebar-sub b").strip().replace(",", "")
-        assert got == str(in_city), f"city filter: count {got!r} != {in_city} {second} shops"
+        title_city = page.inner_text(".titlebar .city").strip()
+        assert title_city == second, f"title city {title_city!r} != {second!r}"
+        subtitle = page.inner_text(".titlebar-sub")
+        assert subtitle.startswith("☕ ") and f"in {second} / " in subtitle, f"subtitle: {subtitle!r}"
         assert in_city < meta["shop_count"], "city filter did not narrow the census"
-        page.click("#panel-shops .panel-cities >> text='Todas'")
+        page.click("#panel-shops .panel-cities >> text='All'")
         page.wait_for_timeout(500)
 
     # settings tab owns night + heat

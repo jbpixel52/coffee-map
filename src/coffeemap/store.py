@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS places (
     lon REAL NOT NULL,
     website TEXT,
     instagram TEXT,
+    address TEXT,
     verdict TEXT,
     verdict_model TEXT,
     verdict_reason TEXT,
@@ -98,7 +99,7 @@ def connect(db_path: Path | None = None) -> sqlite3.Connection:
     if "full_name" not in cols:
         con.execute("ALTER TABLE ig_profiles ADD COLUMN full_name TEXT")
     pcols = {r["name"] for r in con.execute("PRAGMA table_info(places)")}
-    for col in ("verdict", "verdict_model", "verdict_reason", "verdict_at"):
+    for col in ("address", "verdict", "verdict_model", "verdict_reason", "verdict_at"):
         if col not in pcols:
             con.execute(f"ALTER TABLE places ADD COLUMN {col} TEXT")
     con.commit()
@@ -147,18 +148,20 @@ def upsert_place(
     lon: float,
     website: str | None = None,
     instagram: str | None = None,
+    address: str | None = None,
     archive_ref: str | None = None,
 ) -> None:
     con.execute(
         """INSERT INTO places (source, source_id, name, lat, lon, website, instagram,
-                               fetched_at, archive_ref)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                               address, fetched_at, archive_ref)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
            ON CONFLICT (source, source_id) DO UPDATE SET
              name = excluded.name, lat = excluded.lat, lon = excluded.lon,
              website = COALESCE(excluded.website, places.website),
              instagram = COALESCE(excluded.instagram, places.instagram),
+             address = COALESCE(excluded.address, places.address),
              fetched_at = excluded.fetched_at, archive_ref = excluded.archive_ref""",
-        (source, source_id, name, lat, lon, website, instagram, now_utc(), archive_ref),
+        (source, source_id, name, lat, lon, website, instagram, address, now_utc(), archive_ref),
     )
 
 

@@ -1,27 +1,31 @@
-/** Transparent title bar: the city name, gooey-morphed, over the map. */
+/** Transparent title bar: the city in view, as plain static type. */
 import React from "react";
-import GooeyText from "./GooeyText";
+import { format, localeFor, t, type Lang } from "../lib/i18n";
 
 interface Props {
-  cities: string[];
-  shown: number;
-  total: number;
+  city: string;
+  count: number;
+  cityTotal: number;
   status: "loading" | "ready" | "error";
+  lang: Lang;
 }
 
-export default function TitleBar({ cities, shown, total, status }: Props) {
+export default function TitleBar({ city, count, cityTotal, status, lang }: Props) {
+  const locale = localeFor(lang);
   return (
     <header className="titlebar">
-      <GooeyText texts={cities} className="city" morphTime={0.7} cooldownTime={4.2} />
+      <span className="city">{city}</span>
       <p className="titlebar-sub">
         {status === "ready" ? (
-          <>
-            <b>{shown.toLocaleString("es-MX")}</b> de {total.toLocaleString("es-MX")} cafés en el mapa
-          </>
+          format(t(lang, "subtitle"), {
+            n: count.toLocaleString(locale),
+            city,
+            m: cityTotal.toLocaleString(locale),
+          })
         ) : status === "error" ? (
-          "sin datos"
+          t(lang, "titleNoData")
         ) : (
-          "cargando…"
+          t(lang, "loadingBody")
         )}
       </p>
     </header>

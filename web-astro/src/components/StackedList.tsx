@@ -7,6 +7,7 @@
  */
 import React from "react";
 import { Chevron } from "./Icons";
+import { localeFor, t, type Lang } from "../lib/i18n";
 
 export interface ListShop {
   id: number;
@@ -18,9 +19,10 @@ export interface ListShop {
 
 interface Props {
   shops: ListShop[];
-  selected: string | null;
-  onSelect: (name: string) => void;
+  selected: number | null;
+  onSelect: (id: number) => void;
   emptyNote?: React.ReactNode;
+  lang: Lang;
 }
 
 /** Deterministic Pantone accent per shop, with a text colour that clears 4.5:1. */
@@ -41,10 +43,11 @@ export function avatarFor(seed: string): [string, string] {
   return ACCENTS[h % ACCENTS.length];
 }
 
-const fmt = (n: number | null) => (n == null ? "—" : n.toLocaleString("es-MX"));
-
-export default function StackedList({ shops, selected, onSelect, emptyNote }: Props) {
+export default function StackedList({ shops, selected, onSelect, emptyNote, lang }: Props) {
   if (shops.length === 0) return <p className="list-empty">{emptyNote}</p>;
+  const fmt = (n: number | null) =>
+    n == null ? "—" : n.toLocaleString(localeFor(lang));
+  const noInstagram = t(lang, "noInstagram");
   return (
     <ul className="stack" role="list">
       {shops.map((s) => {
@@ -54,9 +57,9 @@ export default function StackedList({ shops, selected, onSelect, emptyNote }: Pr
           <li key={s.id}>
             <button
               type="button"
-              className={`stack-row${selected === s.name ? " on" : ""}`}
-              onClick={() => onSelect(s.name)}
-              aria-current={selected === s.name ? "true" : undefined}
+              className={`stack-row${selected === s.id ? " on" : ""}`}
+              onClick={() => onSelect(s.id)}
+              aria-current={selected === s.id ? "true" : undefined}
             >
               <span className="avatar" style={{ background: bg, color: fg }} aria-hidden="true">
                 {initial}
@@ -81,7 +84,7 @@ export default function StackedList({ shops, selected, onSelect, emptyNote }: Pr
               <span className="stack-body">
                 <span className="stack-name">{s.name}</span>
                 <span className="stack-handle">
-                  {s.handle ? `@${s.handle}` : "sin Instagram"}
+                  {s.handle ? `@${s.handle}` : noInstagram}
                   {s.city ? ` · ${s.city}` : ""}
                 </span>
               </span>
