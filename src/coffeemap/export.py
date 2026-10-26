@@ -2,13 +2,14 @@
 from __future__ import annotations
 
 import json
+import os
 import sqlite3
 from pathlib import Path
 
 from .config import ROOT, City
 from .store import now_utc
 
-OUT_DIR = ROOT / "web-astro" / "public" / "data"
+OUT_DIR = Path(os.environ.get("COFFEEMAP_OUT", ROOT / "web-astro" / "public" / "data"))
 
 
 def export(con: sqlite3.Connection, city: City) -> dict:

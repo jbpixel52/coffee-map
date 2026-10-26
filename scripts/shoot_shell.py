@@ -5,7 +5,7 @@ ensure_browsers_path()
 from pathlib import Path
 from patchright.sync_api import sync_playwright
 
-url = "http://localhost:4324/coffee-map/"
+url = "http://localhost:4325/coffee-map/"
 out = Path(".impeccable/review")
 out.mkdir(parents=True, exist_ok=True)
 

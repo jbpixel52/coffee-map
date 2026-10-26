@@ -29,6 +29,7 @@ const STORE_KEY = "coffee-map-night";
 
 interface Meta {
   city?: string;
+  cities?: Array<{ name: string; slug: string; shop_count: number }>;
   generated_at?: string;
 }
 
@@ -45,6 +46,8 @@ export default function MapApp() {
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const [total, setTotal] = useState(0);
   const [shown, setShown] = useState(0);
+  const [cities, setCities] = useState<string[]>(["Tijuana"]);
+  const [city, setCity] = useState<string | null>(null); // null = all cities
   const [generated, setGenerated] = useState("");
   const [query, setQuery] = useState("");
   const [onlyIg, setOnlyIg] = useState(false);
@@ -97,7 +100,7 @@ export default function MapApp() {
       fcRef.current = fc;
       setTotal(fc.features.length);
       setShown(fc.features.length);
-      if (meta.city) setCity(meta.city);
+      setCities((meta.cities?.map((c) => c.name) ?? [meta.city ?? "Tijuana"]));
       if (meta.generated_at) {
         setGenerated(
           new Date(meta.generated_at).toLocaleDateString("es-MX", {
@@ -290,7 +293,7 @@ export default function MapApp() {
     if (!map || status !== "ready" || !fc) return;
     let count = 0;
     const features = fc.features.map((f) => {
-      const ok = shopMatches(f.properties as ShopProps, query, onlyIg);
+      const ok = shopMatches(f.properties as ShopProps, query, onlyIg, city);
       if (ok) count += 1;
       return { ...f, properties: { ...(f.properties as object), dim: !ok } };
     });
@@ -299,7 +302,7 @@ export default function MapApp() {
       type: "FeatureCollection",
       features,
     });
-  }, [query, onlyIg, status]);
+  }, [query, onlyIg, city, status]);
 
   // ── the tag on the map ────────────────────────────────────────────────
   useEffect(() => {
@@ -369,9 +372,9 @@ export default function MapApp() {
       name: p.name,
       handle: p.instagram ?? null,
       followers: p.ig_followers ?? null,
+      city: p.city ?? null,
     };
   });
-  const [city, setCity] = useState("Tijuana");
 
   const selectByName = useCallback((name: string) => {
     const fc = fcRef.current;
@@ -393,13 +396,16 @@ export default function MapApp() {
       <div id="map" ref={mapEl} />
 
       <div className="top-layer">
-        <TitleBar city={city} shown={shown} total={total} status={status} />
+        <TitleBar cities={cities} shown={shown} total={total} status={status} />
         <ExpandableTabs tabs={tabs} openId={tab} onOpen={setTab} />
       </div>
 
       {tab === "shops" && (
         <ShopsPanel
           shops={railShops}
+          cities={cities}
+          city={city}
+          onCity={setCity}
           query={query}
           onQuery={setQuery}
           onlyIg={onlyIg}

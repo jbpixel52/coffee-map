@@ -1,7 +1,20 @@
 {
-  "city": "Tijuana",
-  "generated_at": "2026-10-23T06:12:34Z",
-  "shop_count": 608,
-  "unnamed_excluded": 13,
-  "with_instagram": 120
+  "city": "San Diego",
+  "cities": [
+    {
+      "name": "San Diego",
+      "slug": "sd",
+      "shop_count": 674,
+      "with_instagram": 41
+    },
+    {
+      "name": "Tijuana",
+      "slug": "tj",
+      "shop_count": 665,
+      "with_instagram": 121
+    }
+  ],
+  "generated_at": "2026-10-26T04:56:39Z",
+  "shop_count": 1339,
+  "with_instagram": 162
 }

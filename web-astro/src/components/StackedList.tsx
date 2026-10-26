@@ -13,6 +13,7 @@ export interface ListShop {
   name: string;
   handle: string | null;
   followers: number | null;
+  city: string | null;
 }
 
 interface Props {
@@ -79,7 +80,10 @@ export default function StackedList({ shops, selected, onSelect, emptyNote }: Pr
               </span>
               <span className="stack-body">
                 <span className="stack-name">{s.name}</span>
-                <span className="stack-handle">{s.handle ? `@${s.handle}` : "sin Instagram"}</span>
+                <span className="stack-handle">
+                  {s.handle ? `@${s.handle}` : "sin Instagram"}
+                  {s.city ? ` · ${s.city}` : ""}
+                </span>
               </span>
               <span className="stack-fig">{fmt(s.followers)}</span>
               <Chevron />

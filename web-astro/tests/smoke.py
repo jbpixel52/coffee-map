@@ -77,6 +77,23 @@ with sync_playwright() as p:
         "picking a shop must not close the list"
     )
 
+    # city filter (only when the shipped data holds more than one city)
+    cities = meta.get("cities", [])
+    if len(cities) > 1:
+        second = cities[1]["name"]
+        page.click(f"#panel-shops .panel-cities >> text='{second}'")
+        page.wait_for_timeout(700)
+        in_city = page.evaluate(
+            "window.__map.getSource('shops').serialize().data.features"
+            ".filter(f => f.properties.city === %r && f.properties.dim !== true).length" % second,
+            isolated_context=False,
+        )
+        got = page.inner_text(".titlebar-sub b").strip().replace(",", "")
+        assert got == str(in_city), f"city filter: count {got!r} != {in_city} {second} shops"
+        assert in_city < meta["shop_count"], "city filter did not narrow the census"
+        page.click("#panel-shops .panel-cities >> text='Todas'")
+        page.wait_for_timeout(500)
+
     # settings tab owns night + heat
     page.click("#tab-settings")
     page.wait_for_selector("#panel-settings", timeout=5000)

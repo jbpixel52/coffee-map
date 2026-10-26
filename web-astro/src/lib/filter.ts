@@ -4,6 +4,7 @@ export interface ShopProps {
   name: string;
   instagram: string | null;
   ig_followers: number | null;
+  city?: string | null;
 }
 
 const fold = (s: string) =>
@@ -15,7 +16,13 @@ const fold = (s: string) =>
 /** Public fold helper: accent/case-insensitive name matching. */
 export const foldName = fold;
 
-export function shopMatches(p: ShopProps, query: string, onlyInstagram: boolean): boolean {
+export function shopMatches(
+  p: ShopProps,
+  query: string,
+  onlyInstagram: boolean,
+  city: string | null = null,
+): boolean {
+  if (city && p.city !== city) return false;
   if (onlyInstagram && !p.instagram) return false;
   const q = fold(query.trim());
   if (!q) return true;

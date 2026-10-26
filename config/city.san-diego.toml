@@ -1,0 +1,33 @@
+name = "San Diego"
+country = "United States"
+locale = "en-US"
+timezone = "America/Los_Angeles"
+center_lat = 32.7157
+center_lon = -117.1611
+zoom = 12.2
+bbox_south = 32.58
+bbox_west = -117.28
+bbox_north = 32.90
+bbox_east = -116.95
+gmaps_queries = [
+  "coffee shops San Diego",
+  "coffee San Diego",
+  "cafe San Diego",
+  "specialty coffee San Diego",
+  "coffee Downtown San Diego",
+  "coffee North Park San Diego",
+  "coffee Hillcrest San Diego",
+  "coffee Little Italy San Diego",
+  "coffee Pacific Beach San Diego",
+  "coffee La Jolla",
+  "coffee Gaslamp Quarter San Diego",
+  "coffee Ocean Beach San Diego",
+  "coffee South Park San Diego",
+  "espresso bar San Diego",
+  "brunch cafe San Diego",
+]
+web_queries = [
+  "best coffee shops San Diego",
+  "best specialty coffee San Diego",
+  "coffee shops North Park San Diego",
+]

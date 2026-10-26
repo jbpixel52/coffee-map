@@ -6,6 +6,9 @@ import { filterShopNames } from "../lib/filter";
 
 interface Props {
   shops: ListShop[];
+  cities: string[];
+  city: string | null;
+  onCity: (city: string | null) => void;
   query: string;
   onQuery: (q: string) => void;
   onlyIg: boolean;
@@ -19,6 +22,9 @@ interface Props {
 
 export default function ShopsPanel({
   shops,
+  cities,
+  city,
+  onCity,
   query,
   onQuery,
   onlyIg,
@@ -30,12 +36,13 @@ export default function ShopsPanel({
   onClose,
 }: Props) {
   const rows = useMemo(() => {
-    const pool = onlyIg ? shops.filter((s) => s.handle) : shops;
+    let pool = city ? shops.filter((s) => s.city === city) : shops;
+    if (onlyIg) pool = pool.filter((s) => s.handle);
     const keep = new Set(filterShopNames(pool.map((s) => s.name), query));
     return pool
       .filter((s) => keep.has(s.name))
       .sort((a, b) => (b.followers ?? -1) - (a.followers ?? -1));
-  }, [shops, query, onlyIg]);
+  }, [shops, query, onlyIg, city]);
 
   return (
     <section className="panel" id="panel-shops" role="tabpanel" aria-labelledby="tab-shops">
@@ -73,6 +80,25 @@ export default function ShopsPanel({
           Con Instagram
         </button>
       </div>
+
+      {cities.length > 1 && (
+        <div className="panel-cities" role="group" aria-label="Ciudad">
+          <button type="button" className="chip" aria-pressed={city === null} onClick={() => onCity(null)}>
+            Todas
+          </button>
+          {cities.map((c) => (
+            <button
+              key={c}
+              type="button"
+              className="chip"
+              aria-pressed={city === c}
+              onClick={() => onCity(city === c ? null : c)}
+            >
+              {c}
+            </button>
+          ))}
+        </div>
+      )}
 
       <div className="panel-body">
         <StackedList

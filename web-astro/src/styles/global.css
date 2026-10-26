@@ -323,6 +323,7 @@ body {
 }
 
 .panel-head {
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -343,11 +344,25 @@ body {
 }
 
 .panel-tools {
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 10px 12px;
   border-bottom: 1px solid var(--border);
+}
+
+.panel-cities {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 6px;
+  padding: 0 12px 10px;
+  overflow-x: auto;
+}
+.panel-cities .chip {
+  height: 28px;
+  padding: 0 10px;
+  font-size: var(--step-1);
 }
 
 .panel-body {

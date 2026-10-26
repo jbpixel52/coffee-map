@@ -1,6 +1,6 @@
 # Coffee Map
 
-A web map of **every coffee shop in Tijuana** — 608 shops and counting — built
+A web map of **every coffee shop in Tijuana and San Diego** — 1,339 shops (665 in Tijuana, 674 in San Diego) — built
 from three scraped sources with an archive-first pipeline. Live at
 **https://jbpixel52.github.io/coffee-map/**.
 
@@ -28,6 +28,27 @@ shell. Spanish (es-MX) strings, PWA-installable, shareable `?ll=&z=` view,
 `prefers-reduced-motion` honoured. Tokens and rules: `DESIGN.md`.
 Data is refreshed by local scrape runs; GitHub Actions only builds and deploys
 the committed data.
+
+## Two cities
+
+One city per pipeline run; `config/city.toml` is Tijuana, `config/city.san-diego.toml`
+is San Diego. Point the whole chain at the second city with env vars and stitch the
+exports together:
+
+```bash
+export COFFEEMAP_CITY=config/city.san-diego.toml COFFEEMAP_DB=data/coffeemap-sd.db \
+       COFFEEMAP_ARCHIVE=data/archive-sd
+uv run coffeemap osm-fetch && uv run coffeemap osm-parse
+uv run coffeemap gmaps-fetch --max-scrolls 3 && uv run coffeemap gmaps-parse
+uv run coffeemap merge
+COFFEEMAP_OUT=data/export/sd uv run coffeemap export   # Tijuana: COFFEEMAP_OUT=data/export/tj
+uv run python scripts/merge_cities.py                  # -> web-astro/public/data/{shops.geojson,meta.json}
+```
+
+Every feature carries `city` + `city_slug`, and the map filters on them (Todas /
+Tijuana / San Diego). San Diego is OSM + Google Maps only so far: the café-or-not
+gate and Instagram recon need the local model host, which was unreachable during
+this run.
 
 ## Quickstart
 
@@ -84,11 +105,30 @@ uv run python web-astro/tests/smoke.py http://localhost:4321/coffee-map/   # hea
   battery first; a wrong answering layer (e.g. a decision shim with broken
   prompts) should be caught there, not mid-pipeline.
 
-## Changing the city
+## Cities
 
-Everything city-shaped lives in `config/city.toml` (name, country, locale,
-timezone, centre/zoom, Overpass bbox, Google Maps queries, web search queries).
-San Diego is one config + one refresh away. The UI strings are Spanish for now.
+Everything city-shaped lives in a TOML file: name, country, locale, timezone,
+centre/zoom, Overpass bbox, Google Maps queries, web search queries.
+`config/city.toml` is Tijuana; `config/city.san-diego.toml` is San Diego. The
+pipeline is one city per run, selected by environment variables, so a second
+city needs no code path:
+
+```bash
+COFFEEMAP_CITY=config/city.san-diego.toml \
+COFFEEMAP_DB=data/coffeemap-sd.db \
+COFFEEMAP_ARCHIVE=data/archive-sd \
+uv run coffeemap osm-fetch      # …osm-parse, gmaps-fetch, gmaps-parse, merge
+
+COFFEEMAP_CITY=config/city.toml  uv run coffeemap merge  # per city
+COFFEEMAP_OUT=data/export/tj COFFEEMAP_CITY=config/city.toml uv run coffeemap export
+COFFEEMAP_OUT=data/export/sd COFFEEMAP_CITY=config/city.san-diego.toml \
+  COFFEEMAP_DB=data/coffeemap-sd.db uv run coffeemap export
+uv run python scripts/merge_cities.py   # data/export/* -> web-astro/public/data
+```
+
+`scripts/merge_cities.py` tags every feature with its `city` and writes the one
+`shops.geojson` the map ships; the UI's city filter reads `meta.json.cities`.
+The UI strings are Spanish for now.
 
 ## Data sources & licences
 

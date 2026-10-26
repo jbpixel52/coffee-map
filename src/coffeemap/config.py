@@ -1,15 +1,19 @@
 """City + path configuration."""
 from __future__ import annotations
 
+import os
 import tomllib
 from dataclasses import dataclass, field
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]  # src/coffeemap/config.py -> repo root
 DATA = ROOT / "data"
-ARCHIVE = DATA / "archive"
-DB_PATH = DATA / "coffeemap.db"
-CONFIG_PATH = ROOT / "config" / "city.toml"
+
+# One city per run, selected by env so a second city needs no code path:
+#   COFFEEMAP_CITY=/path/city.toml COFFEEMAP_DB=… COFFEEMAP_ARCHIVE=… coffeemap osm-fetch
+ARCHIVE = Path(os.environ.get("COFFEEMAP_ARCHIVE", DATA / "archive"))
+DB_PATH = Path(os.environ.get("COFFEEMAP_DB", DATA / "coffeemap.db"))
+CONFIG_PATH = Path(os.environ.get("COFFEEMAP_CITY", ROOT / "config" / "city.toml"))
 
 
 @dataclass(frozen=True)
