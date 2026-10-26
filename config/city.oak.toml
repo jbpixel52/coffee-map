@@ -14,3 +14,7 @@ gmaps_queries = [
   "coffee Oakland",
   "cafe Oakland",
 ]
+
+# Stats tab only; US Census 2020, city of Oakland.
+population = 440646
+area_sq_km = 144.8

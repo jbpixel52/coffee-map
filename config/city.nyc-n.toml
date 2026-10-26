@@ -10,3 +10,7 @@ bbox_west = -74.05
 bbox_north = 40.92
 bbox_east = -73.7
 gmaps_queries = []
+
+# Stats tab only; US Census 2020, New York City.
+population = 8804190
+area_sq_km = 778.2

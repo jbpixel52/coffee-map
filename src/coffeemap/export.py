@@ -61,6 +61,8 @@ def export(con: sqlite3.Connection, city: City) -> dict:
             "SELECT COUNT(*) FROM shops WHERE name = ''"
         ).fetchone()[0],
         "with_instagram": sum(1 for f in features if f["properties"]["instagram"]),
+        "population": city.population,
+        "area_sq_km": city.area_sq_km,
     }
     (OUT_DIR / "meta.json").write_text(
         json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8"

@@ -15,3 +15,7 @@ gmaps_queries = [
   "cafe Seattle",
   "specialty coffee Seattle",
 ]
+
+# Stats tab only; US Census 2020, city of Seattle.
+population = 737015
+area_sq_km = 217.0

@@ -1,13 +1,24 @@
 # Coffee Map
 
-A web map of **8,719 coffee shops across 11 cities** — built from three
+A web map of **8,681 coffee shops across 11 cities** — built from three
 scraped sources with an archive-first pipeline. Live at
 **https://jbpixel52.github.io/coffee-map/**.
 
 Cities: Austin (317), Ensenada (27), Guadalajara (201), Los Angeles (1,170), Mexico City (1,051), New York City (2,670), Oakland (385), San Diego (674), San Francisco (786), Seattle (773), Tijuana (665).
 
-623 shops carry an Instagram handle, and about two thirds have a street address
+619 shops carry an Instagram handle, and about two thirds have a street address
 (OSM `addr:*`, plus the Google Maps card text for Tijuana and San Diego).
+
+The **Stats** tab compares cities on density per sq mi, cafés per 100k residents,
+cafés per ZIP code, Instagram reach (share and combined followers), the mean walk
+to the next café, the most repeated name, and how many shops have an address. Areas
+and populations are city-proper (US) or municipio (MX) 2020 census figures, kept in
+`config/city*.toml` next to each city, so densities compare only loosely across the
+border — the panel says so. Every figure is ranked against the other cities.
+
+A city's scrape can reach across a border (Tijuana's Maps queries return Chula Vista
+cafés). `merge_cities.py` drops a city's claim on a shop another city already owns at
+the same coordinates, keeping the claim whose postcode belongs to that city.
 
 | Layer | Source | What it contributes |
 |---|---|---|

@@ -14,3 +14,7 @@ gmaps_queries = [
   "cafe de especialidad Ensenada",
   "coffee Ensenada",
 ]
+
+# Stats tab only; INEGI 2020, municipio de Ensenada.
+population = 443807
+area_sq_km = 14899.0

@@ -10,3 +10,7 @@ bbox_west = -99.3
 bbox_north = 19.42
 bbox_east = -98.95
 gmaps_queries = []
+
+# Stats tab only; INEGI 2020, Ciudad de México.
+population = 9209944
+area_sq_km = 1485.0

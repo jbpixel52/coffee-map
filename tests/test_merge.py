@@ -97,3 +97,42 @@ def test_name_match_folds_and_covers():
     assert name_match("CRU Coffee Roasters & Cellars", "crucoffee")
     assert name_match("Café de la Flor", "Cafe de la Flor - Plaza Río")
     assert not name_match("Café de la Flor", "padam.bistro")
+
+
+def _feat(name, city, lat, lon, address):
+    return {
+        "type": "Feature",
+        "geometry": {"type": "Point", "coordinates": [lon, lat]},
+        "properties": {"name": name, "city": city, "address": address},
+    }
+
+
+def test_cross_city_duplicates_keep_the_city_that_owns_the_postcode():
+    from coffeemap.merge import drop_cross_city_duplicates
+
+    feats = [
+        # a Tijuana scrape that reached across the border: same café, two claims
+        _feat("Caffe Tazza", "San Diego", 32.6398, -117.0496, "374 East H Street, Chula Vista, 91910"),
+        _feat("Caffe Tazza", "Tijuana", 32.6398, -117.0496, "374 East H Street, Chula Vista, 91910"),
+        # genuine locals on both sides, each with its own postcode
+        _feat("Café Central", "Tijuana", 32.5310, -117.0360, "Av. Revolución 123, Tijuana, 22000"),
+        _feat("Café Central", "San Diego", 32.7150, -117.1600, "700 Kettner Boulevard, San Diego, 92101"),
+    ]
+    kept = drop_cross_city_duplicates(feats)
+    pairs = {(f["properties"]["city"], f["properties"]["name"]) for f in kept}
+    assert pairs == {
+        ("San Diego", "Caffe Tazza"),
+        ("Tijuana", "Café Central"),
+        ("San Diego", "Café Central"),
+    }
+
+
+def test_cross_city_duplicates_leave_ambiguous_groups_alone():
+    from coffeemap.merge import drop_cross_city_duplicates
+
+    # neither address helps (no postcode): do not guess which city owns it
+    feats = [
+        _feat("La Esquina", "Tijuana", 32.53, -117.04, ""),
+        _feat("La Esquina", "San Diego", 32.53, -117.04, ""),
+    ]
+    assert len(drop_cross_city_duplicates(feats)) == 2

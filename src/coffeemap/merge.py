@@ -1,6 +1,7 @@
 """Canonicalisation: collapse per-source `places` into `shops`."""
 from __future__ import annotations
 
+import re
 import sqlite3
 import unicodedata
 from difflib import SequenceMatcher
@@ -171,3 +172,67 @@ def rebuild_shops(con: sqlite3.Connection) -> tuple[int, int]:
             )
     con.commit()
     return len(clusters), sum(len(c) - 1 for c in clusters)
+
+
+# ── cross-city duplicates ────────────────────────────────────────────────────
+# A city's scrape can reach across a border (Tijuana's Google Maps queries return
+# Chula Vista cafés ~10 km north). Those shops then exist twice: correctly under
+# San Diego, wrongly under Tijuana, at identical coordinates. Keep the claim whose
+# postcode belongs to that city, drop the other.
+DUP_DISTANCE_M = 40.0
+
+
+def _zip_prefix(address: str | None) -> str | None:
+    m = re.search(r"\b(\d{5})\b", address or "")
+    return m.group(1)[:3] if m else None
+
+
+def zip_prefix_owners(features: list[dict]) -> dict[str, str]:
+    """Postcode prefix -> the city that claims it most often.
+
+    Ownership by strongest claim rather than a share threshold: a handful of
+    across-the-border shops must not make a foreign prefix look local.
+    """
+    counts: dict[str, dict[str, int]] = {}
+    for f in features:
+        prefix = _zip_prefix(f["properties"].get("address"))
+        if not prefix:
+            continue
+        city = f["properties"]["city"]
+        bucket = counts.setdefault(prefix, {})
+        bucket[city] = bucket.get(city, 0) + 1
+    return {prefix: max(bucket, key=lambda c: bucket[c]) for prefix, bucket in counts.items()}
+
+
+def drop_cross_city_duplicates(features: list[dict]) -> list[dict]:
+    """Drop a city's claim on a shop another city already owns at the same spot.
+
+    Only features whose postcode is foreign to their own city are candidates, and a
+    group is only resolved when exactly one claimant's postcode fits its city — an
+    ambiguous pair is left alone rather than guessed at.
+    """
+    owners = zip_prefix_owners(features)
+    groups: dict[tuple, list[dict]] = {}
+    for f in features:
+        p = f["properties"]
+        lon, lat = f["geometry"]["coordinates"]
+        key = (norm_name(p["name"]), round(lat, 4), round(lon, 4))
+        groups.setdefault(key, []).append(f)
+
+    drop: set[int] = set()
+    for group in groups.values():
+        cities = {f["properties"]["city"] for f in group}
+        if len(cities) < 2:
+            continue
+        fitting = [
+            f
+            for f in group
+            if (owners.get(_zip_prefix(f["properties"].get("address")) or "") or f["properties"]["city"])
+            == f["properties"]["city"]
+        ]
+        if not fitting or len(fitting) == len(group):
+            continue
+        for f in group:
+            if f not in fitting:
+                drop.add(id(f))
+    return [f for f in features if id(f) not in drop]

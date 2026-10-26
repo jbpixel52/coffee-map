@@ -31,3 +31,7 @@ web_queries = [
   "best specialty coffee San Diego",
   "coffee shops North Park San Diego",
 ]
+
+# Stats tab only; US Census 2020, city of San Diego.
+population = 1386932
+area_sq_km = 842.2

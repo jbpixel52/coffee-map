@@ -15,3 +15,7 @@ gmaps_queries = [
   "cafe Los Angeles",
   "specialty coffee Los Angeles",
 ]
+
+# Stats tab only; US Census 2020, city of Los Angeles.
+population = 3898747
+area_sq_km = 1215.0

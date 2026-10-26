@@ -27,6 +27,10 @@ class City:
     zoom: float
     bbox: tuple[float, float, float, float]  # south, west, north, east
     gmaps_queries: list[str]
+    # City-proper (US) or municipio (MX) figures, 2020 census: only used for the
+    # stats tab, and the units are not equal across countries — see README.
+    population: int = 0
+    area_sq_km: float = 0.0
     web_queries: list[str] = field(default_factory=list)
     web_extra_pages: list[str] = field(default_factory=list)
 
@@ -43,6 +47,8 @@ def load_city(path: Path | None = None) -> City:
         zoom=raw.get("zoom", 12.0),
         bbox=(raw["bbox_south"], raw["bbox_west"], raw["bbox_north"], raw["bbox_east"]),
         gmaps_queries=list(raw.get("gmaps_queries", [])),
+        population=int(raw.get("population", 0)),
+        area_sq_km=float(raw.get("area_sq_km", 0.0)),
         web_queries=list(raw.get("web_queries", [])),
         web_extra_pages=list(raw.get("web_extra_pages", [])),
     )

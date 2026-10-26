@@ -50,3 +50,7 @@ web_queries = [
 web_extra_pages = [
   "https://hoteltacubaya.com/post/los-19-cafeterias-de-tijuana.p2050",
 ]
+
+# Stats tab only; INEGI 2020, municipio de Tijuana.
+population = 1922523
+area_sq_km = 1239.6

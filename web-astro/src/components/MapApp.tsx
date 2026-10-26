@@ -1,5 +1,5 @@
 /** Root island: the sheet, the signs, and the census. Owns the MapLibre instance. */
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { Feature, FeatureCollection, Point } from "geojson";
@@ -12,10 +12,12 @@ import { cityInView } from "../lib/viewport";
 import TitleBar from "./TitleBar";
 import ExpandableTabs from "./ExpandableTabs";
 import ShopsPanel from "./ShopsPanel";
+import StatsPanel from "./StatsPanel";
 import SettingsPanel from "./SettingsPanel";
 import Ficha from "./Ficha";
 import type { ListShop } from "./StackedList";
-import { Gear, Rows } from "./Icons";
+import { cityStats, type CityMeta } from "../lib/stats";
+import { Chart, Gear, Rows } from "./Icons";
 import PwaBanner from "./PwaBanner";
 
 const BASE = import.meta.env.BASE_URL;
@@ -32,7 +34,14 @@ const LANG_KEY = "coffee.language";
 
 interface Meta {
   city?: string;
-  cities?: Array<{ name: string; slug: string; shop_count: number }>;
+  cities?: Array<{
+    name: string;
+    slug: string;
+    shop_count: number;
+    with_instagram?: number;
+    population?: number;
+    area_sq_km?: number;
+  }>;
   generated_at?: string;
 }
 
@@ -51,6 +60,7 @@ export default function MapApp() {
   const [total, setTotal] = useState(0);
   const [shown, setShown] = useState(0);
   const [cities, setCities] = useState<string[]>([]);
+  const [cityMeta, setCityMeta] = useState<CityMeta[]>([]);
   const [cityCounts, setCityCounts] = useState<Record<string, number>>({});
   const [viewCity, setViewCity] = useState<string | null>(null);
   const [city, setCity] = useState<string | null>(null); // null = all cities
@@ -110,6 +120,7 @@ export default function MapApp() {
       setTotal(fc.features.length);
       setShown(fc.features.length);
       setCities(meta.cities?.map((c) => c.name) ?? (meta.city ? [meta.city] : []));
+      setCityMeta((meta.cities ?? []) as CityMeta[]);
       const counts: Record<string, number> = {};
       for (const f of fc.features) {
         const c = (f.properties as ShopProps | null)?.city;
@@ -464,8 +475,15 @@ export default function MapApp() {
       icon: <Rows />,
       meta: total.toLocaleString(localeFor(lang)),
     },
+    { id: "stats", label: t(lang, "statsTab"), icon: <Chart /> },
     { id: "settings", label: t(lang, "settingsTab"), icon: <Gear /> },
   ];
+
+  // ── stats tab: one pass over the features, memoised on the loaded data ──
+  const stats = useMemo(
+    () => cityStats(fcRef.current?.features ?? [], cityMeta),
+    [total, cityMeta],
+  );
 
   const titleCity = city ?? viewCity ?? cities[0] ?? "";
   const titleCount = cityCounts[titleCity] ?? 0;
@@ -513,6 +531,16 @@ export default function MapApp() {
           onSelect={selectById}
           onClose={() => setTab(null)}
           lang={lang}
+        />
+      )}
+
+      {tab === "stats" && stats.length > 0 && (
+        <StatsPanel
+          stats={stats}
+          city={city ?? titleCity}
+          onCity={setCity}
+          lang={lang}
+          onClose={() => setTab(null)}
         />
       )}
 

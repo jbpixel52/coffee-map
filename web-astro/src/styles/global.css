@@ -1041,3 +1041,102 @@ body {
     transition-duration: 0.001ms !important;
   }
 }
+
+/* ==========================================================================
+   Stats tab — one city at a time, each figure ranked against the map.
+   Colour is carried by the emoji chip (--stat) so the rows stay scannable.
+   ========================================================================== */
+.stats-note {
+  margin: 6px 8px 8px;
+  font-size: var(--step-1);
+  line-height: 1.45;
+  color: var(--fg-muted);
+}
+.stats-headline {
+  margin: 0 8px 10px;
+  font-size: var(--step-2);
+  color: var(--fg-muted);
+}
+.stats-headline b {
+  font-size: var(--step-4);
+  font-weight: 600;
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+.stat-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 2px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.stat-row {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 8px;
+  border-radius: var(--radius-md);
+}
+.stat-row:hover {
+  background: var(--surface-2);
+}
+.stat-ico {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  line-height: 1;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--stat) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--stat) 38%, transparent);
+}
+.stat-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.stat-k {
+  font-size: var(--step-2);
+  font-weight: 500;
+  color: var(--fg);
+}
+.stat-hint {
+  font-size: var(--step-1);
+  color: var(--fg-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.stat-value {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  justify-content: flex-end;
+  min-width: 0;
+}
+.stat-value b {
+  font-size: var(--step-3);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  max-width: 168px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.stat-rank {
+  font-size: var(--step-1);
+  line-height: 1;
+  color: var(--fg-muted);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px 6px;
+  font-variant-numeric: tabular-nums;
+}
+.stat-rank.top {
+  border-color: var(--arrowwood);
+  background: color-mix(in srgb, var(--arrowwood) 15%, transparent);
+  color: var(--fg);
+}

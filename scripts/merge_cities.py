@@ -8,6 +8,10 @@ from __future__ import annotations
 
 import json
 import sys
+import sys as _sys
+
+_sys.path.insert(0, str(__import__('pathlib').Path(__file__).resolve().parents[1] / 'src'))
+from coffeemap.merge import drop_cross_city_duplicates  # noqa: E402
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -38,9 +42,16 @@ def main() -> int:
         features.extend(feats)
         generated = max(generated, meta.get("generated_at", ""))
         # a dense city can be fetched as several bbox tiles; they add up to one city
-        entry = by_name.setdefault(name, {"name": name, "slug": d.name, "shop_count": 0, "with_instagram": 0})
+        entry = by_name.setdefault(
+            name,
+            {"name": name, "slug": d.name, "shop_count": 0, "with_instagram": 0,
+             "population": 0, "area_sq_km": 0.0},
+        )
         entry["shop_count"] += meta["shop_count"]
         entry["with_instagram"] += meta["with_instagram"]
+        # tiles of one city repeat the same city-wide figures: keep the first non-zero
+        entry["population"] = entry["population"] or meta.get("population", 0)
+        entry["area_sq_km"] = entry["area_sq_km"] or meta.get("area_sq_km", 0.0)
     cities = list(by_name.values())
 
     # A dense city is fetched as bbox tiles; the same OSM feature can land in two
@@ -55,7 +66,7 @@ def main() -> int:
             continue
         seen.add(key)
         unique.append(f)
-    features = unique
+    features = drop_cross_city_duplicates(unique)
     features.sort(key=lambda f: (f["properties"]["city"], f["properties"]["name"].lower()))
     # Ids restart at 1 in every per-city export; the merged file needs one
     # namespace so React can key rows without reusing the wrong DOM node.
