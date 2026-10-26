@@ -55,7 +55,9 @@ with sync_playwright() as p:
 
     # filters dim instead of hiding: searching keeps every feature on the map,
     # marks the non-matches as dim, and the count follows
-    page.fill("input[type=search]", "lumi")
+    page.click("#tab-shops")
+    page.wait_for_selector("#panel-shops", timeout=5000)
+    page.fill("#panel-shops input[type=search]", "lumi")
     page.wait_for_timeout(600)
     feats = page.evaluate(
         "window.__map.getSource('shops').serialize().data.features",
@@ -64,16 +66,21 @@ with sync_playwright() as p:
     shown = sum(1 for f in feats if f["properties"].get("dim") is not True)
     assert len(feats) == meta["shop_count"], f"features {len(feats)} != meta {meta['shop_count']}"
     assert shown < meta["shop_count"], "filter dimmed nothing"
-    count = page.inner_text(".count b").strip()
+    count = page.inner_text(".titlebar-sub b").strip().replace(",", "")
     assert count == str(shown), f"count {count!r} != {shown} shown"
 
-    # the rail opens a ficha with the real handle, and the tag lands on the map
-    page.click(".rows .row", timeout=5000)
+    # a row opens the ficha, and the tag lands on the map
+    page.click(".stack-row", timeout=5000)
     page.wait_for_selector(".slip h3", timeout=5000)
     assert page.evaluate("!!document.querySelector('.tag')", isolated_context=False), "map tag missing"
+    assert page.evaluate("!!document.querySelector('#panel-shops')", isolated_context=False), (
+        "picking a shop must not close the list"
+    )
 
-    # noche flips the sheet
-    page.click("button[aria-label='Modo noche']")
+    # settings tab owns night + heat
+    page.click("#tab-settings")
+    page.wait_for_selector("#panel-settings", timeout=5000)
+    page.click("#set-night")
     page.wait_for_timeout(400)
     assert page.evaluate("document.documentElement.classList.contains('night')", isolated_context=False), (
         "night class not applied"
@@ -81,11 +88,18 @@ with sync_playwright() as p:
     bg = page.evaluate("window.__map.getPaintProperty('background','background-color')", isolated_context=False)
     assert bg == "#191c27", f"night sheet not applied: {bg}"
 
+    page.click("#set-heat")
+    page.wait_for_timeout(600)
+    heat_vis = page.evaluate(
+        "window.__map.getLayoutProperty('shops-heat','visibility')", isolated_context=False
+    )
+    assert heat_vis == "visible", f"heatmap did not toggle: {heat_vis}"
+
     map_errors = page.evaluate("window.__mapErrors || []", isolated_context=False)
     assert not map_errors, f"map errors: {map_errors}"
     assert not errors, f"page errors: {errors}"
     print(
         f"OK: {n} shops, {dots} dots rendered, {tiles['ok']} vector tiles, "
-        f"dim-filter + count, ficha + tag, night sheet, heat {heat_op}, 0 errors"
+        f"tabs + panels, dim-filter + count, ficha + tag, night sheet, heat toggle + {heat_op} opacity, 0 errors"
     )
     browser.close()

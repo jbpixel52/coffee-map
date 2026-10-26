@@ -7,8 +7,13 @@ import { shopMatches, type ShopProps } from "../lib/filter";
 import { applyPlanTheme, planStyle, HEAT_LIGHT, HEAT_NIGHT, PLAN } from "../lib/plan";
 import { buildZones } from "../lib/zones";
 import { detailsFromProps, type ShopDetails } from "../lib/details";
-import SignBand from "./SignBand";
-import RankRail, { type RailShop } from "./RankRail";
+import TitleBar from "./TitleBar";
+import ExpandableTabs from "./ExpandableTabs";
+import ShopsPanel from "./ShopsPanel";
+import SettingsPanel from "./SettingsPanel";
+import Ficha from "./Ficha";
+import type { ListShop } from "./StackedList";
+import { Gear, Rows } from "./Icons";
 import PwaBanner from "./PwaBanner";
 
 const BASE = import.meta.env.BASE_URL;
@@ -23,6 +28,7 @@ const HEAT_OPACITY = 0.32;
 const STORE_KEY = "coffee-map-night";
 
 interface Meta {
+  city?: string;
   generated_at?: string;
 }
 
@@ -50,7 +56,7 @@ export default function MapApp() {
         window.matchMedia("(prefers-color-scheme: dark)").matches),
   );
   const [selected, setSelected] = useState<Selected | null>(null);
-  const [railOpen, setRailOpen] = useState(() => window.innerWidth > 900);
+  const [tab, setTab] = useState<string | null>(null);
 
   /** Paint the dots for the current theme and filter state. */
   const paintDots = useCallback((map: maplibregl.Map, isNight: boolean) => {
@@ -91,6 +97,7 @@ export default function MapApp() {
       fcRef.current = fc;
       setTotal(fc.features.length);
       setShown(fc.features.length);
+      if (meta.city) setCity(meta.city);
       if (meta.generated_at) {
         setGenerated(
           new Date(meta.generated_at).toLocaleDateString("es-MX", {
@@ -207,7 +214,6 @@ export default function MapApp() {
           const [lon, lat] = (f.geometry as Point).coordinates;
           const props = f.properties as Record<string, unknown>;
           setSelected({ ...detailsFromProps({ ...props, lat, lon }), lon, lat });
-          setRailOpen(true);
         });
 
         map.on("click", (e) => {
@@ -314,7 +320,6 @@ export default function MapApp() {
       selected.followers != null ? `${fmt(selected.followers)} seguidores` : "sin Instagram";
     el.addEventListener("click", (ev) => {
       ev.stopPropagation();
-      setRailOpen(true);
     });
     markerRef.current = new maplibregl.Marker({ element: el, anchor: "bottom", offset: [0, -10] })
       .setLngLat([selected.lon, selected.lat])
@@ -343,22 +348,30 @@ export default function MapApp() {
     setSelected(null);
     markerRef.current?.remove();
     markerRef.current = null;
-    if (window.innerWidth <= 900) setRailOpen(false);
   }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeFicha();
+      if (e.key === "Escape") {
+        closeFicha();
+        setTab(null);
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [closeFicha]);
 
   // ── rail data ─────────────────────────────────────────────────────────
-  const railShops: RailShop[] = (fcRef.current?.features ?? []).map((f) => {
+  const railShops: ListShop[] = (fcRef.current?.features ?? []).map((f) => {
     const p = f.properties as ShopProps;
-    return { name: p.name, handle: p.instagram ?? null, followers: p.ig_followers ?? null };
+    return {
+      id: (p as unknown as { id: number }).id,
+      name: p.name,
+      handle: p.instagram ?? null,
+      followers: p.ig_followers ?? null,
+    };
   });
+  const [city, setCity] = useState("Tijuana");
 
   const selectByName = useCallback((name: string) => {
     const fc = fcRef.current;
@@ -370,34 +383,52 @@ export default function MapApp() {
     mapRef.current?.flyTo({ center: [lon, lat], zoom: 15, duration: reduce ? 0 : 800 });
   }, []);
 
+  const tabs = [
+    { id: "shops", label: "Cafés", icon: <Rows />, meta: `${total}` },
+    { id: "settings", label: "Ajustes", icon: <Gear /> },
+  ];
+
   return (
     <>
       <div id="map" ref={mapEl} />
-      <SignBand
-        query={query}
-        onQuery={setQuery}
-        onlyIg={onlyIg}
-        onOnlyIg={() => setOnlyIg((v) => !v)}
-        heat={heat}
-        onHeat={() => setHeat((h) => !h)}
-        night={night}
-        onNight={() => setNight((n) => !n)}
-        shown={shown}
-        total={total}
-        status={status}
-        onOpenRail={() => setRailOpen((o) => !o)}
-      />
-      <RankRail
-        shops={railShops}
-        query={query}
-        onlyIg={onlyIg}
-        selected={selected}
-        open={railOpen}
-        onSelect={selectByName}
-        onCloseFicha={closeFicha}
-        onCloseRail={() => setRailOpen(false)}
-        total={total}
-      />
+
+      <div className="top-layer">
+        <TitleBar city={city} shown={shown} total={total} status={status} />
+        <ExpandableTabs tabs={tabs} openId={tab} onOpen={setTab} />
+      </div>
+
+      {tab === "shops" && (
+        <ShopsPanel
+          shops={railShops}
+          query={query}
+          onQuery={setQuery}
+          onlyIg={onlyIg}
+          onOnlyIg={() => setOnlyIg((v) => !v)}
+          shown={shown}
+          total={total}
+          selected={selected?.name ?? null}
+          onSelect={selectByName}
+          onClose={() => setTab(null)}
+        />
+      )}
+
+      {tab === "settings" && (
+        <SettingsPanel
+          night={night}
+          onNight={() => setNight((n) => !n)}
+          heat={heat}
+          onHeat={() => setHeat((h) => !h)}
+          onClose={() => setTab(null)}
+          generated={generated}
+        />
+      )}
+
+      {selected && (
+        <aside className="ficha-card" aria-label="Ficha del café">
+          <Ficha details={selected} onClose={closeFicha} />
+        </aside>
+      )}
+
       <div className="credit-strip">
         <b>Datos</b> © OpenStreetMap ODbL · Google Maps · Instagram
         {generated ? <span>· {generated}</span> : null}

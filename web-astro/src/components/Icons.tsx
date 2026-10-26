@@ -78,6 +78,31 @@ export function Out({ size = 13 }: Props) {
   );
 }
 
+export function Moon({ size = 17 }: Props) {
+  return (
+    <svg {...base(size)}>
+      <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" />
+    </svg>
+  );
+}
+
+export function Gear({ size = 17 }: Props) {
+  return (
+    <svg {...base(size)}>
+      <circle cx="12" cy="12" r="3.2" />
+      <path d="M12 2.8v2.4M12 18.8v2.4M4.5 12H2.1M21.9 12h-2.4M6.7 6.7 5 5M19 19l-1.7-1.7M17.3 6.7 19 5M5 19l1.7-1.7" />
+    </svg>
+  );
+}
+
+export function Chevron({ size = 14 }: Props) {
+  return (
+    <svg {...base(size)}>
+      <path d="m9 6 6 6-6 6" />
+    </svg>
+  );
+}
+
 export function Rows({ size = 15 }: Props) {
   return (
     <svg {...base(size)}>

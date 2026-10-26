@@ -8,7 +8,7 @@ import {
 } from "../lib/popup";
 import { foldName } from "../lib/filter";
 import type { ShopDetails } from "../lib/details";
-import { Out } from "./Icons";
+import { Close, Out } from "./Icons";
 
 interface Props {
   details: ShopDetails | null;
@@ -23,8 +23,7 @@ export default function Ficha({ details, onClose }: Props) {
   const showFullName = Boolean(fullName) && foldName(fullName!) !== foldName(name);
 
   return (
-    <div className="ficha">
-      <div className="slip">
+    <div className="slip">
         <div className="slip-top">
           <div style={{ flex: 1, minWidth: 0 }}>
             <h3>{name}</h3>
@@ -35,6 +34,9 @@ export default function Ficha({ details, onClose }: Props) {
               <div className="handle muted">sin Instagram conocido</div>
             )}
           </div>
+          <button type="button" className="icon-btn ghost" onClick={onClose} aria-label="Cerrar ficha">
+            <Close />
+          </button>
         </div>
 
         <div className="figs">
@@ -85,7 +87,6 @@ export default function Ficha({ details, onClose }: Props) {
         </div>
 
         <div className="credit">© OpenStreetMap ODbL · Google Maps · Instagram</div>
-      </div>
     </div>
   );
 }

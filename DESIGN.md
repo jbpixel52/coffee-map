@@ -71,18 +71,41 @@ were the loudest thing on the screen.
 - Motion: 150ms ease on hover/focus; the mobile rail slides 280ms on
   `cubic-bezier(0.16,1,0.3,1)`. `prefers-reduced-motion` collapses all of it.
 
-## Components (shadcn anatomy, hand-written CSS)
+## Shell
+
+No top bar. The map is full bleed and three transparent layers float over it:
+
+**Title bar** (`.titlebar`, no background) — the city name in **GooeyText**: two
+stacked spans, one rAF loop, the outgoing layer blurring out (5px) while the
+incoming one blurs in, so the pair reads as one fluid shape. It cycles
+`<city>` → `Cafés de <city>`, 0.7s morph / 4.2s hold; the incoming text is
+Waterfall, the resting one Blue Indigo. Reduced motion swaps without blur.
+
+> The 21st.dev build thresholds alpha with an SVG filter. That needs an opaque
+> ground: on a transparent one the threshold crushes anti-aliased alpha and the
+> text disappears. Blur does the same job and survives both grounds.
+
+**Expandable tabs** (`.tabs`, top right) — icons at rest, the open tab grows to
+show its label (max-width transition) and turns Waterfall; a click outside the
+tabs and panels collapses it, a click inside a panel does not. Two tabs: `Cafés`
+(with the live count) and `Ajustes`. Keyboard: arrows move between tabs.
+
+**Panels** (`.panel`) — a card docked under the tabs, right side, 388px, radius
+16, `--shadow`: header (title + count + ghost close), tools row, scrolling body.
 
 | Element | Anatomy |
 |---|---|
-| Header (`.band-top`) | `--surface`, 1px bottom border, `--shadow-sm`; 36px squircle pictogram in `--primary`; wordmark 15/600 + 11.5 muted; search input 36px, 1px `--border-input`, radius 8, ring on focus; pills 32px radius 999; count 22/600 tabular + muted caption |
-| Rail (`.rail`) | ground `--background`, 1px left border; head 13/600 + muted count + ghost icon buttons; rows 8px padding, radius 8, hover `--surface-2`; selected row = `--primary` at 10% with primary text (no coloured border) |
-| Ficha (`.slip`) | card: `--surface`, 1px border, radius 12, `--shadow-sm`, 16px padding; title 20/600; handle in `--accent-fg`; figures separated by hairlines; embed radius 8 with a 1px border; primary + outline buttons, 36px, `gap: 8px` |
-| Map tag (`.tag`) | popover: surface, 1px border, radius 8, `--shadow`, 8px rotated tail; MapLibre owns the transform (`anchor: bottom`, `offset: [0,-10]`) — CSS must not translate it again |
-| PWA toast (`.pwa`) | card + `--shadow`, bottom centre, primary + outline buttons |
-| Attribution (`.credit-strip`) | 11.5px muted on translucent surface, 1px border, radius 6 |
+| Shops panel | tools = search field (36px, ring on focus) + `Con Instagram` chip; body = stacked list |
+| Stacked list (`.stack-row`) | 38px squircle avatar, name 13.5/500, handle 11.5 muted, followers 12.5/600 in Arrowwood, chevron; hover `--surface-2`; selected lifts with `--shadow-sm` + 1px Waterfall inset, no coloured border |
+| Avatars | drawn, not fetched: the pipeline never archives profile pictures, and an Instagram CDN URL expires. Deterministic Pantone accent per handle (Waterfall, Princess Blue, Tarragon, Lavender Oil, Arrowwood, Rosy Future, Chili Pepper, Daiquiri Green), each with a text colour ≥4.5:1; a small Waterfall Instagram badge marks shops that have a handle |
+| Settings panel | switch rows: Moon icon in Lavender Oil (night), the **🔥 emoji** with an emoji font stack (heat). Switches are 42×24 tracks with an 18px knob |
+| Ficha (`.ficha-card`) | card on the left, 360px: title 20/600, handle in Waterfall, hairline-separated figures, IG embed radius 8, Waterfall primary button + outline buttons |
+| Map tag (`.tag`) | popover: surface, 1px border, radius 8, `--shadow`, rotated tail; MapLibre owns the transform (`anchor: bottom`, `offset: [0,-10]`) |
+| PWA toast | card + `--shadow`, bottom centre |
+| Attribution | 11.5px muted strip, bottom left |
 
-Icons are drawn SVG (`Icons.tsx`), 1.9 stroke, one 24×24 box. No emoji.
+Icons are drawn SVG (`Icons.tsx`), 1.9 stroke, one 24×24 box. The single
+exception is the fire in settings, which the owner asked to be the coloured emoji.
 
 ## Map style
 

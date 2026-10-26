@@ -13,18 +13,18 @@ from three scraped sources with an archive-first pipeline. Live at
 Map UI: MapLibre GL over **OpenFreeMap** vector tiles with a style of our own
 (`web-astro/src/lib/plan.ts`) that draws the city as a **printed plan** — Antique
 White paper, Blue Indigo hairline roads with no casings, flat parks and water, and
-place names set monumentally, like signage. The shell around it is deliberately
-quiet (shadcn-style: hairline borders, one primary, soft shadows): a slim header
-with the cup pictogram, search, filters and the count; a rail of the most-followed
-cafés that turns into a shop *ficha* (Instagram embed, follower count, Google Maps
-and TikTok links); and, when you pick a café, a small tag on the map itself. Every
-café is a dot — **Waterfall** teal when we can show you its Instagram — and
-filtering **dims** the rest instead of hiding them, so the census keeps its shape.
-Colour comes from **Pantone's NYFW Spring/Summer 2027 report** (seasonless shades
-as ground and ink, seasonal colours as data: heat runs Anise Flower → Arrowwood →
-Langoustino → Chili Pepper). Night mode inverts sheet and shell. Spanish (es-MX)
-strings, PWA-installable, shareable `?ll=&z=` view, `prefers-reduced-motion`
-honoured. The tokens and rules live in `DESIGN.md`.
+place names set monumentally. No top bar: the map is full bleed, with a
+**transparent title bar** (the city name, gooey-morphed) and **expandable tabs**
+(icons at rest, the open tab shows its label) floating over it. The tabs open
+panels — a **shops list** as a stacked list with a drawn avatar per café and an
+Instagram badge, and **settings** (night mode, heatmap). Picking a café lifts its
+row and opens its *ficha* as a card (Instagram embed, followers, Google Maps,
+TikTok) plus a tag on the map itself. Filtering **dims** the census instead of
+hiding it. Colour is **Pantone's NYFW Spring/Summer 2027 report** — seasonless
+shades as ground and ink, seasonal colours on avatars and states, heat running
+Anise Flower → Arrowwood → Langoustino → Chili Pepper. Night inverts sheet and
+shell. Spanish (es-MX) strings, PWA-installable, shareable `?ll=&z=` view,
+`prefers-reduced-motion` honoured. Tokens and rules: `DESIGN.md`.
 Data is refreshed by local scrape runs; GitHub Actions only builds and deploys
 the committed data.
 
