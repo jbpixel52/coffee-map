@@ -8,26 +8,21 @@ from three scraped sources with an archive-first pipeline. Live at
 |---|---|---|
 | Backbone | OpenStreetMap (Overpass, ODbL) | the full café census — node/way coordinates, names, tags |
 | Enrichment | Google Maps search (logged-out scrape) | shops OSM misses, with coordinates + place ids |
-| Social | Instagram profiles (logged-out recon) | handle + follower count per shop (119 profiles fetched) |
+| Social | Instagram profiles (logged-out recon) | handle + follower count per shop (120 profiles fetched) |
 
-Map UI: MapLibre GL over **OpenFreeMap** vector tiles (OSM data), re-styled
-with a **custom watercolor theme** — warm paper with fiber + grain, saturated
-turquoise water with pooling blooms, apple-green and peach washes, blurred
-edges, multi-color pigment drift (`web-astro/src/lib/watercolor.ts`, sprite in
-`web-astro/public/styles/`). On top of the style, a **painted-at-rest pass**:
-an SVG turbulence displacement + soft blur over the canvas (disengaged while
-panning/zooming so motion stays smooth) and a screen-space paper overlay with
-`mix-blend-mode: multiply`, so the vector geometry stops reading as
-machine-straight. Both degrade gracefully to a clean map if unsupported.
-Over Zona Centro the map drapes a **prettymaps** poster
-(`scripts/prettymaps_art.py` → `web-astro/public/art/hero.png` +
-`hero.json`): the static OSM artwork is georeferenced as a MapLibre raster
-layer, fully opaque below zoom 13.5, fading out by zoom 15 where the vector
-watercolor takes over; the 🖼️ topbar button toggles it. The visual reference
-is Stamen Watercolor, but no Stadia/Stamen service is used. Spanish (es-MX)
-strings, marker popups with an inline Instagram post embed (official iframe,
-latest post), a Google Maps search link, and a **TikTok hashtag search** built
-from the shop name (`tiktokSearchUrl` → `tiktok.com/search?q=%23<slug>`).
+Map UI: MapLibre GL over **OpenFreeMap** vector tiles with a style of our own
+(`web-astro/src/lib/plan.ts`) that draws the city as a **printed plan** — pale
+paper, black hairline roads with no casings, flat parks and water, and place
+names set monumentally, like signage. The interface is an **airport sign system
+hung over that plan**: a saturated yellow band carrying the cup pictogram,
+search, filters and the count; a yellow rail of the most-followed cafés that
+turns into a shop *ficha* (Instagram embed, follower count, Google Maps and
+TikTok links); and, when you pick a café, a yellow tag on the map itself. Every
+café is a dot — yellow when we can show you its Instagram — and filtering
+**dims** the rest instead of hiding them, so the census keeps its shape. Night
+mode inverts the sheet: black ground, paper ink, the signs unchanged. Spanish
+(es-MX) strings, PWA-installable, shareable `?ll=&z=` view, `prefers-reduced-motion`
+honoured. The visual rules and tokens live in `DESIGN.md`.
 Data is refreshed by local scrape runs; GitHub Actions only builds and deploys
 the committed data.
 
@@ -109,16 +104,15 @@ San Diego is one config + one refresh away. The UI strings are Spanish for now.
   candidates; they reach a shop after recon + classification, like any other
   handle.
 - Map tiles — **OpenFreeMap** vector tiles from OpenStreetMap data (free,
-  keyless, no attribution requirement beyond OSM's). The watercolor look is
-  our own MapLibre style (`web-astro/src/lib/watercolor.ts`): palette + a self-hosted
-  sprite with paper/mottle/wash/drift/bloom tiles and a `paper.png` overlay
-  (`web-astro/public/styles/`, regenerate with
-  `uv run --with pillow python scripts/make_sprite.py`). No external tile
-  service, no API keys; footer keeps the OSM (ODbL) credit.
-- prettymaps art — `prettymaps` (AGPL-3.0) draws the Zona Centro poster from
-  OpenStreetMap data (`uv run python scripts/prettymaps_art.py`); every figure
-  keeps prettymaps' own OSM + prettymaps credit line. The PNG is georeferenced
-  by the `hero.json` written next to it.
+  keyless, no attribution requirement beyond OSM's). The plan style is our own
+  MapLibre style (`web-astro/src/lib/plan.ts`): palette, layer set and the night
+  remap; no external tile service, no API keys, no sprite assets. The footer
+  keeps the OSM (ODbL) credit.
+- prettymaps art — retired from the shipped UI by the owner's decision (one clean
+  map, no raster poster). `scripts/prettymaps_art.py` stays in the repo as a
+  standalone tool; nothing in `web-astro/` consumes it.
+- Type — Hanken Grotesk (SIL Open Font License), self-hosted from
+  `web-astro/src/assets/fonts/`. Map labels use the glyphs OpenFreeMap serves.
 
 ## Repo layout
 
@@ -127,7 +121,7 @@ config/city.toml            the city (only file to edit for a new one)
 src/coffeemap/              pipeline: sources/{osm,gmaps,ig,web}.py, classify, store, merge, export, cli
 scripts/                    refresh.sh, fixture captures, IG discovery probe, prettymaps_art.py
 tests/                      pytest suite (fixtures = real captured bytes)
-web-astro/                  Astro + React + Tamagui + MapLibre app; public/data holds the export
+web-astro/                  Astro + React + MapLibre app; public/data holds the export
 data/                       local only (gitignored): SQLite db + gzip archive
 .github/workflows/deploy.yml  build web-astro/ -> GitHub Pages on push to main
 ```

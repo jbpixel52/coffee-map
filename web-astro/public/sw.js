@@ -1,4 +1,4 @@
-const CACHE_NAME = "coffee-map-v1";
+const CACHE_NAME = "coffee-map-v2";
 
 self.addEventListener("install", (e) => {
   e.waitUntil(self.skipWaiting());
@@ -16,12 +16,7 @@ self.addEventListener("fetch", (e) => {
   if (!req.url.startsWith(location.origin)) return;
 
   // Cache-first for static assets & shop data, network fallback to cache.
-  if (
-    req.url.includes("/coffee-map/data/shops.geojson") ||
-    req.url.includes("/coffee-map/data/meta.json") ||
-    req.url.includes("/coffee-map/styles/") ||
-    req.url.includes("/coffee-map/icon")
-  ) {
+  if (req.url.includes("/coffee-map/icon")) {
     e.respondWith(
       caches
         .open(CACHE_NAME)

@@ -9,3 +9,6 @@ web-astro/dist/
 .astro/
 .hermes/
 .vercel/
+
+# Impeccable working artifacts (design mocks, captures, briefs)
+.impeccable/

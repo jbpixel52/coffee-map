@@ -1,107 +1,53 @@
 /* ==========================================================================
-   Reset & base — theme CSS vars (Tamagui components read these too)
+   Cafés de Tijuana — the sheet and the signs.
+   Two materials only: the printed plan (paper + ink hairlines) and the
+   enamel sign (saturated yellow, black type, white pictogram on a black
+   square). Nothing else is decoration.
    ========================================================================== */
+
+@font-face {
+  font-family: "Hanken Grotesk";
+  src: url("../assets/fonts/hanken-grotesk-latin.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2212, U+2215;
+}
+
 :root {
-  /* Light theme (watercolor) */
-  --bg: #f8ead1;
-  --fg: #332b22;
-  --muted-fg: #5b4c3c;
-  --bar-bg: rgba(248, 234, 209, 0.95);
-  --border: #d6ad6a;
-  --input-bg: #fff8e7;
-  --popup-bg: #fffef7;
-  --popup-border: #e6c3a2;
-  --popup-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-  --popup-color: #332b22;
-  --popup-fullname: #6b5a48;
-  --popup-handle: #c2410c;
-  --popup-followers: #8a6a4a;
-  --embed-bg: #fafafa;
-  --popup-link: #1d4ed8;
-  --popup-gmaps: #3b82f6;
-  --popup-tiktok: #111111;
-  --popup-no-ig: #8a6a4a;
-  --popup-close: #888;
-  --dd-bg: #fffef7;
-  --dd-border: #e6c3a2;
-  --dd-text: #332b22;
-  --dd-hover: #f3e8d5;
-  --sidebar-bg: #fffef7;
-  --sidebar-border: #e6c3a2;
-  --sidebar-head-bg: #f8f2e8;
-  --sidebar-title: #332b22;
-  --accent: #3b82f6;
-  --accent2: #a78bfa;
-  --map-bg: #f8ead1;
-  --paper-opacity: 0.5;
+  --paper: #eeede7;
+  --paper-deep: #e4e2d8;
+  --ink: #12100c;
+  --ink-soft: #3a382f;
+  --ink-faint: #6b685c;
+  --sign: #f2c230;
+  --sign-deep: #dcac14;
+  --vermilion: #c2402a;
+  --water: #b8cdd6;
+
+  --band-h: 64px;
+  --rail-w: 340px;
+
+  --step-1: 11px;
+  --step-2: 12.5px;
+  --step-3: 15px;
+  --step-4: 19px;
+  --step-5: 27px;
+  --step-6: 38px;
+
+  color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #111;
-    --fg: #eaeaea;
-    --muted-fg: #aaa;
-    --bar-bg: rgba(26, 26, 26, 0.95);
-    --border: #444;
-    --input-bg: #2a2a2a;
-    --popup-bg: #222;
-    --popup-border: #444;
-    --popup-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-    --popup-color: #ddd;
-    --popup-fullname: #999;
-    --popup-handle: #c2410c;
-    --popup-followers: #a68a6a;
-    --embed-bg: #000;
-    --popup-link: #60a5fa;
-    --popup-gmaps: #93c5fd;
-    --popup-tiktok: #eaeaea;
-    --popup-no-ig: #888;
-    --popup-close: #888;
-    --dd-bg: #222;
-    --dd-border: #444;
-    --dd-text: #ddd;
-    --dd-hover: #333;
-    --sidebar-bg: #1a1a1a;
-    --sidebar-border: #444;
-    --sidebar-head-bg: #111;
-    --sidebar-title: #fff;
-    --map-bg: #0a0a0a;
-    --paper-opacity: 0.3;
-  }
-}
-
-/* Forced dark via .dark class on <html> */
-html.dark,
-html.dark body {
-  --bg: #111;
-  --fg: #eaeaea;
-  --muted-fg: #aaa;
-  --bar-bg: rgba(26, 26, 26, 0.95);
-  --border: #444;
-  --input-bg: #2a2a2a;
-  --popup-bg: #222;
-  --popup-border: #444;
-  --popup-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-  --popup-color: #ddd;
-  --popup-fullname: #999;
-  --popup-handle: #c2410c;
-  --popup-followers: #a68a6a;
-  --embed-bg: #000;
-  --popup-link: #60a5fa;
-  --popup-gmaps: #93c5fd;
-  --popup-tiktok: #eaeaea;
-  --popup-no-ig: #888;
-  --popup-close: #888;
-  --dd-bg: #222;
-  --dd-border: #444;
-  --dd-text: #ddd;
-  --dd-hover: #333;
-  --sidebar-bg: #1a1a1a;
-  --sidebar-border: #444;
-  --sidebar-head-bg: #111;
-  --sidebar-title: #fff;
-  --map-bg: #0a0a0a;
-  --paper-opacity: 0.3;
+html.night {
+  --paper: #100e0a;
+  --paper-deep: #191510;
+  --ink: #f4ecd8;
+  --ink-soft: #d8cfb6;
+  --ink-faint: #a89e86;
+  --sign: #f2c230;
+  --sign-deep: #e0ad18;
+  --vermilion: #e2603f;
+  color-scheme: dark;
 }
 
 * {
@@ -112,479 +58,713 @@ html,
 body {
   margin: 0;
   height: 100%;
-  font: 14px/1.4 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: var(--bg);
-  color: var(--fg);
   overflow: hidden;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: var(--step-2);
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ==========================================================================
-   Topbar — floating rounded pill (layout CSS; inner controls are Tamagui)
-   ========================================================================== */
-#topbar {
-  position: fixed;
-  top: 12px;
-  left: 12px;
-  right: 12px;
-  background: var(--bar-bg);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
-  z-index: 100;
-  backdrop-filter: saturate(180%) blur(10px);
+::selection {
+  background: var(--sign);
+  color: #12100c;
 }
 
-html.dark #topbar {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-}
-
-#topbar input[type="search"],
-#topbar input:not([type]) {
-  background: var(--input-bg);
-  color: var(--fg);
-  border-color: var(--border);
-  font: inherit;
-}
-
-/* ==========================================================================
-   Map — sits below the floating topbar (--map-top is measured at runtime)
-   ========================================================================== */
-#map {
-  position: fixed;
-  top: var(--map-top, 68px);
-  bottom: var(--footer-h, 44px);
-  left: 0;
-  right: 0;
-  background: var(--map-bg);
-  z-index: 1;
-}
-
-#paper {
-  position: fixed;
-  top: var(--map-top, 68px);
-  bottom: var(--footer-h, 44px);
-  left: 0;
-  right: 0;
-  pointer-events: none;
-  background-repeat: repeat;
-  background-size: 256px 256px;
-  mix-blend-mode: multiply;
-  opacity: var(--paper-opacity);
-  z-index: 2;
-}
-
-/* hand-painted look: displace + soften the canvas while the map is at rest */
-.maplibregl-canvas {
-  filter: url(#wc-paint);
-}
-#map.moving .maplibregl-canvas {
-  filter: none;
-}
-
-/* ==========================================================================
-   Footer
-   ========================================================================== */
-#attrib {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 44px;
-  line-height: 44px;
-  padding: 0 16px;
-  font-size: 11px;
-  color: var(--muted-fg);
-  background: var(--bar-bg);
-  border-top: 1px solid var(--border);
-  z-index: 50;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* ==========================================================================
-   Left sidebar: shop detail card (positioning shell; content is Tamagui)
-   ========================================================================== */
-.left-sidebar {
-  position: fixed;
-  top: var(--map-top, 68px);
-  left: 0;
-  bottom: var(--footer-h, 44px);
-  width: 360px;
-  max-width: 90vw;
-  background: var(--sidebar-bg);
-  border-right: 1px solid var(--sidebar-border);
-  border-radius: 0 12px 12px 0;
-  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  z-index: 80;
-  transform: translateX(-100%);
-  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  overflow: hidden;
-}
-
-.left-sidebar.open {
-  transform: translateX(0);
-}
-
-.left-sidebar .sidebar-head {
-  padding: 12px 14px;
-  border-bottom: 1px solid var(--sidebar-border);
-  background: var(--sidebar-head-bg);
-  flex-shrink: 0;
-}
-
-.left-sidebar .sidebar-content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 12px 14px;
-}
-
-.left-sidebar .shop-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  text-decoration: none;
-  color: var(--fg);
-  background: var(--dd-hover);
-  border: 1px solid var(--sidebar-border);
-  transition: background 0.15s, border-color 0.15s;
-}
-
-.left-sidebar .shop-link:hover {
-  background: var(--border);
-}
-
-.left-sidebar .shop-link.ig {
-  color: var(--popup-handle);
-}
-
-.left-sidebar .shop-link.gmaps {
-  color: var(--popup-gmaps);
-}
-
-.left-sidebar .shop-link.tiktok {
-  color: var(--popup-tiktok);
-}
-
-.left-sidebar .shop-embed {
-  width: 100%;
-  aspect-ratio: 1 / 1.2;
-  border: none;
-  border-radius: 8px;
-  background: var(--embed-bg);
-}
-
-/* ==========================================================================
-   Dropdown list of all shops
-   ========================================================================== */
-.shop-dd {
-  position: fixed;
-  top: 74px;
-  right: 16px;
-  width: 300px;
-  max-width: calc(100vw - 32px);
-  max-height: calc(100vh - 120px);
-  background: var(--dd-bg);
-  border: 1px solid var(--dd-border);
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
-  z-index: 120;
-  display: flex;
-  flex-direction: column;
-}
-
-.shop-dd.hidden {
-  display: none;
-}
-
-.shop-dd .shop-dd-search {
-  width: 100%;
-  padding: 10px 12px;
-  border: none;
-  border-bottom: 1px solid var(--dd-border);
-  background: transparent;
-  color: var(--fg);
-  font: inherit;
-}
-
-#shop-dd-list {
-  list-style: none;
-  margin: 0;
-  padding: 8px 0;
-}
-
-#shop-dd-list .shop-dd-item {
-  display: block;
-  width: 100%;
-  padding: 10px 14px;
-  border: none;
-  background: transparent;
-  text-align: left;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font: inherit;
-  font-size: 14px;
-  color: var(--dd-text);
-  cursor: pointer;
-  transition: background 0.1s;
-}
-
-#shop-dd-list .shop-dd-item:hover,
-#shop-dd-list .shop-dd-item:focus-visible {
-  background: var(--dd-hover);
-  outline: none;
-}
-
-/* ==========================================================================
-   Popup overrides (maplibregl popup — quick preview at the dot)
-   ========================================================================== */
-.maplibregl-popup-content {
-  border-radius: 12px;
-  padding: 0;
-  background: var(--popup-bg);
-  border: 1px solid var(--popup-border);
-  box-shadow: var(--popup-shadow);
-  max-width: 340px;
-}
-
-.maplibregl-popup-close-button {
-  color: var(--popup-close);
-  font-size: 18px;
-  padding: 4px 10px;
-}
-
-.popup {
-  width: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 12px 10px 8px;
-  font: 13px/1.35 system-ui, sans-serif;
-  color: var(--popup-color);
-}
-
-.popup-name {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--fg);
-}
-
-.popup-fullname {
-  color: var(--popup-fullname);
-  font-size: 12px;
-}
-
-.popup-handle {
-  color: var(--popup-handle);
-  font-weight: 600;
-  font-size: 13px;
-}
-
-.popup-followers {
-  color: var(--popup-followers);
-  font-weight: 400;
-  font-size: 11px;
-}
-
-.popup-embed-wrapper {
-  width: 100%;
-}
-
-.popup-embed {
-  width: 100%;
-  height: 380px;
-  border: 0;
-  border-radius: 8px;
-  background: var(--embed-bg);
-}
-
-.popup-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 4px;
-}
-
-.popup-link {
-  color: var(--popup-link);
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 13px;
-}
-
-.popup-link:hover {
-  text-decoration: underline;
-}
-
-.popup-gmaps {
-  color: var(--popup-gmaps);
-}
-
-.popup-tiktok {
-  color: var(--popup-tiktok);
-}
-
-.popup-no-ig {
-  color: var(--popup-no-ig);
-  font-style: italic;
-  font-size: 13px;
-}
-
-/* ==========================================================================
-   Mobile / Responsive
-   ========================================================================== */
-@media (max-width: 640px) {
-  :root {
-    --topbar-h: 72px;
-    --footer-h: 48px;
-  }
-
-  #topbar {
-    top: 8px;
-    left: 8px;
-    right: 8px;
-    border-radius: 14px;
-  }
-
-  #map {
-    top: calc(var(--topbar-h) + 16px);
-    bottom: var(--footer-h);
-  }
-
-  #paper {
-    top: calc(var(--topbar-h) + 16px);
-    bottom: var(--footer-h);
-  }
-
-  #attrib {
-    height: var(--footer-h);
-    line-height: var(--footer-h);
-    font-size: 10px;
-    padding: 0 12px;
-  }
-
-  /* Sidebar becomes a bottom sheet on mobile */
-  .left-sidebar {
-    top: auto;
-    bottom: var(--footer-h);
-    left: 0;
-    right: 0;
-    width: 100%;
-    max-width: 100%;
-    height: 70vh;
-    max-height: 80vh;
-    border-radius: 16px 16px 0 0;
-    border-right: none;
-    border-top: 1px solid var(--sidebar-border);
-    transform: translateY(100%);
-    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.15);
-  }
-
-  .left-sidebar.open {
-    transform: translateY(0);
-  }
-
-  .shop-dd {
-    top: calc(var(--topbar-h) + 24px);
-    right: 8px;
-    left: 8px;
-    width: auto;
-    max-width: none;
-    max-height: 50vh;
-    border-radius: 14px;
-  }
-}
-
-/* ==========================================================================
-   PWA / Install prompt
-   ========================================================================== */
-.pwa-install-banner {
-  position: fixed;
-  bottom: 56px;
-  left: 12px;
-  right: 12px;
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 14px 16px;
-  background: var(--bar-bg);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-  display: none;
-  z-index: 200;
-  animation: slideUp 0.3s ease;
-}
-
-.pwa-install-banner.show {
-  display: flex;
-  flex-direction: column;
-}
-
-.pwa-install-banner .pwa-install-text {
-  margin: 0 0 10px;
-  font-size: 14px;
-  color: var(--fg);
-}
-
-.pwa-install-banner .pwa-install-btns {
-  display: flex;
-  gap: 8px;
-}
-
-.pwa-install-banner .pwa-install-btns button {
-  flex: 1;
-  padding: 9px 12px;
-  border-radius: 10px;
-  font: inherit;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid var(--border);
-}
-
-.pwa-install-banner .pwa-install-yes {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
-}
-
-.pwa-install-banner .pwa-install-no {
-  background: transparent;
-  color: var(--fg);
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ==========================================================================
-   Focus visible for accessibility
-   ========================================================================== */
-*:focus-visible {
-  outline: 2px solid var(--accent);
+:focus-visible {
+  outline: 2px solid var(--ink);
   outline-offset: 2px;
 }
 
-/* Reduce motion */
+/* scrollbars belong to the palette */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink-faint) transparent;
+}
+*::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+*::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--ink) 32%, transparent);
+  border-radius: 0;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ── the map owns the screen ─────────────────────────────────────────── */
+#map {
+  position: fixed;
+  inset: 0;
+  background: var(--paper);
+  z-index: 1;
+}
+
+.maplibregl-ctrl-attrib,
+.maplibregl-ctrl-bottom-right {
+  display: none !important;
+}
+
+/* ── sign band: top ─────────────────────────────────────────────────── */
+.band {
+  position: fixed;
+  z-index: 30;
+  background: var(--sign);
+  color: #12100c;
+}
+
+.band-top {
+  top: 0;
+  left: 0;
+  right: var(--rail-w);
+  height: var(--band-h);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-right: 16px;
+  border-bottom: 2px solid #12100c;
+}
+
+.pict {
+  width: var(--band-h);
+  height: calc(var(--band-h) - 2px);
+  flex: 0 0 var(--band-h);
+  background: #12100c;
+  display: grid;
+  place-items: center;
+}
+
+.wordmark {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  white-space: nowrap;
+}
+.wordmark b {
+  font-size: var(--step-4);
+  font-weight: 900;
+  letter-spacing: -0.015em;
+}
+.wordmark span {
+  font-size: var(--step-1);
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: #4a3f18;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  width: min(340px, 30vw);
+  padding: 0 10px;
+  background: #fffdf6;
+  border: 2px solid #12100c;
+}
+.field input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #12100c;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 500;
+}
+.field input::placeholder {
+  color: #7d7561;
+  font-weight: 400;
+}
+.field:focus-within {
+  box-shadow: inset 0 0 0 2px var(--sign-deep);
+}
+
+.chips {
+  display: flex;
+}
+.chip {
+  height: 38px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 2px solid #12100c;
+  border-left-width: 0;
+  background: transparent;
+  color: #12100c;
+  font: inherit;
+  font-size: var(--step-1);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.chip:first-child {
+  border-left-width: 2px;
+}
+.chip:hover {
+  background: #12100c;
+  color: var(--sign);
+}
+.chip[aria-pressed="true"] {
+  background: #12100c;
+  color: var(--sign);
+}
+.chip svg {
+  width: 14px;
+  height: 14px;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.count {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  white-space: nowrap;
+}
+.count b {
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.count span {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  line-height: 1.25;
+  text-transform: uppercase;
+  color: #4a3f18;
+}
+
+.icon-btn {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  display: grid;
+  place-items: center;
+  border: 2px solid #12100c;
+  background: transparent;
+  color: #12100c;
+  cursor: pointer;
+  padding: 0;
+}
+.icon-btn:hover {
+  background: #12100c;
+  color: var(--sign);
+}
+
+.icon-btn[data-rail-toggle] {
+  display: none;
+}
+
+/* ── rail: ranking → ficha ──────────────────────────────────────────── */
+.rail {
+  position: fixed;
+  top: var(--band-h);
+  right: 0;
+  bottom: 0;
+  width: var(--rail-w);
+  z-index: 25;
+  background: var(--sign);
+  color: #12100c;
+  border-left: 2px solid #12100c;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.rail-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 14px 11px;
+  border-bottom: 2px solid #12100c;
+}
+.rail-head h2 {
+  margin: 0;
+  font-size: var(--step-1);
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.rail-head .sub {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #4a3f18;
+  font-variant-numeric: tabular-nums;
+}
+
+.rows {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 3px 10px;
+  width: 100%;
+  padding: 10px 14px;
+  border: 0;
+  border-bottom: 1px solid #12100c26;
+  background: transparent;
+  color: #12100c;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+.row:hover {
+  background: #12100c14;
+}
+.row .nm {
+  grid-column: 1;
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.row .hd {
+  grid-column: 1;
+  grid-row: 2;
+  font-size: 11px;
+  color: #4a3f18;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.row .f {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  justify-self: end;
+  align-self: center;
+  font-size: 13px;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+.row.on {
+  background: #12100c;
+  color: var(--sign);
+}
+.row.on .hd {
+  color: #c9bda0;
+}
+.row-none {
+  padding: 18px 14px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: #4a3f18;
+}
+
+/* ficha: a paper slip pinned to the sign board */
+.ficha {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  gap: 12px;
+}
+.slip {
+  background: var(--paper);
+  color: var(--ink);
+  border: 2px solid #12100c;
+  padding: 14px 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+}
+.slip-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.slip .kicker {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.slip h3 {
+  margin: 4px 0 0;
+  font-size: var(--step-5);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+.slip .handle {
+  font-size: var(--step-2);
+  font-weight: 700;
+  color: var(--vermilion);
+}
+.slip .figs {
+  display: flex;
+  gap: 18px;
+  padding: 8px 0;
+  border-top: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+}
+.slip .figs div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.slip .figs b {
+  font-size: var(--step-4);
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.slip .figs span {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.slip .embed {
+  width: 100%;
+  height: 460px;
+  border: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+  background: #fff;
+  display: block;
+}
+.slip .no-ig {
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  padding: 10px 0;
+}
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.actions a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 8px;
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.actions a:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+.actions a.pri {
+  grid-column: 1 / -1;
+  background: var(--ink);
+  color: var(--paper);
+}
+.actions a.pri:hover {
+  background: var(--vermilion);
+  border-color: var(--vermilion);
+  color: #fff;
+}
+.slip .credit {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* ── selection tag on the map ───────────────────────────────────────── */
+.tag {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 6px 10px 7px;
+  background: var(--sign);
+  color: #12100c;
+  border: 2px solid #12100c;
+  box-shadow: 3px 3px 0 rgba(18, 16, 12, 0.28);
+  cursor: pointer;
+  transform: translate(-50%, calc(-100% - 12px));
+  white-space: nowrap;
+}
+.tag b {
+  font-size: 12.5px;
+  font-weight: 900;
+  letter-spacing: -0.005em;
+  line-height: 1.1;
+}
+.tag span {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #4a3f18;
+  font-variant-numeric: tabular-nums;
+}
+.tag::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -9px;
+  width: 2px;
+  height: 9px;
+  background: #12100c;
+  transform: translateX(-50%);
+}
+
+/* ── attribution: a strip, not a paragraph ─────────────────────────── */
+.credit-strip {
+  position: fixed;
+  left: 10px;
+  bottom: 10px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 9px;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+}
+.credit-strip b {
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+/* ── states ─────────────────────────────────────────────────────────── */
+.loading {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  background: var(--paper);
+  color: var(--ink);
+}
+.loading div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.loading b {
+  font-size: var(--step-3);
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.loading i {
+  display: block;
+  width: 120px;
+  height: 3px;
+  background: color-mix(in srgb, var(--ink) 18%, transparent);
+  overflow: hidden;
+  position: relative;
+}
+.loading i::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  transform-origin: left;
+  animation: sweep 1.1s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+@keyframes sweep {
+  0% {
+    transform: scaleX(0.05);
+  }
+  60% {
+    transform: scaleX(0.8);
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+.loading.err b {
+  color: var(--vermilion);
+}
+
+/* ── PWA install: a sign at the foot of the sheet ──────────────────── */
+.pwa {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 18px;
+  z-index: 35;
+  display: none;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px 10px 14px;
+  background: #12100c;
+  color: var(--sign);
+  border: 2px solid #12100c;
+}
+.pwa.show {
+  display: flex;
+}
+.pwa p {
+  margin: 0;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.pwa button {
+  font: inherit;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 7px 10px;
+  border: 2px solid var(--sign);
+  background: transparent;
+  color: var(--sign);
+  cursor: pointer;
+}
+.pwa button.yes {
+  background: var(--sign);
+  color: #12100c;
+}
+.pwa button:hover {
+  background: var(--sign);
+  color: #12100c;
+}
+
+/* ── narrow: the signs stack, the rail becomes a sheet ─────────────── */
+@media (max-width: 900px) {
+  :root {
+    --band-h: 56px;
+    --rail-w: 0px;
+  }
+
+  .band-top {
+    right: 0;
+    height: auto;
+    flex-wrap: wrap;
+    padding: 0 0 8px;
+    gap: 8px;
+  }
+
+  .pict {
+    width: var(--band-h);
+    height: var(--band-h);
+  }
+
+  .wordmark {
+    padding-top: 10px;
+  }
+  .wordmark b {
+    font-size: 16px;
+  }
+  .wordmark span {
+    display: none;
+  }
+
+  .spacer {
+    display: none;
+  }
+
+  .field {
+    order: 5;
+    width: auto;
+    flex: 1 1 auto;
+    margin: 0 8px 0 10px;
+  }
+
+  /* search and chips share one row: the band must not eat the map */
+  .chips {
+    order: 6;
+    flex: 0 0 auto;
+    margin: 0 10px 0 0;
+  }
+  .chip {
+    padding: 0 8px;
+    font-size: 9.5px;
+    letter-spacing: 0.06em;
+  }
+
+  .count {
+    margin-left: auto;
+    padding-right: 10px;
+  }
+  .count b {
+    font-size: 22px;
+  }
+  .count span {
+    display: none;
+  }
+
+  .rail {
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 68vh;
+    border-left: 0;
+    border-top: 2px solid #12100c;
+    transform: translateY(100%);
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .rail.open {
+    transform: translateY(0);
+  }
+  .rail-head {
+    cursor: pointer;
+  }
+
+  .slip .embed {
+    height: 380px;
+  }
+
+  .icon-btn[data-rail-toggle] {
+    display: grid;
+  }
+  [data-rail-close] {
+    display: none;
+  }
+
+  .credit-strip {
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    justify-content: space-between;
+    font-size: 8.5px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .left-sidebar,
-  .shop-dd,
-  .pwa-install-banner {
-    transition: none;
-    animation: none;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
   }
 }

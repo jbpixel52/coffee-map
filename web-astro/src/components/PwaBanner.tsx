@@ -37,16 +37,14 @@ export default function PwaBanner() {
   };
 
   return (
-    <div className={`pwa-install-banner${show ? " show" : ""}`}>
-      <p className="pwa-install-text">Instala esta app para acceso rápido y offline</p>
-      <div className="pwa-install-btns">
-        <button type="button" className="pwa-install-yes" onClick={install}>
-          Instalar
-        </button>
-        <button type="button" className="pwa-install-no" onClick={dismiss}>
-          Ahora no
-        </button>
-      </div>
+    <div className={`pwa${show ? " show" : ""}`}>
+      <p>Instala el mapa para llevarlo sin señal</p>
+      <button type="button" className="yes" onClick={install}>
+        Instalar
+      </button>
+      <button type="button" onClick={dismiss}>
+        Ahora no
+      </button>
     </div>
   );
 }
