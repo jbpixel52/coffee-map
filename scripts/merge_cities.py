@@ -31,22 +31,33 @@ def main() -> int:
         return 1
 
     features: list[dict] = []
-    cities: list[dict] = []
     generated = ""
+    by_name: dict[str, dict] = {}
     for d in dirs:
         name, feats, meta = load_city(d)
         features.extend(feats)
         generated = max(generated, meta.get("generated_at", ""))
-        cities.append(
-            {
-                "name": name,
-                "slug": d.name,
-                "shop_count": meta["shop_count"],
-                "with_instagram": meta["with_instagram"],
-            }
-        )
+        # a dense city can be fetched as several bbox tiles; they add up to one city
+        entry = by_name.setdefault(name, {"name": name, "slug": d.name, "shop_count": 0, "with_instagram": 0})
+        entry["shop_count"] += meta["shop_count"]
+        entry["with_instagram"] += meta["with_instagram"]
+    cities = list(by_name.values())
 
+    # A dense city is fetched as bbox tiles; the same OSM feature can land in two
+    # of them. Same name at the same coordinates is the same café.
+    seen: set[tuple] = set()
+    unique: list[dict] = []
+    for f in features:
+        p = f["properties"]
+        lon, lat = f["geometry"]["coordinates"]
+        key = (p["city"], p["name"].strip().lower(), round(lat, 5), round(lon, 5))
+        if key in seen:
+            continue
+        seen.add(key)
+        unique.append(f)
+    features = unique
     features.sort(key=lambda f: (f["properties"]["city"], f["properties"]["name"].lower()))
+    cities.sort(key=lambda c: c["name"].lower())
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     (OUT_DIR / "shops.geojson").write_text(
         json.dumps({"type": "FeatureCollection", "features": features}, ensure_ascii=False),

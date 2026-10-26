@@ -110,12 +110,28 @@ const name = ["coalesce", ["get", "name:es"], ["get", "name"]] as unknown as str
 const AREA_CLASSES = ["wood", "grass", "farmland", "wetland", "rock", "sand"];
 const PARK_CLASSES = ["national_park", "protected_area"];
 
+/**
+ * Line opacities, day and night. These are backgrounds, not type: the goal is
+ * 1.3:1 to 2.4:1 against the sheet, so the dots own the contrast. Night needs
+ * less alpha for the same weight — light-on-dark reads stronger.
+ * Contrast at these values (road ink vs ground): 2.41 / 2.02 / 1.67 / 1.35.
+ */
+export const LINE_OPACITY: Record<string, { day: number; night: number }> = {
+  "boundary-country": { day: 0.3, night: 0.22 },
+  "boundary-state": { day: 0.2, night: 0.14 },
+  rail: { day: 0.22, night: 0.14 },
+  "road-motorway": { day: 0.55, night: 0.34 },
+  "road-primary": { day: 0.45, night: 0.28 },
+  "road-secondary": { day: 0.34, night: 0.2 },
+  "road-minor": { day: 0.2, night: 0.12 },
+};
+
 /** Road classes: one hairline each, no casing — a plan, not a road atlas. */
-const ROADS: Array<{ id: string; classes: string[]; width: number; opacity: number }> = [
-  { id: "road-motorway", classes: ["motorway", "trunk"], width: 1.9, opacity: 0.92 },
-  { id: "road-primary", classes: ["primary"], width: 1.35, opacity: 0.8 },
-  { id: "road-secondary", classes: ["secondary", "tertiary"], width: 0.95, opacity: 0.6 },
-  { id: "road-minor", classes: ["minor", "street", "service"], width: 0.6, opacity: 0.32 },
+const ROADS: Array<{ id: string; classes: string[]; width: number }> = [
+  { id: "road-motorway", classes: ["motorway", "trunk"], width: 1.5 },
+  { id: "road-primary", classes: ["primary"], width: 1.15 },
+  { id: "road-secondary", classes: ["secondary", "tertiary"], width: 0.85 },
+  { id: "road-minor", classes: ["minor", "street", "service"], width: 0.55 },
 ];
 
 export const planStyle: StyleSpecification = {
@@ -165,9 +181,9 @@ export const planStyle: StyleSpecification = {
       filter: ["<=", ["get", "admin_level"], 2],
       paint: {
         "line-color": PLAN.boundary,
-        "line-width": 1.6,
+        "line-width": 1.4,
         "line-dasharray": [4, 2],
-        "line-opacity": 0.55,
+        "line-opacity": LINE_OPACITY["boundary-country"].day,
       },
     },
     {
@@ -176,7 +192,12 @@ export const planStyle: StyleSpecification = {
       source: "openmaptiles",
       "source-layer": "boundary",
       filter: ["==", ["get", "admin_level"], 4],
-      paint: { "line-color": PLAN.boundary, "line-width": 1, "line-dasharray": [2, 3], "line-opacity": 0.35 },
+      paint: {
+        "line-color": PLAN.boundary,
+        "line-width": 1,
+        "line-dasharray": [2, 3],
+        "line-opacity": LINE_OPACITY["boundary-state"].day,
+      },
     },
     {
       id: "rail",
@@ -184,7 +205,12 @@ export const planStyle: StyleSpecification = {
       source: "openmaptiles",
       "source-layer": "transportation",
       filter: ["==", ["get", "class"], "rail"],
-      paint: { "line-color": PLAN.ink, "line-width": 0.9, "line-dasharray": [1, 2], "line-opacity": 0.35 },
+      paint: {
+        "line-color": PLAN.ink,
+        "line-width": 0.9,
+        "line-dasharray": [1, 2],
+        "line-opacity": LINE_OPACITY.rail.day,
+      },
     },
     ...ROADS.map((r) => ({
       id: r.id,
@@ -197,7 +223,7 @@ export const planStyle: StyleSpecification = {
       paint: {
         "line-color": PLAN.ink,
         "line-width": ["interpolate", ["linear"], ["zoom"], 8, r.width * 0.7, 16, r.width * 1.5] as never,
-        "line-opacity": r.opacity,
+        "line-opacity": LINE_OPACITY[r.id].day,
       },
     })),
     {
@@ -309,6 +335,10 @@ export function applyPlanTheme(map: ThemedMap, night: boolean): void {
     for (const [prop, value] of Object.entries(paint)) {
       const next = remapColor(value, remap);
       if (JSON.stringify(next) !== JSON.stringify(value)) map.setPaintProperty(layer.id, prop, next);
+    }
+    const lineOpacity = LINE_OPACITY[layer.id];
+    if (lineOpacity) {
+      map.setPaintProperty(layer.id, "line-opacity", night ? lineOpacity.night : lineOpacity.day);
     }
   }
   sheetMode.set(map as object, target);

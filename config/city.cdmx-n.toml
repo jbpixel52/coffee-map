@@ -1,0 +1,12 @@
+name = "Mexico City"
+country = "Mexico"
+locale = "es-MX"
+timezone = "America/Mexico_City"
+center_lat = 19.5100
+center_lon = -99.1250
+zoom = 12
+bbox_south = 19.42
+bbox_west = -99.3
+bbox_north = 19.6
+bbox_east = -98.95
+gmaps_queries = []

@@ -4,6 +4,9 @@ import { Close, Search } from "./Icons";
 import StackedList, { type ListShop } from "./StackedList";
 import { filterShopNames } from "../lib/filter";
 
+/** Rendering every row of eleven cities janks the list; the map still holds them all. */
+const LIST_CAP = 200;
+
 interface Props {
   shops: ListShop[];
   cities: string[];
@@ -102,7 +105,7 @@ export default function ShopsPanel({
 
       <div className="panel-body">
         <StackedList
-          shops={rows}
+          shops={rows.slice(0, LIST_CAP)}
           selected={selected}
           onSelect={onSelect}
           emptyNote={
@@ -111,6 +114,12 @@ export default function ShopsPanel({
             </>
           }
         />
+        {rows.length > LIST_CAP && (
+          <p className="list-note">
+            Mostrando los {LIST_CAP} primeros de {rows.length.toLocaleString("es-MX")}. Busca por
+            nombre para llegar al resto.
+          </p>
+        )}
       </div>
     </section>
   );

@@ -118,6 +118,12 @@ house-number layers, monumental letterspaced place names. `PLAN` (day) and
 `PLAN_NIGHT` must stay **disjoint** and every colour in the style must appear in
 `PLAN_NIGHT` — both asserted in `plan.test.ts`.
 
+Line weight is a contrast budget, not a taste call: every line layer sits between
+**1.3:1 and 2.4:1** against the sheet (`LINE_OPACITY`, asserted in `plan.test.ts`),
+so the dots (6.47:1) are the only strong ink on the map. Night uses less alpha for
+the same weight — light-on-dark reads stronger — and the theme switch owns that
+swap.
+
 Hard-won constraints:
 
 - **One zoom `interpolate` per expression.** A `case` holding two makes MapLibre

@@ -1,5 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { applyPlanTheme, HEAT_LIGHT, HEAT_NIGHT, PLAN, PLAN_NIGHT, planStyle, remapColor } from "./plan";
+import {
+  applyPlanTheme,
+  HEAT_LIGHT,
+  HEAT_NIGHT,
+  LINE_OPACITY,
+  PLAN,
+  PLAN_NIGHT,
+  planStyle,
+  remapColor,
+} from "./plan";
 
 /** Every string colour that appears anywhere in the style's paint blocks. */
 function styleColours(): string[] {
@@ -68,6 +77,41 @@ describe("planStyle", () => {
     const night = new Set(Object.values(PLAN_NIGHT).map((c) => c.toLowerCase()));
     const overlap = [...night].filter((c) => day.has(c));
     expect(overlap).toEqual([]);
+  });
+});
+
+describe("line weights", () => {
+  // map lines are background: they must stay quieter than the dots (6.47:1)
+  const rgb = (h: string) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+  const mix = (fg: string, bg: string, a: number) =>
+    rgb(fg).map((c, i) => c * a + rgb(bg)[i] * (1 - a));
+  const lum = (c: number[]) => {
+    const f = (v: number) => {
+      const s = v / 255;
+      return s <= 0.04045 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+    };
+    return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]);
+  };
+  const contrast = (a: number[], ground: string = PLAN.paper) => {
+    const la = lum(a), lb = lum(rgb(ground));
+    const hi = Math.max(la, lb), lo = Math.min(la, lb);
+    return (hi + 0.05) / (lo + 0.05);
+  };
+
+  it("keeps every line between 1.2:1 and 2.6:1 against the sheet", () => {
+    for (const [id, op] of Object.entries(LINE_OPACITY)) {
+      const c = contrast(mix(PLAN.ink, PLAN.paper, op.day));
+      expect(c, `${id} day`).toBeGreaterThan(1.2);
+      expect(c, `${id} day`).toBeLessThan(2.6);
+    }
+  });
+
+  it("keeps the night lines just as quiet", () => {
+    for (const [id, op] of Object.entries(LINE_OPACITY)) {
+      const ground = PLAN_NIGHT[PLAN.paper];
+      const c = contrast(mix(PLAN_NIGHT[PLAN.ink], ground, op.night), ground);
+      expect(c, `${id} night`).toBeLessThan(3.2);
+    }
   });
 });
 

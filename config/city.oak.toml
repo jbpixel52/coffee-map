@@ -1,0 +1,16 @@
+name = "Oakland"
+country = "United States"
+locale = "en-US"
+timezone = "America/Los_Angeles"
+center_lat = 37.8044
+center_lon = -122.2712
+zoom = 12.4
+bbox_south = 37.7
+bbox_west = -122.35
+bbox_north = 37.88
+bbox_east = -122.15
+gmaps_queries = [
+  "coffee shops Oakland",
+  "coffee Oakland",
+  "cafe Oakland",
+]

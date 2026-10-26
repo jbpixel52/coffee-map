@@ -1,0 +1,17 @@
+name = "Seattle"
+country = "United States"
+locale = "en-US"
+timezone = "America/Los_Angeles"
+center_lat = 47.6062
+center_lon = -122.3321
+zoom = 11.8
+bbox_south = 47.49
+bbox_west = -122.45
+bbox_north = 47.74
+bbox_east = -122.22
+gmaps_queries = [
+  "coffee shops Seattle",
+  "coffee Seattle",
+  "cafe Seattle",
+  "specialty coffee Seattle",
+]

@@ -1,11 +1,65 @@
 {
-  "city": "San Diego",
+  "city": "Austin",
   "cities": [
+    {
+      "name": "Austin",
+      "slug": "aus",
+      "shop_count": 317,
+      "with_instagram": 26
+    },
+    {
+      "name": "Ensenada",
+      "slug": "ens",
+      "shop_count": 27,
+      "with_instagram": 0
+    },
+    {
+      "name": "Guadalajara",
+      "slug": "gdl",
+      "shop_count": 201,
+      "with_instagram": 8
+    },
+    {
+      "name": "Los Angeles",
+      "slug": "la",
+      "shop_count": 1170,
+      "with_instagram": 114
+    },
+    {
+      "name": "Mexico City",
+      "slug": "cdmx-n",
+      "shop_count": 1052,
+      "with_instagram": 18
+    },
+    {
+      "name": "New York City",
+      "slug": "nyc-n",
+      "shop_count": 2670,
+      "with_instagram": 152
+    },
+    {
+      "name": "Oakland",
+      "slug": "oak",
+      "shop_count": 385,
+      "with_instagram": 36
+    },
     {
       "name": "San Diego",
       "slug": "sd",
       "shop_count": 674,
       "with_instagram": 41
+    },
+    {
+      "name": "San Francisco",
+      "slug": "sfo",
+      "shop_count": 786,
+      "with_instagram": 49
+    },
+    {
+      "name": "Seattle",
+      "slug": "sea",
+      "shop_count": 773,
+      "with_instagram": 58
     },
     {
       "name": "Tijuana",
@@ -14,7 +68,7 @@
       "with_instagram": 121
     }
   ],
-  "generated_at": "2026-10-26T04:56:39Z",
-  "shop_count": 1339,
-  "with_instagram": 162
+  "generated_at": "2026-10-26T20:36:24Z",
+  "shop_count": 8719,
+  "with_instagram": 623
 }

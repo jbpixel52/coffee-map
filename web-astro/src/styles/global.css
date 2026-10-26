@@ -355,9 +355,9 @@ body {
 .panel-cities {
   flex: 0 0 auto;
   display: flex;
+  flex-wrap: wrap; /* a dozen cities: wrap beats a scroller that hides them */
   gap: 6px;
   padding: 0 12px 10px;
-  overflow-x: auto;
 }
 .panel-cities .chip {
   height: 28px;
@@ -560,6 +560,15 @@ body {
 }
 .stack-row.on .stack-fig {
   color: var(--accent-text);
+}
+
+.list-note {
+  margin: 6px 4px 0;
+  padding: 8px 8px 10px;
+  font-size: var(--step-1);
+  line-height: 1.5;
+  color: var(--fg-muted);
+  border-top: 1px solid var(--border);
 }
 
 .list-empty {

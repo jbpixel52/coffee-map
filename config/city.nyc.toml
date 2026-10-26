@@ -1,0 +1,17 @@
+name = "New York City"
+country = "United States"
+locale = "en-US"
+timezone = "America/New_York"
+center_lat = 40.7128
+center_lon = -74.006
+zoom = 11.4
+bbox_south = 40.55
+bbox_west = -74.05
+bbox_north = 40.92
+bbox_east = -73.7
+gmaps_queries = [
+  "coffee shops New York",
+  "coffee Manhattan",
+  "cafe Brooklyn",
+  "specialty coffee New York",
+]

@@ -304,6 +304,23 @@ export default function MapApp() {
     });
   }, [query, onlyIg, city, status]);
 
+  // ── city selection frames the map ─────────────────────────────────────
+  useEffect(() => {
+    const map = mapRef.current;
+    const fc = fcRef.current;
+    if (!map || status !== "ready" || !fc || !city) return;
+    const feats = fc.features.filter((f) => (f.properties as ShopProps).city === city);
+    if (feats.length === 0) return;
+    const bounds = new maplibregl.LngLatBounds();
+    for (const f of feats) bounds.extend((f.geometry as Point).coordinates as [number, number]);
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    map.fitBounds(bounds, {
+      padding: { top: 90, bottom: 60, left: 60, right: 60 },
+      maxZoom: 13.5,
+      duration: reduce ? 0 : 900,
+    });
+  }, [city, status]);
+
   // ── the tag on the map ────────────────────────────────────────────────
   useEffect(() => {
     const map = mapRef.current;
@@ -396,7 +413,7 @@ export default function MapApp() {
       <div id="map" ref={mapEl} />
 
       <div className="top-layer">
-        <TitleBar cities={cities} shown={shown} total={total} status={status} />
+        <TitleBar cities={city ? [city] : cities} shown={shown} total={total} status={status} />
         <ExpandableTabs tabs={tabs} openId={tab} onOpen={setTab} />
       </div>
 

@@ -1,0 +1,17 @@
+name = "Austin"
+country = "United States"
+locale = "en-US"
+timezone = "America/Chicago"
+center_lat = 30.2672
+center_lon = -97.7431
+zoom = 12.0
+bbox_south = 30.13
+bbox_west = -97.95
+bbox_north = 30.52
+bbox_east = -97.55
+gmaps_queries = [
+  "coffee shops Austin",
+  "coffee Austin",
+  "cafe Austin",
+  "specialty coffee Austin",
+]

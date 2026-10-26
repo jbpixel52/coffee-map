@@ -1,0 +1,12 @@
+name = "New York City"
+country = "Mexico"
+locale = "es-MX"
+timezone = "America/Mexico_City"
+center_lat = 40.6450
+center_lon = -73.8750
+zoom = 12
+bbox_south = 40.55
+bbox_west = -74.05
+bbox_north = 40.74
+bbox_east = -73.7
+gmaps_queries = []

@@ -1,0 +1,16 @@
+name = "San Francisco"
+country = "United States"
+locale = "en-US"
+timezone = "America/Los_Angeles"
+center_lat = 37.7749
+center_lon = -122.4194
+zoom = 12.4
+bbox_south = 37.7
+bbox_west = -122.52
+bbox_north = 37.83
+bbox_east = -122.35
+gmaps_queries = [
+  "coffee shops San Francisco",
+  "coffee San Francisco",
+  "cafe Mission District San Francisco",
+]

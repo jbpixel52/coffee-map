@@ -1,0 +1,17 @@
+name = "Guadalajara"
+country = "Mexico"
+locale = "es-MX"
+timezone = "America/Mexico_City"
+center_lat = 20.6597
+center_lon = -103.3496
+zoom = 12.2
+bbox_south = 20.55
+bbox_west = -103.45
+bbox_north = 20.75
+bbox_east = -103.25
+gmaps_queries = [
+  "cafeterias Guadalajara",
+  "cafe de especialidad Guadalajara",
+  "coffee Guadalajara",
+  "cafes Chapultepec Guadalajara",
+]

@@ -5,7 +5,7 @@ ensure_browsers_path()
 from pathlib import Path
 from patchright.sync_api import sync_playwright
 
-url = "http://localhost:4325/coffee-map/"
+url = "http://localhost:4326/coffee-map/"
 out = Path(".impeccable/review")
 out.mkdir(parents=True, exist_ok=True)
 
@@ -39,6 +39,17 @@ with sync_playwright() as p:
             pg.wait_for_timeout(600),
             pg.click(".stack-row"),
             pg.wait_for_timeout(1800),
+        ),
+    )
+    shot(
+        "shell-city",
+        1440,
+        900,
+        lambda pg: (
+            pg.click("#tab-shops"),
+            pg.wait_for_timeout(500),
+            pg.click("#panel-shops .panel-cities >> text='New York City'"),
+            pg.wait_for_timeout(2600),
         ),
     )
     shot("shell-mobile", 390, 844)
