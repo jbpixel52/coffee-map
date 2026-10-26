@@ -1000,11 +1000,14 @@ body {
   }
 
   .panel {
-    top: 58px;
+    /* clears the title block: on a phone the subtitle wraps to two lines and ends
+       near 80px, so a panel starting at 58 sliced its last line and 76 still caught
+       the panel's shadow */
+    top: 88px;
     left: 10px;
     right: 10px;
     width: auto;
-    max-height: 64vh;
+    max-height: 60vh;
   }
   .panel-tools {
     flex-wrap: wrap;
