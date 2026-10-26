@@ -11,18 +11,20 @@ from three scraped sources with an archive-first pipeline. Live at
 | Social | Instagram profiles (logged-out recon) | handle + follower count per shop (120 profiles fetched) |
 
 Map UI: MapLibre GL over **OpenFreeMap** vector tiles with a style of our own
-(`web-astro/src/lib/plan.ts`) that draws the city as a **printed plan** — pale
-paper, black hairline roads with no casings, flat parks and water, and place
-names set monumentally, like signage. The interface is an **airport sign system
-hung over that plan**: a saturated yellow band carrying the cup pictogram,
-search, filters and the count; a yellow rail of the most-followed cafés that
-turns into a shop *ficha* (Instagram embed, follower count, Google Maps and
-TikTok links); and, when you pick a café, a yellow tag on the map itself. Every
-café is a dot — yellow when we can show you its Instagram — and filtering
-**dims** the rest instead of hiding them, so the census keeps its shape. Night
-mode inverts the sheet: black ground, paper ink, the signs unchanged. Spanish
-(es-MX) strings, PWA-installable, shareable `?ll=&z=` view, `prefers-reduced-motion`
-honoured. The visual rules and tokens live in `DESIGN.md`.
+(`web-astro/src/lib/plan.ts`) that draws the city as a **printed plan** — Antique
+White paper, Blue Indigo hairline roads with no casings, flat parks and water, and
+place names set monumentally, like signage. The shell around it is deliberately
+quiet (shadcn-style: hairline borders, one primary, soft shadows): a slim header
+with the cup pictogram, search, filters and the count; a rail of the most-followed
+cafés that turns into a shop *ficha* (Instagram embed, follower count, Google Maps
+and TikTok links); and, when you pick a café, a small tag on the map itself. Every
+café is a dot — **Waterfall** teal when we can show you its Instagram — and
+filtering **dims** the rest instead of hiding them, so the census keeps its shape.
+Colour comes from **Pantone's NYFW Spring/Summer 2027 report** (seasonless shades
+as ground and ink, seasonal colours as data: heat runs Anise Flower → Arrowwood →
+Langoustino → Chili Pepper). Night mode inverts sheet and shell. Spanish (es-MX)
+strings, PWA-installable, shareable `?ll=&z=` view, `prefers-reduced-motion`
+honoured. The tokens and rules live in `DESIGN.md`.
 Data is refreshed by local scrape runs; GitHub Actions only builds and deploys
 the committed data.
 
@@ -113,6 +115,9 @@ San Diego is one config + one refresh away. The UI strings are Spanish for now.
   standalone tool; nothing in `web-astro/` consumes it.
 - Type — Hanken Grotesk (SIL Open Font License), self-hosted from
   `web-astro/src/assets/fonts/`. Map labels use the glyphs OpenFreeMap serves.
+- Colour — Pantone Fashion Color Trend Report for NYFW Spring/Summer 2027
+  (seasonless shades + top-10 accents); hex values from W3Schools' 2027 list,
+  codes matched to Pantone's report.
 
 ## Repo layout
 

@@ -36,9 +36,7 @@ export default function SignBand({
   return (
     <header className="band band-top">
       <div className="pict" aria-hidden="true">
-        <span style={{ color: "var(--sign)" }}>
-          <Cup size={30} />
-        </span>
+        <Cup size={20} />
       </div>
 
       <div className="wordmark">
@@ -99,7 +97,6 @@ export default function SignBand({
         onClick={onOpenRail}
         aria-label="Abrir lista y ficha"
         title="Lista y ficha"
-        style={{ display: "none" }}
         data-rail-toggle=""
       >
         <Cup size={17} />

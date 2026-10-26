@@ -27,7 +27,7 @@ An exhaustive, sourced map of every café in Tijuana — 608 shops today — bui
 - Static Astro site on GitHub Pages, served from `/coffee-map/`, copy in Spanish (es-MX).
 - Data is refreshed by local scrape runs and committed as `web-astro/public/data/shops.geojson` + `meta.json`; the site itself does no live querying.
 - Used in a hand, outdoors, on a corner, frequently on poor mobile signal — a PWA with a service worker.
-- Map rendering: MapLibre GL over OpenFreeMap vector tiles, with a self-hosted sprite for texture.
+- Map rendering: MapLibre GL over OpenFreeMap vector tiles, restyled as a printed plan (no sprite, no textures).
 
 ## Capabilities and Constraints
 
@@ -50,7 +50,10 @@ Hard constraints:
 
 - **Voice: Spanish (es-MX), plain and local.** No marketing tone, no English chrome.
 - **The map is the product.** Interface chrome is a guest on it.
-- **Hand-made, printed character** — the incumbent expressed this as a watercolour basemap with paper grain; the owner has released that specific world but the material, hand-made quality is what the project is known for.
+- **Hand-made, printed character** — the map reads as a printed plan, not a generic basemap.
+- **Palette: Pantone's NYFW Spring/Summer 2027 report** (owner's instruction, 2026-10-26). The
+  seasonless shades are the ground and ink; the seasonal colours do data work. Interface chrome
+  stays neutral — the owner asked for a quieter screen than the enamel-yellow version.
 
 ## Evidence on Hand
 

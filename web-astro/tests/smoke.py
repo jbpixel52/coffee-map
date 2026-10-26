@@ -79,7 +79,7 @@ with sync_playwright() as p:
         "night class not applied"
     )
     bg = page.evaluate("window.__map.getPaintProperty('background','background-color')", isolated_context=False)
-    assert bg == "#100e0a", f"night sheet not applied: {bg}"
+    assert bg == "#191c27", f"night sheet not applied: {bg}"
 
     map_errors = page.evaluate("window.__mapErrors || []", isolated_context=False)
     assert not map_errors, f"map errors: {map_errors}"

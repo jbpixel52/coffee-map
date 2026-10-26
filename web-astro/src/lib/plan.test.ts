@@ -65,7 +65,7 @@ describe("planStyle", () => {
 
   it("keeps day and night colours disjoint, so a remap can never alias", () => {
     const day = new Set(styleColours());
-    const night = new Set(Object.values(PLAN_NIGHT));
+    const night = new Set(Object.values(PLAN_NIGHT).map((c) => c.toLowerCase()));
     const overlap = [...night].filter((c) => day.has(c));
     expect(overlap).toEqual([]);
   });
@@ -75,7 +75,7 @@ describe("remapColor", () => {
   it("swaps exact matches and leaves everything else alone, without mutating", () => {
     const input = ["case", ["get", "x"], PLAN.paper, "#123456"];
     const out = remapColor(input, PLAN_NIGHT) as unknown[];
-    expect(out[2]).toBe(PLAN_NIGHT[PLAN.paper]);
+    expect(out[2]).toBe(PLAN_NIGHT[PLAN.paper.toLowerCase()]);
     expect(out[3]).toBe("#123456");
     expect(input[2]).toBe(PLAN.paper);
   });
@@ -104,7 +104,7 @@ describe("applyPlanTheme", () => {
     expect(map.calls.at(-1)).toEqual([
       "background",
       "background-color",
-      PLAN_NIGHT[PLAN.paper],
+      PLAN_NIGHT[PLAN.paper.toLowerCase()],
     ]);
     applyPlanTheme(map, false);
     expect(map.calls.at(-1)).toEqual(["background", "background-color", PLAN.paper]);
@@ -127,7 +127,7 @@ describe("applyPlanTheme", () => {
     applyPlanTheme(map, true);
     expect(map.calls.length).toBe(after);
     expect((map.getStyle().layers![0].paint as Record<string, unknown>)["background-color"]).toBe(
-      PLAN_NIGHT[PLAN.paper],
+      PLAN_NIGHT[PLAN.paper.toLowerCase()],
     );
   });
 

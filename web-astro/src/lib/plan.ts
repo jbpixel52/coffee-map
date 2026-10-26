@@ -14,19 +14,45 @@
 import type { StyleSpecification } from "maplibre-gl";
 import type { ExpressionSpecification } from "@maplibre/maplibre-gl-style-spec";
 
+/**
+ * Pantone NYFW Spring/Summer 2027 (TCX), the seasonless shades as the ground
+ * and Blue Indigo as the ink: Antique White 11-0105, Dolphin 16-2901,
+ * Blue Indigo 19-3928, Tarragon 15-0326, Waterfall 15-5516.
+ * Hex values: W3Schools' 2027 list (codes matched to Pantone's report).
+ */
+export const PANTONE = {
+  aniseFlower: "#F4E3B5", // 12-0717
+  princessBlue: "#00539C", // 19-4150
+  waterfall: "#3AB0A2", // 15-5516
+  langoustino: "#CA6C56", // 16-1440
+  chiliPepper: "#9B1B30", // 19-1557
+  rosyFuture: "#F37E9B", // 15-1910
+  dragonFire: "#FD652D", // 16-1460
+  daiquiriGreen: "#C9D77E", // 12-0435
+  hibiscus: "#DE3848", // 18-1762
+  lavenderOil: "#C3A6CD", // 15-3615
+  antiqueWhite: "#EEE5D3", // 11-0105
+  tarragon: "#A4AE77", // 15-0326
+  arrowwood: "#BC8D1F", // 16-0954
+  blueIndigo: "#49516D", // 19-3928
+  dolphin: "#9A9699", // 16-2901
+} as const;
+
+/** The plan's own colours, all tints of the seasonless shades. Lowercase on
+ * purpose: the night remap compares strings, so both directions agree. */
 export const PLAN = {
-  paper: "#eeede7",
-  paperDeep: "#e4e2d8",
-  ink: "#12100c",
-  inkSoft: "#3a382f",
-  inkFaint: "#6b685c",
-  water: "#b8cdd6",
-  waterLine: "#9fbac6",
-  waterName: "#4a6b78",
-  park: "#c6cfc0",
-  landcover: "#dde3d6",
-  building: "#e2e0d6",
-  boundary: "#12100c",
+  paper: PANTONE.antiqueWhite.toLowerCase(),
+  paperDeep: "#e1d8ca", // Dolphin 16% over Antique White — building fill
+  ink: PANTONE.blueIndigo.toLowerCase(),
+  inkSoft: "#606479", // Blue Indigo 72% over Dolphin
+  inkFaint: "#7c8093", // quieter figures, water names
+  water: "#aad1c0", // Waterfall 38% over Antique White
+  waterLine: "#86c0b2", // Waterfall 55%
+  waterName: "#35665f", // Waterfall, deep
+  park: "#cfceac", // Tarragon 42%
+  landcover: "#e1dbc2", // Tarragon 18%
+  building: "#e1d8ca",
+  boundary: PANTONE.blueIndigo.toLowerCase(),
 } as const;
 
 /**
@@ -35,17 +61,16 @@ export const PLAN = {
  * would collide.
  */
 export const PLAN_NIGHT: Record<string, string> = {
-  "#eeede7": "#100e0a", // paper (ground) — night values never reuse a day hex
-  "#e4e2d8": "#191510", // paper-deep (buildings' fill)
-  "#12100c": "#f4ecd8", // ink: roads, boundaries, city labels
-  "#3a382f": "#d8cfb6", // ink-soft
-  "#6b685c": "#a89e86", // ink-faint
-  "#b8cdd6": "#16232b", // water
-  "#9fbac6": "#22343e", // waterline
-  "#4a6b78": "#8fb4c2", // water name
-  "#c6cfc0": "#1d2418", // park
-  "#dde3d6": "#1a1e17", // landcover
-  "#e2e0d6": "#1a1713", // building
+  "#eee5d3": "#191c27", // Antique White ground → Blue Indigo night
+  "#e1d8ca": "#232630", // buildings
+  "#49516d": "#f2eada", // Blue Indigo ink → Antique White (never the same hex both ways)
+  "#606479": "#d3ccc0", // ink-soft
+  "#7c8093": "#a6a093", // ink-faint
+  "#aad1c0": "#173738", // water
+  "#86c0b2": "#235150", // waterline
+  "#35665f": "#8fbdb4", // water name
+  "#cfceac": "#2d3029", // park
+  "#e1dbc2": "#1d201f", // landcover
 };
 
 /** Calor: heat tints the sheet. Light = pigment on paper; night = light on black. */
@@ -54,15 +79,15 @@ export const HEAT_LIGHT: ExpressionSpecification = [
   ["linear"],
   ["heatmap-density"],
   0,
-  "rgba(242, 194, 48, 0)",
+  "rgba(244, 227, 181, 0)", // Anise Flower
   0.25,
-  "rgba(242, 194, 48, 0.45)",
+  "rgba(244, 227, 181, 0.5)",
   0.5,
-  "rgba(232, 138, 30, 0.6)",
+  "rgba(188, 141, 31, 0.5)", // Arrowwood
   0.75,
-  "rgba(194, 64, 42, 0.72)",
+  "rgba(202, 108, 86, 0.55)", // Langoustino
   1,
-  "rgba(90, 20, 12, 0.85)",
+  "rgba(155, 27, 48, 0.65)", // Chili Pepper
 ];
 
 export const HEAT_NIGHT: ExpressionSpecification = [
@@ -70,15 +95,13 @@ export const HEAT_NIGHT: ExpressionSpecification = [
   ["linear"],
   ["heatmap-density"],
   0,
-  "rgba(240, 232, 210, 0)",
-  0.25,
-  "rgba(242, 194, 48, 0.4)",
-  0.5,
-  "rgba(255, 214, 102, 0.55)",
-  0.75,
-  "rgba(255, 236, 180, 0.7)",
+  "rgba(244, 227, 181, 0)", // Anise Flower
+  0.35,
+  "rgba(244, 227, 181, 0.38)",
+  0.65,
+  "rgba(195, 166, 205, 0.5)", // Lavender Oil
   1,
-  "rgba(255, 248, 225, 0.88)",
+  "rgba(243, 126, 155, 0.62)", // Rosy Future
 ];
 
 const FONT = ["Noto Sans Regular"];
@@ -250,9 +273,10 @@ export const planStyle: StyleSpecification = {
   ],
 };
 
-/** Deep-walk a style value, swapping any exact colour match. Pure. */
+/** Deep-walk a style value, swapping any colour match. Case-insensitive: the
+ * palette is written uppercase (Pantone codes) and the night table lowercase. Pure. */
 export function remapColor(value: unknown, remap: Record<string, string>): unknown {
-  if (typeof value === "string") return remap[value] ?? value;
+  if (typeof value === "string") return remap[value.toLowerCase()] ?? value;
   if (Array.isArray(value)) return value.map((v) => remapColor(v, remap));
   return value;
 }

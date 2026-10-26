@@ -27,15 +27,12 @@ export default function Ficha({ details, onClose }: Props) {
       <div className="slip">
         <div className="slip-top">
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div className="kicker">Café seleccionado</div>
             <h3>{name}</h3>
-            {showFullName && <div className="handle" style={{ color: "var(--ink-soft)", fontWeight: 600 }}>{fullName}</div>}
+            {showFullName && <div className="handle muted">{fullName}</div>}
             {handle ? (
               <div className="handle">@{handle}</div>
             ) : (
-              <div className="handle" style={{ color: "var(--ink-faint)" }}>
-                sin Instagram conocido
-              </div>
+              <div className="handle muted">sin Instagram conocido</div>
             )}
           </div>
         </div>

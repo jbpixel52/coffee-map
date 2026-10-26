@@ -2,116 +2,107 @@
 
 <!-- impeccable:design-schema 1 -->
 
-Two materials, and nothing else: **the printed plan** (paper, ink hairlines,
-monumental place letters) and **the enamel sign** (saturated yellow, black type,
-white pictogram on a black square). The world is an airport sign system hung
-over a city sheet. If an element belongs to neither material, it does not ship.
+A quiet product shell over a printed city plan. The shell borrows shadcn/ui's
+anatomy — hairline borders, one primary, 8–12px radii, soft single-offset
+shadows, neutral surfaces — and the colour comes from **Pantone's NYFW
+Spring/Summer 2027 palette**: the five seasonless shades carry the ground and
+the ink, the ten seasonal colours do data work.
 
-## Colour
+## Palette (Pantone TCX)
 
-Roles, not shades. Every colour in `web-astro/src/lib/plan.ts` has exactly one
-counterpart in `PLAN_NIGHT`, and the two sets are disjoint by test.
+Hex values: W3Schools' 2027 list, codes matched to Pantone's report.
 
-| Token | Day | Night | Job |
+| Pantone | TCX | Hex | Job |
 |---|---|---|---|
-| `--paper` / `PLAN.paper` | `#eeede7` | `#100e0a` | the sheet's ground, panels' base |
-| `--paper-deep` | `#e4e2d8` | `#191510` | building fill on the plan |
-| `--ink` / `PLAN.ink` | `#12100c` | `#f4ecd8` | roads, boundaries, all body type |
-| `--ink-soft` | `#3a382f` | `#d8cfb6` | secondary type, attribution |
-| `--ink-faint` | `#6b685c` | `#a89e86` | captions, labels inside panels |
-| `--sign` | `#f2c230` | `#f2c230` | the sign: bands, rail, tag, dots-with-Instagram, heat midpoint |
-| `--sign-deep` | `#dcac14` | `#e0ad18` | pressed/inset state on the sign |
-| `--vermilion` | `#c2402a` | `#e2603f` | one state only: the Instagram handle, errors |
-| `PLAN.water` | `#b8cdd6` | `#16232b` | water |
-| `PLAN.park` | `#c6cfc0` | `#1d2418` | parks, landcover |
+| Antique White | 11-0105 | `#eee5d3` | app ground, plan paper |
+| Dolphin | 16-2901 | `#9a9699` | borders (mixed), recessive marks |
+| Blue Indigo | 19-3928 | `#49516d` | ink, primary, road hairlines |
+| Tarragon | 15-0326 | `#a4ae77` | parks, landcover |
+| Waterfall | 15-5516 | `#3ab0a2` | accent, water, has-Instagram dots, focus ring |
+| Anise Flower | 12-0717 | `#f4e3b5` | heat floor |
+| Arrowwood | 16-0954 | `#bc8d1f` | heat mid |
+| Langoustino | 16-1440 | `#ca6c56` | heat mid-high, zone bloom |
+| Chili Pepper | 19-1557 | `#9b1b30` | heat peak, warning, "sin Instagram" |
+| Lavender Oil | 15-3615 | `#c3a6cd` | night heat, secondary |
+| Rosy Future | 15-1910 | `#f37e9b` | night warning |
+| Princess Blue | 19-4150 | `#00539c` | reserved (no role yet) |
+| Dragon Fire | 16-1460 | `#fd652d` | reserved (no role yet) |
+| Daiquiri Green | 12-0435 | `#c9d77e` | reserved (no role yet) |
+| Hibiscus | 18-1762 | `#de3848` | reserved (no role yet) |
 
-Type on the sign is always `#12100c`, in both themes: the enamel does not change
-colour at night, the sheet does.
+Tokens (`global.css`), all derived from those:
 
-**Why these.** A sign system's whole value is that the sign is the same object in
-daylight and at night; that is why `--sign` never inverts while everything else
-does. Yellow carries the two zones a visitor *acts* in (top band, rail); the map
-stays paper so the dots read.
+| Token | Day | Night |
+|---|---|---|
+| `--background` | `#eee5d3` | `#191c27` |
+| `--surface` | `#f7f3eb` | `#202432` |
+| `--surface-2` | `#efe9dd` | `#262a38` |
+| `--border` / `--border-input` | `#cbc4bb` / `#c0b8ae` | `#333849` / `#3d4356` |
+| `--fg` | `#49516d` (6.26:1 on ground) | `#f2eada` (13.6:1) |
+| `--fg-muted` | `#606479` (4.67:1) | `#d3ccc0` (10.7:1) |
+| `--primary` / `--primary-fg` | `#49516d` / `#f7f3eb` | `#eee5d3` / `#191c27` |
+| `--accent` / `--ring` | `#3ab0a2` | `#3ab0a2` |
+| `--warn` | `#9b1b30` | `#f37e9b` |
+
+Rules the palette has to respect:
+
+- **Chrome is neutral; colour is data.** Waterfall marks what we can show you
+  (Instagram), Tarragon is land, Waterfall tints water, the warm four are heat.
+  Nothing decorative gets a seasonal colour.
+- **Waterfall never carries white text** (2.1:1). It is a fill, a ring, water and
+  a dot — the dot's Blue Indigo stroke is what makes it visible (6.26:1).
+- Night keeps the same data hues; only surfaces invert.
 
 ## Type
 
-One family for the interface, one for the plan.
+One family: **Hanken Grotesk** (variable, self-hosted, `src/assets/fonts/`).
+Map labels use the tiles' own Noto Sans glyphs.
 
-| Voice | Face | Use |
-|---|---|---|
-| Interface | **Hanken Grotesk** (variable, self-hosted from `src/assets/fonts/`) | every control, label, name, number |
-| Plan lettering | Noto Sans / Noto Sans Bold served by OpenFreeMap glyphs | map labels only — the tiles' own font stack |
+Scale: 11.5 / 12.5 / 13.5 / 15 / 20 / 26 px. Weights 400 (body), 500 (rows,
+buttons), 600 (titles, numerals). Nothing above 600 — the previous world's 900s
+were the loudest thing on the screen.
 
-Scale (fixed steps, no in-between sizes): 11 / 12.5 / 15 / 19 / 27 / 38 px.
-Weights: 400 (body), 600 (secondary), 700 (names, labels), 900 (numerals, headings).
+## Shape, depth, motion
 
-Discipline borrowed from signage:
+- Radii: 6 (badges/credit) / 8 (buttons, inputs, rows) / 12 (cards, tag, sheet).
+- Shadows: `--shadow-sm` for the header and cards, `--shadow` for floating
+  surfaces (tag, PWA toast). Single offset, soft blur — no coloured halos, no
+  offset blocks.
+- Motion: 150ms ease on hover/focus; the mobile rail slides 280ms on
+  `cubic-bezier(0.16,1,0.3,1)`. `prefers-reduced-motion` collapses all of it.
 
-- Labels are `text-transform: uppercase` with `letter-spacing: 0.1–0.22em` at 9–11px.
-- Counts are set `font-weight: 900` + `font-variant-numeric: tabular-nums`, 30px in the band.
-- Place names on the plan are upcased and tracked (`place-neighbourhood`, size 13→30 px
-  across z9→z15) — the lettering *is* the wayfinding, not a caption.
-- No italics anywhere. No display face as a costume: the hero is a number.
+## Components (shadcn anatomy, hand-written CSS)
 
-## Layout
-
-- The map is `position: fixed; inset: 0`. Chrome floats over it; nothing insets the map.
-- Top band: 64px (56px on mobile), full width minus the rail.
-- Rail: 340px, right, from under the band to the foot. Ranking by followers; becomes the
-  ficha on selection. Below 900px it is a 68vh bottom sheet, closed until asked.
-- Selected shop: a `maplibregl.Marker` tag — 2px ink border, 3px hard offset shadow,
-  pointer line down to the dot; `transform: translate(-50%, calc(-100% - 12px))`.
-- Attribution: a strip bottom-left, 9.5px, never a paragraph over the map.
-- Spacing rhythm: 6 / 8 / 10 / 12 / 14 / 18 px inside panels; 22–28 px at region edges.
-
-## Components
-
-| Component | Notes |
+| Element | Anatomy |
 |---|---|
-| `SignBand` | pictogram square (36px drawn cup) · wordmark + tracked subtitle · search field (white, 2px ink) · chips · night toggle · count block |
-| `RankRail` | hairline rows (1px ink @15%), name 700 / handle 11px / followers 900 tabular; hover fills 8% ink |
-| `Ficha` | a *paper slip* on the yellow board: 2px ink border, no radius, kicker + 38px name + handle in vermilion + figures row + IG embed + action buttons |
-| `PwaBanner` | ink bar with sign-coloured type, not a card |
-| `Icons` | drawn SVG only, 1.9 stroke, one 24×24 box. No emoji, ever |
+| Header (`.band-top`) | `--surface`, 1px bottom border, `--shadow-sm`; 36px squircle pictogram in `--primary`; wordmark 15/600 + 11.5 muted; search input 36px, 1px `--border-input`, radius 8, ring on focus; pills 32px radius 999; count 22/600 tabular + muted caption |
+| Rail (`.rail`) | ground `--background`, 1px left border; head 13/600 + muted count + ghost icon buttons; rows 8px padding, radius 8, hover `--surface-2`; selected row = `--primary` at 10% with primary text (no coloured border) |
+| Ficha (`.slip`) | card: `--surface`, 1px border, radius 12, `--shadow-sm`, 16px padding; title 20/600; handle in `--accent-fg`; figures separated by hairlines; embed radius 8 with a 1px border; primary + outline buttons, 36px, `gap: 8px` |
+| Map tag (`.tag`) | popover: surface, 1px border, radius 8, `--shadow`, 8px rotated tail; MapLibre owns the transform (`anchor: bottom`, `offset: [0,-10]`) — CSS must not translate it again |
+| PWA toast (`.pwa`) | card + `--shadow`, bottom centre, primary + outline buttons |
+| Attribution (`.credit-strip`) | 11.5px muted on translucent surface, 1px border, radius 6 |
 
-Corners are square except the tag/`.field` (0 radius everywhere — a sign has cut
-edges, not rounded ones).
-
-## States
-
-- **Filtered out = dimmed, not hidden.** Non-matching shops stay on the plan as 1.6px
-  ink ghosts at 0.3 opacity (`shops-dots-dim`); the count and the rail follow. The
-  census never loses its shape.
-- **Selected** = tag on the map + ficha in the rail + `aria-pressed` on nothing else.
-- **Empty result** = one sentence in the rail naming the query and the fix.
-- **Loading** = full-sheet `loading` overlay with a 3px sweeping rule.
-- **Error** = same overlay, vermilion heading, "Revisa tu conexión y recarga."
-- **Focus** = 2px ink outline, 2px offset, in both themes.
-
-## Motion
-
-One authored moment: the mobile rail slides on `cubic-bezier(0.16, 1, 0.3, 1)` over
-280ms. `flyTo` is 800ms, or 0 under `prefers-reduced-motion`, which also collapses
-every transition and animation to 0.001ms. No entrance animations, no hover bounces,
-no parallax: a sign does not animate.
+Icons are drawn SVG (`Icons.tsx`), 1.9 stroke, one 24×24 box. No emoji.
 
 ## Map style
 
-`lib/plan.ts` is a full MapLibre style over OpenFreeMap planet tiles: no sprite, no
-textures, roads as single hairlines (no casings), no POI, road-name or house-number
-layers, and 11 layers' worth of palette that `PLAN_NIGHT` must cover (asserted).
+`lib/plan.ts`: MapLibre style over OpenFreeMap planet tiles, no sprite, no
+textures, roads as single hairline strokes with no casings, no POI / road-name /
+house-number layers, monumental letterspaced place names. `PLAN` (day) and
+`PLAN_NIGHT` must stay **disjoint** and every colour in the style must appear in
+`PLAN_NIGHT` — both asserted in `plan.test.ts`.
 
 Hard-won constraints:
 
-- **One zoom `interpolate` per expression.** A `case` holding two of them makes
-  MapLibre drop the whole layer *silently* (it fires `error`, never throws). Hence two
-  circle layers with filters instead of one with a `case`.
-- **A layer id must not equal its source id.** Layer `shops-dots` reads source `shops`.
-- **`["get","dim"]` is not a boolean**; `["==", ["get","dim"], true]` is.
-- `window.__mapErrors` collects every map error so `tests/smoke.py` can fail on them.
+- **One zoom `interpolate` per expression.** A `case` holding two makes MapLibre
+  drop the layer *silently* (fires `error`, never throws).
+- **A layer id must differ from its source id** (`shops-dots` reads `shops`).
+- **`["get","dim"]` is not a boolean** — use `["==", ["get","dim"], true]`.
+- Remap is case-insensitive; palette hexes are lowercase so both directions agree.
+- `window.__mapErrors` collects map errors; `tests/smoke.py` fails on them.
 
-## What was retired and must not come back
+## Retired and not to be reintroduced
 
-The watercolour basemap, the paper/mottle sprite, the SVG displacement filter over the
-canvas, the prettymaps raster poster, the Tamagui chrome, emoji icon buttons, and the
-Lagrange popup. Owner's decision: one clean map, no raster poster.
+Watercolour basemap, paper/mottle sprite, canvas displacement filter, prettymaps
+raster poster, Tamagui chrome, emoji icon buttons, the MapLibre popup — and the
+enamel-yellow sign world that replaced them (owner: too aggressive).

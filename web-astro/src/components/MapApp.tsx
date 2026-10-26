@@ -54,11 +54,13 @@ export default function MapApp() {
 
   /** Paint the dots for the current theme and filter state. */
   const paintDots = useCallback((map: maplibregl.Map, isNight: boolean) => {
-    const hasIg = "#f2c230";
-    const plain = isNight ? "#f4ecd8" : PLAN.ink;
-    const stroke = isNight ? "#100e0a" : PLAN.paper;
+    // Waterfall marks what we can show; a neutral Dolphin/Indigo mix is the
+    // rest of the census; the stroke carries the contrast on both grounds.
+    const hasIg = "#3ab0a2";
+    const plain = isNight ? "#a6a093" : PLAN.inkFaint;
+    const stroke = isNight ? "#f2eada" : PLAN.ink;
     if (map.getLayer(SHOPS_GHOST)) {
-      map.setPaintProperty(SHOPS_GHOST, "circle-color", isNight ? "#f4ecd8" : PLAN.ink);
+      map.setPaintProperty(SHOPS_GHOST, "circle-color", isNight ? "#a6a093" : PLAN.ink);
     }
     if (!map.getLayer(SHOPS)) return;
     map.setPaintProperty(SHOPS, "circle-color", [
@@ -70,7 +72,7 @@ export default function MapApp() {
     map.setPaintProperty(SHOPS, "circle-stroke-color", [
       "case",
       ["has", "instagram"],
-      isNight ? "#f4ecd8" : PLAN.ink,
+      stroke,
       stroke,
     ]);
   }, []);
@@ -153,9 +155,9 @@ export default function MapApp() {
           source: SOURCE,
           filter: ["!=", ["get", "dim"], true],
           paint: {
-            "circle-radius": ["interpolate", ["linear"], ["zoom"], 10, 3.4, 16, 6.6],
-            "circle-color": "#f2c230",
-            "circle-stroke-width": 1.4,
+            "circle-radius": ["interpolate", ["linear"], ["zoom"], 10, 3.2, 16, 6],
+            "circle-color": "#3ab0a2",
+            "circle-stroke-width": 1.3,
             "circle-stroke-color": PLAN.ink,
           },
         });
@@ -187,14 +189,14 @@ export default function MapApp() {
               "interpolate",
               ["linear"],
               ["get", "zone_followers"],
-              0, "rgba(242,194,48,0.18)",
-              400, "rgba(242,194,48,0.32)",
-              1500, "rgba(226,133,26,0.34)",
-              5000, "rgba(194,64,42,0.36)",
+              0, "rgba(58,176,162,0.10)",
+              400, "rgba(58,176,162,0.20)",
+              1500, "rgba(202,108,86,0.22)",
+              5000, "rgba(155,27,48,0.26)",
             ],
             "circle-stroke-color": PLAN.ink,
             "circle-stroke-width": 1,
-            "circle-stroke-opacity": 0.25,
+            "circle-stroke-opacity": 0.18,
             "circle-opacity": 0.9,
           },
         });
@@ -314,7 +316,7 @@ export default function MapApp() {
       ev.stopPropagation();
       setRailOpen(true);
     });
-    markerRef.current = new maplibregl.Marker({ element: el, anchor: "bottom" })
+    markerRef.current = new maplibregl.Marker({ element: el, anchor: "bottom", offset: [0, -10] })
       .setLngLat([selected.lon, selected.lat])
       .addTo(map);
   }, [selected, status]);
