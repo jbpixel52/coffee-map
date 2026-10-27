@@ -69,6 +69,22 @@ export default function StatsPanel({ stats, city, onCity, lang, onClose }: Props
   };
   const rankLabel = t(lang, "statRankAria");
 
+  // The city's single strongest claim, computed from the same ranks the rows use.
+  // Only facts we actually measure: no adjectives without a number behind them.
+  const insight = (() => {
+    const top = (pick: (s: CityStats) => number | null, lower = false) =>
+      rankBy(stats, pick, lower)[0] === current.name;
+    if (top((s) => s.igPct)) return `${num(current.igPct, locale)}% — ${t(lang, "insightInstagram")}`;
+    if (top((s) => s.perSqMi)) return `${num(current.perSqMi ?? 0, locale, 2)}/sq mi — ${t(lang, "insightDensity")}`;
+    if (top((s) => s.shops)) return `${current.shops.toLocaleString(locale)} — ${t(lang, "insightShops")}`;
+    if (top((s) => s.nearestM, true)) return `${num(current.nearestM ?? 0, locale, 0)} m — ${t(lang, "insightWalk")}`;
+    const order = rankBy(stats, (s) => s.shops);
+    return format(t(lang, "insightRank"), {
+      rank: ordinal(order.indexOf(current.name) + 1),
+      of: String(order.length),
+    });
+  })();
+
   return (
     <section className="panel" id="panel-stats" role="tabpanel" aria-labelledby="tab-stats">
       <header className="panel-head">
@@ -108,6 +124,10 @@ export default function StatsPanel({ stats, city, onCity, lang, onClose }: Props
           {format(t(lang, "statShare"), { pct: num(current.sharePct, locale) })}
         </p>
 
+        <p className="stats-insight">
+          <span aria-hidden="true">💡</span> {insight}
+        </p>
+
         <ul className="stat-list" aria-label={t(lang, "statsAria")}>
           <Row
             emoji="☕"
@@ -121,7 +141,13 @@ export default function StatsPanel({ stats, city, onCity, lang, onClose }: Props
           <Row
             emoji="🏙️"
             label={t(lang, "statDensity")}
-            value={current.perSqMi == null ? "—" : num(current.perSqMi, locale, 2)}
+            value={
+              current.perSqMi == null
+                ? "—"
+                : current.perSqMi < 0.01
+                  ? "<0.01"
+                  : num(current.perSqMi, locale, 2)
+            }
             colour="var(--princess-blue)"
             rank={rank((s) => s.perSqMi)}
             rankLabel={rankLabel}

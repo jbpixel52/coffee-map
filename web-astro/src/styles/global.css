@@ -1143,3 +1143,14 @@ body {
   background: color-mix(in srgb, var(--arrowwood) 15%, transparent);
   color: var(--fg);
 }
+
+.stats-insight {
+  margin: 0 8px 10px;
+  padding: 9px 11px;
+  font-size: var(--step-2);
+  line-height: 1.45;
+  color: var(--fg);
+  background: color-mix(in srgb, var(--arrowwood) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--arrowwood) 32%, transparent);
+  border-radius: var(--radius-md);
+}

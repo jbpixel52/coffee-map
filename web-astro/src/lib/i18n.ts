@@ -74,6 +74,11 @@ const en = {
   statAddress: "with a street address",
   statRankAria: "best on the map",
   statsAria: "Coffee shop statistics by city",
+  insightInstagram: "the highest share on Instagram",
+  insightDensity: "the densest café city on the map",
+  insightShops: "the most cafés on the map",
+  insightWalk: "the shortest walk to the next café",
+  insightRank: "{rank} of {of} cities by shop count",
 } as const;
 
 export type I18nKey = keyof typeof en;
@@ -152,6 +157,11 @@ const es: Record<I18nKey, string> = {
   statAddress: "con dirección",
   statRankAria: "el mejor del mapa",
   statsAria: "Estadísticas de cafeterías por ciudad",
+  insightInstagram: "la mayor proporción en Instagram",
+  insightDensity: "la ciudad más densa en cafeterías",
+  insightShops: "la mayor cantidad de cafeterías del mapa",
+  insightWalk: "el recorrido más corto a la siguiente cafetería",
+  insightRank: "{rank} de {of} ciudades por número de cafeterías",
 };
 
 export const DICT: Record<Lang, Record<I18nKey, string>> = { en, es };
