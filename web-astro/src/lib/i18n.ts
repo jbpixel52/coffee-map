@@ -79,6 +79,11 @@ const en = {
   insightShops: "the most cafés on the map",
   insightWalk: "the shortest walk to the next café",
   insightRank: "{rank} of {of} cities by shop count",
+  pcBusiestZip: "busiest ZIP",
+  pcWalk: "walk to next",
+  pcPerCapita: "per 100k",
+  pcAddress: "with address",
+  pcAria: "Postcard for {city}",
 } as const;
 
 export type I18nKey = keyof typeof en;
@@ -162,6 +167,11 @@ const es: Record<I18nKey, string> = {
   insightShops: "la mayor cantidad de cafeterías del mapa",
   insightWalk: "el recorrido más corto a la siguiente cafetería",
   insightRank: "{rank} de {of} ciudades por número de cafeterías",
+  pcBusiestZip: "CP más concurrido",
+  pcWalk: "camine al siguiente",
+  pcPerCapita: "por 100 mil",
+  pcAddress: "con dirección",
+  pcAria: "Postal de {city}",
 };
 
 export const DICT: Record<Lang, Record<I18nKey, string>> = { en, es };

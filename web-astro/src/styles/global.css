@@ -1055,16 +1055,95 @@ body {
   line-height: 1.45;
   color: var(--fg-muted);
 }
-.stats-headline {
+/* Postcard: one city as a collectible card — a hero count, a stamp, three facts.
+   Paper grain is texture, not decoration: it keeps the card from reading as a panel. */
+.postcard {
+  position: relative;
   margin: 0 8px 10px;
-  font-size: var(--step-2);
+  padding: 12px 14px 11px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background:
+    repeating-linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--dolphin) 9%, transparent) 0 2px,
+      transparent 2px 9px
+    ),
+    var(--surface);
+}
+.postcard-stamp {
+  position: absolute;
+  top: 11px;
+  right: 12px;
+  width: 33px;
+  height: 39px;
+  display: grid;
+  place-items: center;
+  border: 1.5px dashed color-mix(in srgb, var(--chili-pepper) 52%, transparent);
+  border-radius: 3px;
+  background: var(--surface);
+}
+.postcard-stamp b {
+  font-size: 10.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: color-mix(in srgb, var(--chili-pepper) 88%, var(--fg));
+}
+.postcard-city {
+  margin: 0;
+  padding-right: 42px;
+  font-size: var(--step-1);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
   color: var(--fg-muted);
 }
-.stats-headline b {
-  font-size: var(--step-4);
+.postcard-hero {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin: 3px 0 10px;
+  font-size: 31px;
   font-weight: 600;
-  color: var(--fg);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
+}
+.postcard-hero span {
+  font-size: var(--step-1);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.postcard-facts {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 9px 0 0;
+  border-top: 1px dashed color-mix(in srgb, var(--border) 92%, transparent);
+}
+.postcard-facts li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.postcard-facts b {
+  font-size: var(--step-3);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.postcard-facts span {
+  font-size: 10px;
+  line-height: 1.2;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
 }
 .stat-list {
   list-style: none;

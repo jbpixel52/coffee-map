@@ -16,6 +16,12 @@ and populations are city-proper (US) or municipio (MX) 2020 census figures, kept
 `config/city*.toml` next to each city, so densities compare only loosely across the
 border — the panel says so. Every figure is ranked against the other cities.
 
+Above the rows sits the city's own card (sketch 10 of twelve): the shop count as a hero
+number, a stamp carrying that city's share of the whole map, and three facts that
+actually exist for it — density, Instagram share, busiest ZIP, falling back to walk
+distance or address coverage when a city has no handles yet. A postcard that prints a
+0% share for a city whose discovery never ran would be lying.
+
 A city's scrape can reach across a border (Tijuana's Maps queries return Chula Vista
 cafés). `merge_cities.py` drops a city's claim on a shop another city already owns at
 the same coordinates, keeping the claim whose postcode belongs to that city.

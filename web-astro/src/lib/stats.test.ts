@@ -1,6 +1,7 @@
+import type { CityStats } from "./stats";
 import { describe, expect, it } from "vitest";
 import type { Feature, Point } from "geojson";
-import { cityStats, meanNearestM, ordinal, rankBy, topBrand, zipOf } from "./stats";
+import { cityStats, meanNearestM, ordinal, postcardFacts, rankBy, topBrand, zipOf } from "./stats";
 
 const shop = (
   name: string,
@@ -138,5 +139,44 @@ describe("ordinal", () => {
     expect([1, 2, 3, 4, 11, 12, 13, 21, 22].map(ordinal)).toEqual([
       "1st", "2nd", "3rd", "4th", "11th", "12th", "13th", "21st", "22nd",
     ]);
+  });
+});
+
+describe("postcardFacts", () => {
+  const base: CityStats = {
+    name: "Testville",
+    shops: 100,
+    sharePct: 1,
+    perSqMi: 4.2,
+    per100k: 8.1,
+    zipCount: 9,
+    shopsPerZip: 11.1,
+    topZip: { zip: "12345", count: 12 },
+    igShops: 20,
+    igPct: 20,
+    followers: 1000,
+    medianFollowers: 500,
+    topShop: { name: "Top", followers: 900 },
+    nearestM: 120,
+    brand: null,
+    addressPct: 60,
+  };
+
+  it("takes density, Instagram and the busiest ZIP when the city has all three", () => {
+    expect(postcardFacts(base).map((f) => f.key)).toEqual(["density", "instagram", "zip"]);
+    expect(postcardFacts(base)[2].value).toBe("12345");
+  });
+
+  it("skips a metric the city cannot support instead of printing a zero", () => {
+    // no handles discovered: a 0% Instagram share would read as "nobody is online"
+    const quiet = { ...base, igShops: 0, igPct: 0 };
+    expect(postcardFacts(quiet).map((f) => f.key)).toEqual(["density", "zip", "walk"]);
+  });
+
+  it("falls back through the order and never emits a null value", () => {
+    const bare = { ...base, perSqMi: null, igShops: 0, igPct: 0, topZip: null, addressPct: 0 };
+    const facts = postcardFacts(bare);
+    expect(facts.map((f) => f.key)).toEqual(["walk", "perCapita"]);
+    expect(facts.every((f) => f.value !== null)).toBe(true);
   });
 });

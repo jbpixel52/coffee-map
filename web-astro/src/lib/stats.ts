@@ -184,6 +184,39 @@ export function cityStats(
   });
 }
 
+/**
+ * The three facts a city postcard carries. Ordered by how much they say about the
+ * place, taking the first three the city actually has: a city with no Instagram
+ * handles shows its walk distance instead of a meaningless 0%.
+ */
+export type PostcardFactKey = "density" | "instagram" | "zip" | "walk" | "perCapita" | "address";
+
+export interface PostcardFact {
+  key: PostcardFactKey;
+  /** primitive so the caller formats; null never appears in the output */
+  value: number | string;
+}
+
+const POSTCARD_ORDER: Array<[PostcardFactKey, (s: CityStats) => number | string | null]> = [
+  ["density", (s) => s.perSqMi],
+  ["instagram", (s) => (s.igShops > 0 ? s.igPct : null)],
+  ["zip", (s) => s.topZip?.zip ?? null],
+  ["walk", (s) => s.nearestM],
+  ["perCapita", (s) => s.per100k],
+  ["address", (s) => (s.addressPct > 0 ? s.addressPct : null)],
+];
+
+export function postcardFacts(city: CityStats, take = 3): PostcardFact[] {
+  const facts: PostcardFact[] = [];
+  for (const [key, pick] of POSTCARD_ORDER) {
+    const value = pick(city);
+    if (value === null || value === undefined) continue;
+    facts.push({ key, value });
+    if (facts.length === take) break;
+  }
+  return facts;
+}
+
 /** 1 → "1st", 2 → "2nd", 11 → "11th"; the stats tab only needs en. */
 export function ordinal(n: number): string {
   const mod100 = n % 100;

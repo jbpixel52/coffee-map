@@ -5,7 +5,14 @@
 import React from "react";
 import { Close } from "./Icons";
 import { format, localeFor, t, type Lang } from "../lib/i18n";
-import { ordinal, rankBy, type CityStats } from "../lib/stats";
+import {
+  ordinal,
+  postcardFacts,
+  rankBy,
+  type CityStats,
+  type PostcardFact,
+  type PostcardFactKey,
+} from "../lib/stats";
 
 interface Props {
   stats: CityStats[];
@@ -85,6 +92,24 @@ export default function StatsPanel({ stats, city, onCity, lang, onClose }: Props
     });
   })();
 
+  const factLabels: Record<PostcardFactKey, string> = {
+    density: t(lang, "statDensity"),
+    instagram: t(lang, "statInstagram"),
+    zip: t(lang, "pcBusiestZip"),
+    walk: t(lang, "pcWalk"),
+    perCapita: t(lang, "pcPerCapita"),
+    address: t(lang, "pcAddress"),
+  };
+  const factValue = (f: PostcardFact): string => {
+    if (f.key === "zip") return String(f.value);
+    const n = f.value as number;
+    if (f.key === "density") return n < 0.01 ? "<0.01" : num(n, locale, 2);
+    if (f.key === "walk") return `${num(n, locale, 0)} m`;
+    if (f.key === "instagram" || f.key === "address") return `${num(n, locale)}%`;
+    return num(n, locale);
+  };
+  const facts = postcardFacts(current);
+
   return (
     <section className="panel" id="panel-stats" role="tabpanel" aria-labelledby="tab-stats">
       <header className="panel-head">
@@ -119,10 +144,28 @@ export default function StatsPanel({ stats, city, onCity, lang, onClose }: Props
       <div className="panel-body">
         <p className="stats-note">{t(lang, "statsNote")}</p>
 
-        <p className="stats-headline">
-          <b>{current.shops.toLocaleString(locale)}</b> ·{" "}
-          {format(t(lang, "statShare"), { pct: num(current.sharePct, locale) })}
-        </p>
+        <article className="postcard" aria-label={format(t(lang, "pcAria"), { city: current.name })}>
+          <span
+            className="postcard-stamp"
+            role="note"
+            aria-label={format(t(lang, "statShare"), { pct: num(current.sharePct, locale) })}
+          >
+            <b aria-hidden="true">{num(current.sharePct, locale)}%</b>
+          </span>
+          <p className="postcard-city">{current.name}</p>
+          <p className="postcard-hero">
+            {current.shops.toLocaleString(locale)}
+            <span>{t(lang, "statShops")}</span>
+          </p>
+          <ul className="postcard-facts">
+            {facts.map((f) => (
+              <li key={f.key}>
+                <b>{factValue(f)}</b>
+                <span>{factLabels[f.key]}</span>
+              </li>
+            ))}
+          </ul>
+        </article>
 
         <p className="stats-insight">
           <span aria-hidden="true">💡</span> {insight}
