@@ -11,7 +11,8 @@ Cities: Austin (317), Ensenada (27), Guadalajara (201), Los Angeles (1,170), Mex
 
 The **Stats** tab compares cities on density per sq mi, cafés per 100k residents,
 cafés per ZIP code, Instagram reach (share and combined followers), the mean walk
-to the next café, the most repeated name, and how many shops have an address. Areas
+to the next café (a sampled mean, labelled as such so nobody reads it as
+the typical walk), the most repeated name, and how many shops have an address. Areas
 and populations are city-proper (US) or municipio (MX) 2020 census figures, kept in
 `config/city*.toml` next to each city, so densities compare only loosely across the
 border — the panel says so. Every figure is ranked against the other cities.
