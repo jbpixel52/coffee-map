@@ -204,12 +204,26 @@ def zip_prefix_owners(features: list[dict]) -> dict[str, str]:
     return {prefix: max(bucket, key=lambda c: bucket[c]) for prefix, bucket in counts.items()}
 
 
-def drop_cross_city_duplicates(features: list[dict]) -> list[dict]:
+def _inside(bbox: tuple[float, float, float, float] | None, lat: float, lon: float) -> bool:
+    if not bbox:
+        return False
+    s, w, n, e = bbox
+    return s <= lat <= n and w <= lon <= e
+
+
+def drop_cross_city_duplicates(
+    features: list[dict],
+    bboxes: dict[str, tuple[float, float, float, float]] | None = None,
+) -> list[dict]:
     """Drop a city's claim on a shop another city already owns at the same spot.
 
     Only features whose postcode is foreign to their own city are candidates, and a
     group is only resolved when exactly one claimant's postcode fits its city — an
     ambiguous pair is left alone rather than guessed at.
+
+    When `bboxes` is given, a claim must also land inside its own city's box. Postcodes
+    on OSM tags are sometimes simply wrong (a Tijuana café tagged with a Chula Vista
+    ZIP), and a wrong postcode must not hand a shop to the wrong side of the border.
     """
     owners = zip_prefix_owners(features)
     groups: dict[tuple, list[dict]] = {}
@@ -224,12 +238,21 @@ def drop_cross_city_duplicates(features: list[dict]) -> list[dict]:
         cities = {f["properties"]["city"] for f in group}
         if len(cities) < 2:
             continue
+        lon, lat = group[0]["geometry"]["coordinates"]
+
+        def own_ground(f: dict) -> bool:
+            return bboxes is None or _inside(bboxes.get(f["properties"]["city"]), lat, lon)
+
         fitting = [
             f
             for f in group
-            if (owners.get(_zip_prefix(f["properties"].get("address")) or "") or f["properties"]["city"])
+            if (owners.get(_zip_prefix(f["properties"]["address"])) or f["properties"]["city"])
             == f["properties"]["city"]
+            and own_ground(f)
         ]
+        if not fitting and bboxes is not None:
+            # the postcode is no help here; coordinates still are
+            fitting = [f for f in group if own_ground(f)]
         if not fitting or len(fitting) == len(group):
             continue
         for f in group:

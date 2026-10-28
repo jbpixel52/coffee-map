@@ -25,6 +25,8 @@ gmaps_queries = [
   "coffee South Park San Diego",
   "espresso bar San Diego",
   "brunch cafe San Diego",
+  "matcha San Diego",
+  "matcha cafe San Diego",
 ]
 web_queries = [
   "best coffee shops San Diego",

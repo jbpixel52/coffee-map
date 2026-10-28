@@ -36,16 +36,16 @@
     {
       "name": "Mexico City",
       "slug": "cdmx-n",
-      "shop_count": 1051,
-      "with_instagram": 18,
+      "shop_count": 1060,
+      "with_instagram": 19,
       "population": 9209944,
       "area_sq_km": 1485.0
     },
     {
       "name": "New York City",
       "slug": "nyc-n",
-      "shop_count": 2670,
-      "with_instagram": 152,
+      "shop_count": 2714,
+      "with_instagram": 154,
       "population": 8804190,
       "area_sq_km": 778.2
     },
@@ -60,7 +60,7 @@
     {
       "name": "San Diego",
       "slug": "sd",
-      "shop_count": 674,
+      "shop_count": 715,
       "with_instagram": 41,
       "population": 1386932,
       "area_sq_km": 842.2
@@ -68,29 +68,29 @@
     {
       "name": "San Francisco",
       "slug": "sfo",
-      "shop_count": 786,
-      "with_instagram": 49,
+      "shop_count": 822,
+      "with_instagram": 64,
       "population": 873965,
       "area_sq_km": 121.4
     },
     {
       "name": "Seattle",
       "slug": "sea",
-      "shop_count": 773,
-      "with_instagram": 58,
+      "shop_count": 800,
+      "with_instagram": 61,
       "population": 737015,
       "area_sq_km": 217.0
     },
     {
       "name": "Tijuana",
       "slug": "tj",
-      "shop_count": 627,
-      "with_instagram": 117,
+      "shop_count": 650,
+      "with_instagram": 116,
       "population": 1922523,
       "area_sq_km": 1239.6
     }
   ],
-  "generated_at": "2026-10-27T15:49:57Z",
-  "shop_count": 8681,
-  "with_instagram": 619
+  "generated_at": "2026-10-28T23:50:47Z",
+  "shop_count": 8861,
+  "with_instagram": 639
 }

@@ -30,6 +30,9 @@ gmaps_queries = [
   "cafe Avenida Revolucion Tijuana",
   "cafeteria Agua Caliente Tijuana",
   "cafe Sanchez Taboada Tijuana",
+  "matcha Tijuana",
+  "matcha cafe Tijuana",
+  "matcha Tijuana Zona Rio",
 ]
 web_queries = [
   "mejores cafeterias Tijuana",

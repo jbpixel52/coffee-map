@@ -12,6 +12,14 @@ def test_query_shape():
     q = build_query(load_city())
     assert '"amenity"="cafe"' in q and "out center tags" in q and "32.37" in q
 
+
+def test_query_includes_matcha_shops_but_not_tea_in_general():
+    q = build_query(load_city())
+    # a matcha-branded tea shop is a café (it serves coffee), a plain tea shop is not
+    assert '"shop"="tea"]["name"~"matcha",i]' in q
+    assert '"cuisine"~"matcha",i' in q
+    assert '"shop"="tea"]' not in q.replace('"shop"="tea"]["name"~"matcha",i]', "")
+
 def test_parses_real_overpass_payload():
     items = parse_elements(FIXTURE.read_bytes())
     assert len(items) == TOTAL

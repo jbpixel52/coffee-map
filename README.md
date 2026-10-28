@@ -17,6 +17,10 @@ and populations are city-proper (US) or municipio (MX) 2020 census figures, kept
 `config/city*.toml` next to each city, so densities compare only loosely across the
 border — the panel says so. Every figure is ranked against the other cities.
 
+Matcha-first places count as cafés: the Overpass query takes every `amenity=cafe` plus
+matcha-branded tea shops and `cuisine=matcha` places, because they serve coffee too.
+Plain `shop=tea` (boba, tea houses) stays out — that is a different census.
+
 Above the rows sits the city's own card (sketch 10 of twelve): the shop count as a hero
 number, a stamp carrying that city's share of the whole map, and three facts that
 actually exist for it — density, Instagram share, busiest ZIP, falling back to walk

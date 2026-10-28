@@ -13,6 +13,7 @@ import sys as _sys
 _sys.path.insert(0, str(__import__('pathlib').Path(__file__).resolve().parents[1] / 'src'))
 from coffeemap.merge import drop_cross_city_duplicates  # noqa: E402
 from pathlib import Path
+import tomllib  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 EXPORT_ROOT = ROOT / "data" / "export"
@@ -26,6 +27,25 @@ def load_city(slug_dir: Path) -> tuple[str, list[dict], dict]:
         f["properties"]["city"] = meta["city"]
         f["properties"]["city_slug"] = slug_dir.name
     return meta["city"], fc["features"], meta
+
+
+def city_bboxes() -> dict[str, tuple[float, float, float, float]]:
+    """City name -> union of its bbox tiles (CDMX and NYC are fetched as two)."""
+    out: dict[str, tuple[float, float, float, float]] = {}
+    for cfg in (ROOT / "config").glob("city*.toml"):
+        raw = tomllib.loads(cfg.read_text(encoding="utf-8"))
+        try:
+            box = (raw["bbox_south"], raw["bbox_west"], raw["bbox_north"], raw["bbox_east"])
+        except KeyError:
+            continue
+        name = raw.get("name")
+        if not name:
+            continue
+        if name in out:
+            s0, w0, n0, e0 = out[name]
+            box = (min(s0, box[0]), min(w0, box[1]), max(n0, box[2]), max(e0, box[3]))
+        out[name] = box
+    return out
 
 
 def main() -> int:
@@ -66,7 +86,7 @@ def main() -> int:
             continue
         seen.add(key)
         unique.append(f)
-    features = drop_cross_city_duplicates(unique)
+    features = drop_cross_city_duplicates(unique, city_bboxes())
     features.sort(key=lambda f: (f["properties"]["city"], f["properties"]["name"].lower()))
     # Ids restart at 1 in every per-city export; the merged file needs one
     # namespace so React can key rows without reusing the wrong DOM node.

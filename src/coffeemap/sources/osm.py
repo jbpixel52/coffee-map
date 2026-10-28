@@ -8,18 +8,28 @@ import httpx
 from ..config import City
 
 MIRRORS = [
-    "https://overpass-api.de/api/interpreter",
+    # maps.mail.ru answers fast with current planet data; overpass-api.de bans
+    # bursty IPs, so a working primary that is not api.de is load-bearing.
+    "https://maps.mail.ru/osm/tools/overpass/api/interpreter",
     "https://overpass.kumi.systems/api/interpreter",
+    "https://overpass.private.coffee/api/interpreter",
+    "https://overpass-api.de/api/interpreter",
 ]
 UA = "coffee-map/0.1 (github.com/jbpixel52/coffee-map)"
 
 
 def build_query(city: City) -> str:
     s, w, n, e = city.bbox
+    bbox = f"({s},{w},{n},{e})"
     return (
-        "[out:json][timeout:180];"
-        f'nwr["amenity"="cafe"]({s},{w},{n},{e});'
-        "out center tags;"
+        "[out:json][timeout:180];("
+        f'nwr["amenity"="cafe"]{bbox};'
+        # Matcha-first places count as cafés on this map: they serve coffee too.
+        # shop=tea alone is NOT included — boba and tea houses are a different census —
+        # but a matcha-branded one is a café in every city's local understanding.
+        f'nwr["shop"="tea"]["name"~"matcha",i]{bbox};'
+        f'nwr["cuisine"~"matcha",i]{bbox};'
+        ");out center tags;"
     )
 
 

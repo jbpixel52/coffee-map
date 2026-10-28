@@ -136,3 +136,19 @@ def test_cross_city_duplicates_leave_ambiguous_groups_alone():
         _feat("La Esquina", "San Diego", 32.53, -117.04, ""),
     ]
     assert len(drop_cross_city_duplicates(feats)) == 2
+
+
+def test_wrong_postcode_does_not_hand_a_shop_to_the_other_city():
+    from coffeemap.merge import drop_cross_city_duplicates
+
+    # Divina Matcha: a Tijuana café whose OSM address carries a Chula Vista ZIP.
+    # Without coordinates the postcode rule gives it to San Diego, 30 km away.
+    feats = [
+        _feat("Divina Matcha", "Tijuana", 32.5267, -116.9056, "216 3rd Avenue, Tijuana, 91910"),
+        _feat("Divina Matcha", "San Diego", 32.5267, -116.9056, "216 3rd Avenue, Tijuana, 91910"),
+    ]
+    bboxes = {"Tijuana": (32.37, -117.20, 32.70, -116.87), "San Diego": (32.53, -117.28, 33.11, -116.70)}
+    kept = drop_cross_city_duplicates(feats, bboxes)
+    assert [f["properties"]["city"] for f in kept] == ["Tijuana"]
+    # and with no bboxes the old postcode behaviour is unchanged
+    assert len(drop_cross_city_duplicates(feats)) == 1
