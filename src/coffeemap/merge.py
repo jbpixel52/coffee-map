@@ -204,11 +204,50 @@ def zip_prefix_owners(features: list[dict]) -> dict[str, str]:
     return {prefix: max(bucket, key=lambda c: bucket[c]) for prefix, bucket in counts.items()}
 
 
-def _inside(bbox: tuple[float, float, float, float] | None, lat: float, lon: float) -> bool:
+def _inside(bbox: tuple[float, float, float, float] | None, lat: float, lon: float, margin: float = 0.0) -> bool:
     if not bbox:
         return False
     s, w, n, e = bbox
-    return s <= lat <= n and w <= lon <= e
+    return s - margin <= lat <= n + margin and w - margin <= lon <= e + margin
+
+
+# A city's scrape can only find shops its bbox covers, so a shop that only one city
+# found can still be on the other side of a border. How far outside the owning city's
+# box we still believe its postcode: ~5 km, which separates San Ysidro (32.54–32.56)
+# from Tijuana's centre (32.52) without reaching into it.
+REASSIGN_MARGIN_DEG = 0.045
+
+
+def reassign_by_postcode(
+    features: list[dict],
+    bboxes: dict[str, tuple[float, float, float, float]],
+    margin: float = REASSIGN_MARGIN_DEG,
+) -> int:
+    """Move a shop to the city that owns its postcode when it sits near that city.
+
+    `drop_cross_city_duplicates` only acts when two cities both claim a shop. Six San
+    Diego shops (San Ysidro, Otay Mesa) exist only under Tijuana because Tijuana's bbox
+    reaches north of the border while San Diego's stops at 32.58. Their addresses say
+    92173/92154, and San Diego owns those prefixes — but a wrong postcode on a genuine
+    Tijuana café must not move it, so the coordinates have to agree: the point must fall
+    within `margin` of the owning city's box.
+    """
+    owners = zip_prefix_owners(features)
+    moved = 0
+    for f in features:
+        p = f["properties"]
+        lon, lat = f["geometry"]["coordinates"]
+        prefix = _zip_prefix(p.get("address"))
+        owner = owners.get(prefix) if prefix else None
+        if not owner or owner == p["city"]:
+            continue
+        if not _inside(bboxes.get(owner), lat, lon, margin):
+            continue
+        p["city"] = owner
+        if "city_slug" in p:
+            p["city_slug"] = owner
+        moved += 1
+    return moved
 
 
 def drop_cross_city_duplicates(

@@ -152,3 +152,22 @@ def test_wrong_postcode_does_not_hand_a_shop_to_the_other_city():
     assert [f["properties"]["city"] for f in kept] == ["Tijuana"]
     # and with no bboxes the old postcode behaviour is unchanged
     assert len(drop_cross_city_duplicates(feats)) == 1
+
+
+def test_postcode_reassignment_needs_the_coordinates_to_agree():
+    from coffeemap.merge import reassign_by_postcode
+
+    bboxes = {"Tijuana": (32.37, -117.20, 32.70, -116.87), "San Diego": (32.58, -117.28, 32.90, -116.95)}
+    feats = [
+        # San Ysidro: only Tijuana's bbox reached it, but the address is San Diego's
+        _feat("Starbucks", "Tijuana", 32.5442, -117.0420, "4201 International Gateway, 92173"),
+        # a genuine Tijuana café with a wrong US postcode stays put: the pin is 7 km south
+        _feat("Café Centro", "Tijuana", 32.5220, -117.0380, "Av. Revolución 123, Tijuana, 92173"),
+        # plenty of San Diego shops so the 921 prefix belongs to San Diego
+        *[_feat(f"SD Café {i}", "San Diego", 32.70 + i / 1000, -117.16, "700 Kettner Boulevard, San Diego, 92101") for i in range(5)],
+    ]
+    moved = reassign_by_postcode(feats, bboxes)
+    by_name = {f["properties"]["name"]: f["properties"]["city"] for f in feats}
+    assert moved == 1
+    assert by_name["Starbucks"] == "San Diego"
+    assert by_name["Café Centro"] == "Tijuana"
