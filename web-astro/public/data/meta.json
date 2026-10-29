@@ -5,7 +5,7 @@
       "name": "Austin",
       "slug": "aus",
       "shop_count": 317,
-      "with_instagram": 26,
+      "with_instagram": 40,
       "population": 961855,
       "area_sq_km": 823.4
     },
@@ -29,7 +29,7 @@
       "name": "Los Angeles",
       "slug": "la",
       "shop_count": 1170,
-      "with_instagram": 114,
+      "with_instagram": 385,
       "population": 3898747,
       "area_sq_km": 1215.0
     },
@@ -37,7 +37,7 @@
       "name": "Mexico City",
       "slug": "cdmx-n",
       "shop_count": 1060,
-      "with_instagram": 19,
+      "with_instagram": 22,
       "population": 9209944,
       "area_sq_km": 1485.0
     },
@@ -45,7 +45,7 @@
       "name": "New York City",
       "slug": "nyc-n",
       "shop_count": 2714,
-      "with_instagram": 154,
+      "with_instagram": 236,
       "population": 8804190,
       "area_sq_km": 778.2
     },
@@ -53,7 +53,7 @@
       "name": "Oakland",
       "slug": "oak",
       "shop_count": 385,
-      "with_instagram": 36,
+      "with_instagram": 46,
       "population": 440646,
       "area_sq_km": 144.8
     },
@@ -61,7 +61,7 @@
       "name": "San Diego",
       "slug": "sd",
       "shop_count": 721,
-      "with_instagram": 41,
+      "with_instagram": 53,
       "population": 1386932,
       "area_sq_km": 842.2
     },
@@ -69,7 +69,7 @@
       "name": "San Francisco",
       "slug": "sfo",
       "shop_count": 822,
-      "with_instagram": 64,
+      "with_instagram": 93,
       "population": 873965,
       "area_sq_km": 121.4
     },
@@ -77,7 +77,7 @@
       "name": "Seattle",
       "slug": "sea",
       "shop_count": 800,
-      "with_instagram": 61,
+      "with_instagram": 150,
       "population": 737015,
       "area_sq_km": 217.0
     },
@@ -85,12 +85,12 @@
       "name": "Tijuana",
       "slug": "tj",
       "shop_count": 644,
-      "with_instagram": 116,
+      "with_instagram": 139,
       "population": 1922523,
       "area_sq_km": 1239.6
     }
   ],
-  "generated_at": "2026-10-28T23:50:47Z",
+  "generated_at": "2026-10-29T00:22:42Z",
   "shop_count": 8861,
-  "with_instagram": 639
+  "with_instagram": 1172
 }
