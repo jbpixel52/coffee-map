@@ -6,7 +6,7 @@ from coffeemap.config import load_city
 def test_loads_default_city(tmp_path: Path):
     city = load_city()
     assert city.name == "Tijuana"
-    assert city.bbox == (32.37, -117.20, 32.70, -116.87)
+    assert city.bbox == (32.37, -117.20, 32.70, -116.78)  # east edge covers the municipio
     assert city.locale == "es-MX"
     # multi-query harvest (zone variants) + web-tier SERP queries
     assert len(city.gmaps_queries) >= 15
