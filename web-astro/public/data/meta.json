@@ -5,7 +5,7 @@
       "name": "Austin",
       "slug": "aus",
       "shop_count": 317,
-      "with_instagram": 40,
+      "with_instagram": 41,
       "population": 961855,
       "area_sq_km": 823.4
     },
@@ -20,32 +20,32 @@
     {
       "name": "Guadalajara",
       "slug": "gdl",
-      "shop_count": 201,
-      "with_instagram": 8,
+      "shop_count": 213,
+      "with_instagram": 9,
       "population": 1385629,
       "area_sq_km": 151.5
     },
     {
       "name": "Los Angeles",
-      "slug": "la",
-      "shop_count": 1170,
-      "with_instagram": 388,
+      "slug": "la-n",
+      "shop_count": 1224,
+      "with_instagram": 118,
       "population": 3898747,
       "area_sq_km": 1215.0
     },
     {
       "name": "Mexico City",
       "slug": "cdmx-n",
-      "shop_count": 1060,
-      "with_instagram": 18,
+      "shop_count": 1097,
+      "with_instagram": 19,
       "population": 9209944,
       "area_sq_km": 1485.0
     },
     {
       "name": "New York City",
       "slug": "nyc-n",
-      "shop_count": 2714,
-      "with_instagram": 195,
+      "shop_count": 2955,
+      "with_instagram": 218,
       "population": 8804190,
       "area_sq_km": 778.2
     },
@@ -53,44 +53,44 @@
       "name": "Oakland",
       "slug": "oak",
       "shop_count": 385,
-      "with_instagram": 44,
+      "with_instagram": 46,
       "population": 440646,
       "area_sq_km": 144.8
     },
     {
       "name": "San Diego",
       "slug": "sd",
-      "shop_count": 823,
-      "with_instagram": 62,
+      "shop_count": 838,
+      "with_instagram": 81,
       "population": 1386932,
       "area_sq_km": 842.2
     },
     {
       "name": "San Francisco",
       "slug": "sfo",
-      "shop_count": 822,
-      "with_instagram": 91,
+      "shop_count": 849,
+      "with_instagram": 99,
       "population": 873965,
       "area_sq_km": 121.4
     },
     {
       "name": "Seattle",
       "slug": "sea",
-      "shop_count": 800,
-      "with_instagram": 151,
+      "shop_count": 814,
+      "with_instagram": 158,
       "population": 737015,
       "area_sq_km": 217.0
     },
     {
       "name": "Tijuana",
       "slug": "tj",
-      "shop_count": 659,
-      "with_instagram": 119,
+      "shop_count": 665,
+      "with_instagram": 123,
       "population": 1922523,
       "area_sq_km": 1239.6
     }
   ],
-  "generated_at": "2026-10-29T02:04:09Z",
-  "shop_count": 8983,
-  "with_instagram": 1116
+  "generated_at": "2026-10-29T03:08:02Z",
+  "shop_count": 9389,
+  "with_instagram": 912
 }
