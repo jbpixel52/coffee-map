@@ -97,8 +97,17 @@ def parse_elements(raw: bytes, city_name: str | None = None) -> list[dict]:
 
 
 def norm_instagram(text: str) -> str:
-    """'@Foo', 'https://instagram.com/foo/', 'instagram.com/foo?hl=x' -> 'foo'."""
+    """'@Foo', 'https://instagram.com/foo/', 'instagram.com/foo?hl=x' -> 'foo'.
+
+    Mirrors and archives hand over more than handles: a full imginn.com URL, a trailing
+    slash, or a link to a post rather than a profile. A post code is not a handle, so it
+    is dropped rather than shipped as a button that opens the wrong thing.
+    """
     text = (text or "").strip().lstrip("@")
-    if "instagram.com/" in text:
-        text = text.split("instagram.com/", 1)[1]
-    return text.strip("/").split("?")[0].split("#")[0]
+    for host in ("instagram.com/", "imginn.com/", "picuki.com/profile/", "www.instagram.com/"):
+        if host in text:
+            text = text.split(host, 1)[1]
+    text = text.strip("/").split("?")[0].split("#")[0].strip("/")
+    if text.startswith(("p/", "reel/", "reels/", "tv/", "stories/")):
+        return ""
+    return text if all(ch.isalnum() or ch in "._" for ch in text) else ""

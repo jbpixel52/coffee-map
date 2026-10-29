@@ -54,3 +54,14 @@ def test_format_address():
     assert format_address(no_city, "Austin") == "604 Brazos Street, Austin, 78701"
     assert format_address({}) is None
     assert format_address({"addr:postcode": "22000"}, "Tijuana") is None  # a postcode is not a street address
+
+
+def test_norm_instagram_handles_mirrors_urls_and_post_links():
+    """Archives hand over more than handles: a mirror URL, a trailing slash, a post link."""
+    from coffeemap.sources.osm import norm_instagram
+
+    assert norm_instagram("https://imginn.com/yosis_cafe") == "yosis_cafe"
+    assert norm_instagram("instagram.com/kiss_of_matcha/") == "kiss_of_matcha"
+    assert norm_instagram("p/DdLT7mMgH_7") == ""      # a post is not a profile
+    assert norm_instagram("reel/abc123") == ""
+    assert norm_instagram("instagram.com/x?hl=es") == "x"

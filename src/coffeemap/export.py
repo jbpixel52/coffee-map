@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import re
 import os
 import sqlite3
 from pathlib import Path
@@ -10,6 +11,9 @@ from .config import ROOT, City
 from .store import now_utc
 
 OUT_DIR = Path(os.environ.get("COFFEEMAP_OUT", ROOT / "web-astro" / "public" / "data"))
+
+
+_HANDLE_RE = re.compile(r"^[A-Za-z0-9._]{1,30}$")
 
 
 def export(con: sqlite3.Connection, city: City) -> dict:
@@ -37,13 +41,16 @@ def export(con: sqlite3.Connection, city: City) -> dict:
         # so shipping it puts a broken button on the card. The place keeps existing —
         # only the handle is withheld.
         dead = bool(igp and igp["capture_state"] == "not_found")
+        # A handle that is not a handle (a post code, a pasted URL) becomes a broken button:
+        # withhold it rather than link somewhere wrong.
+        handle = r["instagram"] if r["instagram"] and _HANDLE_RE.match(r["instagram"]) else None
         features.append({
             "type": "Feature",
             "geometry": {"type": "Point", "coordinates": [r["lon"], r["lat"]]},
             "properties": {
                 "id": r["id"],
                 "name": r["name"],
-                "instagram": None if dead else r["instagram"],
+                "instagram": None if dead else handle,
                 # a parsed 0 is a failed read, not an audience of nobody: ship null so the
                 # card and the stats tab both treat it as unknown
                 "ig_followers": igp["followers"]
