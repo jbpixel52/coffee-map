@@ -6,7 +6,7 @@ import random
 import sys
 import time
 
-from .config import load_city
+from .config import CONFIG_PATH as CFG_PATH, load_city
 from .store import (
     archive_read,
     archive_write,
@@ -56,7 +56,8 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("candidates-apply", help="promote café-verdict candidates to places (dedupe vs existing)")
     sub.add_parser("merge", help="rebuild canonical shops from places")
     sub.add_parser("export", help="write web-astro/public/data (geojson + meta)")
-    sub.add_parser("status", help="print row counts")
+    p = sub.add_parser("status", help="print row counts (--json for a machine)")
+    p.add_argument("--json", action="store_true", help="emit one JSON object instead of text")
 
     args = ap.parse_args(argv)
     city = load_city()
@@ -83,11 +84,47 @@ def main(argv: list[str] | None = None) -> int:
         named = sum(1 for i in items if i["name"])
         print(f"osm-parse: {len(items)} places ({named} named) from {ref}")
     elif args.cmd == "status":
-        for table in ("places", "shops", "ig_profiles", "fetches", "candidates"):
-            n = con.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
-            print(f"{table:12s} {n}")
-        for row in con.execute("SELECT source, COUNT(*) n FROM places GROUP BY source"):
-            print(f"  places[{row['source']}] {row['n']}")
+        tables = {
+            table: con.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
+            for table in ("places", "shops", "ig_profiles", "fetches", "candidates")
+        }
+        by_source = {
+            row["source"]: row["n"]
+            for row in con.execute("SELECT source, COUNT(*) n FROM places GROUP BY source")
+        }
+        if args.json:
+            import json as _json
+
+            # The point of this mode is auditing a refresh without reading logs: which
+            # city, what landed, when it last fetched, and what is still unenriched.
+            latest = con.execute(
+                "SELECT source, key, fetched_at FROM fetches ORDER BY id DESC LIMIT 5"
+            ).fetchall()
+            ig_states = {
+                row["capture_state"] or "pending": row["n"]
+                for row in con.execute(
+                    "SELECT capture_state, COUNT(*) n FROM ig_profiles GROUP BY capture_state"
+                )
+            }
+            print(
+                _json.dumps(
+                    {
+                        "city": city.name,
+                        "config": str(CFG_PATH),
+                        "tables": tables,
+                        "places_by_source": by_source,
+                        "ig_capture": ig_states,
+                        "latest_fetches": [dict(r) for r in latest],
+                    },
+                    indent=2,
+                    ensure_ascii=False,
+                )
+            )
+        else:
+            for table, n in tables.items():
+                print(f"{table:12s} {n}")
+            for source, n in by_source.items():
+                print(f"  places[{source}] {n}")
     elif args.cmd == "gmaps-fetch":
         # ensure_browsers_path() MUST run before patchright is imported: it reads
         # PLAYWRIGHT_BROWSERS_PATH once at import time and caches it.
