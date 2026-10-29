@@ -16,6 +16,13 @@ NAME_RATIO_MIN = 0.80
 STOP_TOKENS = {
     "cafe", "cafeteria", "coffee", "cafes", "de", "del", "la", "el", "los", "las",
     "y", "the", "shop", "bar", "mx", "mexico", "tijuana", "baja", "co", "and",
+    # Category words are never identity. A profile whose full name is "MATCHA BAR"
+    # otherwise matches every matcha shop in town: the matcher drops tokens under 4
+    # chars, so "Mad Matcha" left only "matcha" as evidence and attached one café's
+    # account to fourteen others.
+    "matcha", "tea", "boba", "juice", "bakery", "panaderia", "kitchen", "house",
+    "roasters", "roastery", "coffeehouse", "brunch", "deli", "market", "sweets",
+    "sweet", "dessert", "donut", "donuts", "express", "grill", "barra", "cafeteria",
 }
 
 
