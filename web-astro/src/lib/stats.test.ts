@@ -180,3 +180,24 @@ describe("postcardFacts", () => {
     expect(facts.every((f) => f.value !== null)).toBe(true);
   });
 });
+
+describe("audience dedupe", () => {
+  const shop = (name: string, ig: string | null, followers: number | null) =>
+    ({
+      type: "Feature",
+      geometry: { type: "Point", coordinates: [-117.03, 32.52] },
+      properties: { name, instagram: ig, ig_followers: followers, address: null, city: "Tijuana" },
+    }) as unknown as Feature<Point>;
+
+  it("counts a chain's account once, not once per branch", () => {
+    // three branches of one brand share @starbucks; summing per shop would treble it
+    const stats = cityStats(
+      [shop("Starbucks", "starbucks", 17_600_000), shop("Starbucks", "starbucks", 17_600_000),
+       shop("Starbucks", "starbucks", 17_600_000), shop("Lumi", "lumi", 328_600)],
+      [{ name: "Tijuana", shop_count: 4, with_instagram: 4 }],
+    )[0];
+    expect(stats.followers).toBe(17_600_000 + 328_600);
+    expect(stats.medianFollowers).toBe(Math.round((328_600 + 17_600_000) / 2));
+    expect(stats.topShop).toEqual({ name: "Starbucks", followers: 17_600_000 });
+  });
+});

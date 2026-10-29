@@ -134,16 +134,33 @@ export function cityStats(
     const props = mine.map((f) => f.properties as Record<string, unknown>);
     const shops = mine.length;
     const igShops = props.filter((p) => Boolean(p.instagram)).length;
-    const followers = props
-      .map((p) => (typeof p.ig_followers === "number" ? (p.ig_followers as number) : 0))
-      .filter((n) => n > 0);
-    const top = mine.reduce<{ name: string; followers: number } | null>((best, f) => {
-      const p = f.properties as Record<string, unknown>;
+    // One handle, one audience. A chain's Instagram account is attached to every branch
+    // that name-matches it, so summing per shop counts Starbucks 40 times: Los Angeles
+    // read 4.2B followers that way, more than the world population.
+    const byHandle = new Map<string, number>();
+    for (const p of props) {
+      const handle = typeof p.instagram === "string" ? p.instagram.trim().toLowerCase() : "";
       const n = typeof p.ig_followers === "number" ? (p.ig_followers as number) : 0;
-      if (n <= 0) return best;
-      const name = String(p.name ?? "");
-      return !best || n > best.followers ? { name, followers: n } : best;
-    }, null);
+      if (!handle || n <= 0) continue;
+      byHandle.set(handle, Math.max(byHandle.get(handle) ?? 0, n));
+    }
+    const followers = [...byHandle.values()];
+    const top = (() => {
+      let best: { handle: string; followers: number } | null = null;
+      for (const [handle, n] of byHandle) {
+        if (!best || n > best.followers) best = { handle, followers: n };
+      }
+      if (!best) return null;
+      const shop = mine.find(
+        (f) =>
+          String((f.properties as Record<string, unknown>).instagram ?? "").trim().toLowerCase() ===
+          best!.handle,
+      );
+      return {
+        name: String((shop?.properties as Record<string, unknown> | undefined)?.name ?? `@${best.handle}`),
+        followers: best.followers,
+      };
+    })();
 
     const zips = new Map<string, number>();
     let withAddress = 0;
