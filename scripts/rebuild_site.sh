@@ -17,6 +17,9 @@ for slug in tj sd la-n la-s cdmx-n cdmx-s gdl ens nyc-n nyc-s aus sea sfo oak; d
     sd) cfg=config/city.san-diego.toml; db=data/coffeemap-sd.db; archive=data/archive-sd ;;
     *)  cfg="config/city.$slug.toml"; db="data/coffeemap-$slug.db"; archive="data/archive-$slug" ;;
   esac
+  # merge first: it rebuilds the shops table from places (verdicts, new rows, dedupe)
+  COFFEEMAP_CITY="$cfg" COFFEEMAP_DB="$db" COFFEEMAP_ARCHIVE="$archive" \
+    uv run coffeemap merge >/dev/null || echo "FAILED merge $slug"
   COFFEEMAP_CITY="$cfg" COFFEEMAP_DB="$db" COFFEEMAP_ARCHIVE="$archive" \
     COFFEEMAP_OUT="data/export/$slug" uv run coffeemap export >/dev/null || echo "FAILED export $slug"
 done
