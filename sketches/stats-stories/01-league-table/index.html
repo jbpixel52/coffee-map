@@ -1,0 +1,160 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>Café capital scoreboard — coffee-map stats sketch</title>
+<style>:root {
+  /* — Pantone NYFW SS27 ————————————————————————————————— */
+  --antique-white: #eee5d3; /* 11-0105  ground */
+  --dolphin: #9a9699; /* 16-2901  borders, recessive marks */
+  --blue-indigo: #49516d; /* 19-3928  ink, primary */
+  --tarragon: #a4ae77; /* 15-0326  parks, success */
+  --waterfall: #3ab0a2; /* 15-5516  water, one avatar hue */
+  --arrowwood: #bc8d1f; /* 16-0954  heat mid, figures */
+  --langoustino: #ca6c56; /* 16-1440  heat mid-high */
+  --chili-pepper: #9b1b30; /* 19-1557  warning, "sin Instagram" */
+  --lavender-oil: #c3a6cd; /* 15-3615  night accent, settings */
+  --rosy-future: #f37e9b; /* 15-1910  night warning */
+  --anise-flower: #f4e3b5; /* 12-0717  heat floor */
+  --princess-blue: #00539c; /* 19-4150  links, avatars */
+  --dragon-fire: #fd652d; /* 16-1460  heat button, destructive-ish */
+  --daiquiri-green: #c9d77e; /* 12-0435  avatars */
+  --hibiscus: #de3848; /* 18-1762  avatars */
+
+  /* — surfaces & ink ———————————————————————————————————— */
+  --background: var(--antique-white);
+  --surface: #f7f3eb;
+  --surface-2: #efe9dd;
+  --border: #cbc4bb;
+  --border-input: #c0b8ae;
+  --fg: var(--blue-indigo);
+  --fg-muted: #606479;
+  --primary: var(--blue-indigo);
+  --primary-fg: #f7f3eb;
+  --accent: var(--chili-pepper); /* 19-1557 */
+  --accent-fg: #fbf3ee;
+  --accent-soft: #e2c7bb;
+  --accent-text: var(--chili-pepper);
+  --warn: var(--chili-pepper);
+  --ring: var(--waterfall);
+
+  /* — shape & depth ————————————————————————————————————— */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --shadow-sm: 0 1px 2px 0 rgb(24 22 30 / 0.07);
+  --shadow: 0 6px 20px -6px rgb(24 22 30 / 0.22), 0 2px 6px -2px rgb(24 22 30 / 0.08);
+
+  --top-h: 96px;
+  --step-1: 11.5px;
+  --step-2: 12.5px;
+  --step-3: 13.5px;
+  --step-4: 15px;
+  --step-5: 20px;
+  --step-6: 26px;
+
+  color-scheme: light;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+@font-face{font-family:"Hanken Grotesk";src:url("../assets/hanken-grotesk-latin.woff2") format("woff2");
+  font-weight:100 900;font-style:normal;font-display:swap}
+body{font-family:"Hanken Grotesk",ui-sans-serif,system-ui,sans-serif;
+  background:var(--antique-white);color:var(--blue-indigo);-webkit-font-smoothing:antialiased}
+.wrap{height:100%;display:flex;flex-direction:column;padding:22px 26px;gap:14px;overflow:hidden}
+.top{display:flex;align-items:center;gap:12px;flex:0 0 auto}
+.top h1{font-size:19px;margin:0;letter-spacing:-.01em;white-space:nowrap}
+.stance{margin-left:auto;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap;
+  color:var(--chili-pepper);border:1px solid var(--accent-soft);border-radius:999px;padding:4px 9px}
+.stamp{font-size:9.5px;letter-spacing:.08em;color:var(--fg-muted);text-transform:uppercase;white-space:nowrap}
+.canvas{flex:1;min-height:0;position:relative;overflow:hidden}
+.note{flex:0 0 auto;font-size:11px;line-height:1.45;color:var(--fg-muted);
+  border-top:1px solid var(--border);padding-top:8px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg)}
+
+    .tbl{position:absolute;inset:0;overflow:hidden;padding:0 4px}
+    table{width:100%;border-collapse:collapse;font-size:13px;height:100%}
+    th{text-align:left;font-size:10px;letter-spacing:.06em;
+      text-transform:uppercase;color:var(--fg-muted);padding:6px 8px;border-bottom:1px solid var(--border)}
+    td{padding:4px 8px;border-bottom:1px solid color-mix(in srgb,var(--border) 45%,transparent)}
+    .rk{width:46px;color:var(--fg-muted);font-variant-numeric:tabular-nums}
+    .nm{font-weight:600}
+    .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+    .muted{color:var(--fg-muted)}
+    .bar i{display:block;height:7px;border-radius:999px;background:var(--waterfall);min-width:2px}
+    tbody tr:hover{background:var(--surface-2)}
+    </style></head>
+<body><div class="wrap">
+  <div class="top"><h1>Café capital scoreboard</h1><span class="stance">operate · compare</span>
+    <span class="stamp">real census · 8,681 shops</span></div>
+  <div class="canvas"><div class="card tbl"><table>
+      <thead><tr><th></th><th>City</th><th class="num">Shops</th><th></th>
+      <th class="num">Share</th><th class="num">/sq mi</th><th class="num">/100k</th><th class="num">IG</th></tr></thead>
+      <tbody><tr><td class="rk">1🥇</td><td class="nm">New York City</td>
+            <td class="num">2,670</td>
+            <td class="bar"><i style="width:100%"></i></td>
+            <td class="num muted">30.8%</td>
+            <td class="num">8.89</td>
+            <td class="num">30.3</td>
+            <td class="num">5.7%</td></tr><tr><td class="rk">2</td><td class="nm">Los Angeles</td>
+            <td class="num">1,170</td>
+            <td class="bar"><i style="width:44%"></i></td>
+            <td class="num muted">13.5%</td>
+            <td class="num">2.49</td>
+            <td class="num">30.0</td>
+            <td class="num">9.7%</td></tr><tr><td class="rk">3</td><td class="nm">Mexico City</td>
+            <td class="num">1,051</td>
+            <td class="bar"><i style="width:39%"></i></td>
+            <td class="num muted">12.1%</td>
+            <td class="num">1.83</td>
+            <td class="num">11.4</td>
+            <td class="num">1.7%</td></tr><tr><td class="rk">4</td><td class="nm">San Francisco</td>
+            <td class="num">786</td>
+            <td class="bar"><i style="width:29%"></i></td>
+            <td class="num muted">9.1%</td>
+            <td class="num">16.77</td>
+            <td class="num">89.9</td>
+            <td class="num">6.2%</td></tr><tr><td class="rk">5</td><td class="nm">Seattle</td>
+            <td class="num">773</td>
+            <td class="bar"><i style="width:29%"></i></td>
+            <td class="num muted">8.9%</td>
+            <td class="num">9.23</td>
+            <td class="num">104.9</td>
+            <td class="num">7.5%</td></tr><tr><td class="rk">6</td><td class="nm">San Diego</td>
+            <td class="num">674</td>
+            <td class="bar"><i style="width:25%"></i></td>
+            <td class="num muted">7.8%</td>
+            <td class="num">2.07</td>
+            <td class="num">48.6</td>
+            <td class="num">6.1%</td></tr><tr><td class="rk">7</td><td class="nm">Tijuana</td>
+            <td class="num">627</td>
+            <td class="bar"><i style="width:23%"></i></td>
+            <td class="num muted">7.2%</td>
+            <td class="num">1.31</td>
+            <td class="num">32.6</td>
+            <td class="num">18.7%</td></tr><tr><td class="rk">8</td><td class="nm">Oakland</td>
+            <td class="num">385</td>
+            <td class="bar"><i style="width:14%"></i></td>
+            <td class="num muted">4.4%</td>
+            <td class="num">6.89</td>
+            <td class="num">87.4</td>
+            <td class="num">9.4%</td></tr><tr><td class="rk">9</td><td class="nm">Austin</td>
+            <td class="num">317</td>
+            <td class="bar"><i style="width:12%"></i></td>
+            <td class="num muted">3.7%</td>
+            <td class="num">1.0</td>
+            <td class="num">33.0</td>
+            <td class="num">8.2%</td></tr><tr><td class="rk">10</td><td class="nm">Guadalajara</td>
+            <td class="num">201</td>
+            <td class="bar"><i style="width:8%"></i></td>
+            <td class="num muted">2.3%</td>
+            <td class="num">3.44</td>
+            <td class="num">14.5</td>
+            <td class="num">4.0%</td></tr><tr><td class="rk">11</td><td class="nm">Ensenada</td>
+            <td class="num">27</td>
+            <td class="bar"><i style="width:1%"></i></td>
+            <td class="num muted">0.3%</td>
+            <td class="num">0.0</td>
+            <td class="num">6.1</td>
+            <td class="num">0.0%</td></tr></tbody></table></div></div>
+  <div class="note">Sortable league table: one row per city, inline bars, a medal on the leader. Pro: reads instantly, scales to more cities. Con: a table, not a story.</div>
+</div></body></html>

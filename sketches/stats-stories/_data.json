@@ -1,0 +1,272 @@
+{
+ "total": 8681,
+ "cities": [
+  {
+   "name": "New York City",
+   "shops": 2670,
+   "share": 30.8,
+   "per_sq_mi": 8.89,
+   "per_100k": 30.3,
+   "zips": 166,
+   "shops_per_zip": 16.1,
+   "top_zip": [
+    "10003",
+    73
+   ],
+   "ig": 152,
+   "ig_pct": 5.7,
+   "followers": 0,
+   "median_followers": null,
+   "top_shop": null,
+   "nearest_m": 139,
+   "brand": [
+    "Starbucks",
+    274
+   ],
+   "addr_pct": 72.8
+  },
+  {
+   "name": "Los Angeles",
+   "shops": 1170,
+   "share": 13.5,
+   "per_sq_mi": 2.49,
+   "per_100k": 30.0,
+   "zips": 230,
+   "shops_per_zip": 5.1,
+   "top_zip": [
+    "90012",
+    36
+   ],
+   "ig": 114,
+   "ig_pct": 9.7,
+   "followers": 0,
+   "median_followers": null,
+   "top_shop": null,
+   "nearest_m": 282,
+   "brand": [
+    "Starbucks",
+    235
+   ],
+   "addr_pct": 66.4
+  },
+  {
+   "name": "Mexico City",
+   "shops": 1051,
+   "share": 12.1,
+   "per_sq_mi": 1.83,
+   "per_100k": 11.4,
+   "zips": 88,
+   "shops_per_zip": 11.9,
+   "top_zip": [
+    "06600",
+    34
+   ],
+   "ig": 18,
+   "ig_pct": 1.7,
+   "followers": 0,
+   "median_followers": null,
+   "top_shop": null,
+   "nearest_m": 228,
+   "brand": [
+    "Starbucks",
+    162
+   ],
+   "addr_pct": 36.3
+  },
+  {
+   "name": "San Francisco",
+   "shops": 786,
+   "share": 9.1,
+   "per_sq_mi": 16.77,
+   "per_100k": 89.9,
+   "zips": 31,
+   "shops_per_zip": 25.4,
+   "top_zip": [
+    "94122",
+    50
+   ],
+   "ig": 49,
+   "ig_pct": 6.2,
+   "followers": 0,
+   "median_followers": null,
+   "top_shop": null,
+   "nearest_m": 116,
+   "brand": [
+    "Starbucks",
+    52
+   ],
+   "addr_pct": 76.6
+  },
+  {
+   "name": "Seattle",
+   "shops": 773,
+   "share": 8.9,
+   "per_sq_mi": 9.23,
+   "per_100k": 104.9,
+   "zips": 58,
+   "shops_per_zip": 13.3,
+   "top_zip": [
+    "98122",
+    61
+   ],
+   "ig": 58,
+   "ig_pct": 7.5,
+   "followers": 0,
+   "median_followers": null,
+   "top_shop": null,
+   "nearest_m": 169,
+   "brand": [
+    "Starbucks",
+    56
+   ],
+   "addr_pct": 86.0
+  },
+  {
+   "name": "San Diego",
+   "shops": 674,
+   "share": 7.8,
+   "per_sq_mi": 2.07,
+   "per_100k": 48.6,
+   "zips": 51,
+   "shops_per_zip": 13.2,
+   "top_zip": [
+    "92101",
+    43
+   ],
+   "ig": 41,
+   "ig_pct": 6.1,
+   "followers": 0,
+   "median_followers": null,
+   "top_shop": null,
+   "nearest_m": 271,
+   "brand": [
+    "Starbucks",
+    106
+   ],
+   "addr_pct": 77.9
+  },
+  {
+   "name": "Tijuana",
+   "shops": 627,
+   "share": 7.2,
+   "per_sq_mi": 1.31,
+   "per_100k": 32.6,
+   "zips": 64,
+   "shops_per_zip": 9.8,
+   "top_zip": [
+    "22040",
+    5
+   ],
+   "ig": 117,
+   "ig_pct": 18.7,
+   "followers": 1703734,
+   "median_followers": 7027,
+   "top_shop": [
+    "Wanderlust H \"El Cafe del Viajero\"",
+    279
+   ],
+   "nearest_m": 229,
+   "brand": [
+    "Starbucks",
+    22
+   ],
+   "addr_pct": 38.3
+  },
+  {
+   "name": "Oakland",
+   "shops": 385,
+   "share": 4.4,
+   "per_sq_mi": 6.89,
+   "per_100k": 87.4,
+   "zips": 20,
+   "shops_per_zip": 19.2,
+   "top_zip": [
+    "94704",
+    27
+   ],
+   "ig": 36,
+   "ig_pct": 9.4,
+   "followers": 0,
+   "median_followers": null,
+   "top_shop": null,
+   "nearest_m": 201,
+   "brand": [
+    "Peet's",
+    20
+   ],
+   "addr_pct": 66.2
+  },
+  {
+   "name": "Austin",
+   "shops": 317,
+   "share": 3.7,
+   "per_sq_mi": 1.0,
+   "per_100k": 33.0,
+   "zips": 60,
+   "shops_per_zip": 5.3,
+   "top_zip": [
+    "78701",
+    27
+   ],
+   "ig": 26,
+   "ig_pct": 8.2,
+   "followers": 0,
+   "median_followers": null,
+   "top_shop": null,
+   "nearest_m": 477,
+   "brand": [
+    "Starbucks",
+    65
+   ],
+   "addr_pct": 75.1
+  },
+  {
+   "name": "Guadalajara",
+   "shops": 201,
+   "share": 2.3,
+   "per_sq_mi": 3.44,
+   "per_100k": 14.5,
+   "zips": 24,
+   "shops_per_zip": 8.4,
+   "top_zip": [
+    "44160",
+    7
+   ],
+   "ig": 8,
+   "ig_pct": 4.0,
+   "followers": 0,
+   "median_followers": null,
+   "top_shop": null,
+   "nearest_m": 347,
+   "brand": [
+    "Starbucks",
+    30
+   ],
+   "addr_pct": 29.4
+  },
+  {
+   "name": "Ensenada",
+   "shops": 27,
+   "share": 0.3,
+   "per_sq_mi": 0.0,
+   "per_100k": 6.1,
+   "zips": 3,
+   "shops_per_zip": 9.0,
+   "top_zip": [
+    "22800",
+    3
+   ],
+   "ig": 0,
+   "ig_pct": 0.0,
+   "followers": 0,
+   "median_followers": null,
+   "top_shop": null,
+   "nearest_m": 415,
+   "brand": [
+    "Starbucks",
+    2
+   ],
+   "addr_pct": 48.1
+  }
+ ]
+}

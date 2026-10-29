@@ -1,0 +1,114 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>Density vs social — coffee-map stats sketch</title>
+<style>:root {
+  /* — Pantone NYFW SS27 ————————————————————————————————— */
+  --antique-white: #eee5d3; /* 11-0105  ground */
+  --dolphin: #9a9699; /* 16-2901  borders, recessive marks */
+  --blue-indigo: #49516d; /* 19-3928  ink, primary */
+  --tarragon: #a4ae77; /* 15-0326  parks, success */
+  --waterfall: #3ab0a2; /* 15-5516  water, one avatar hue */
+  --arrowwood: #bc8d1f; /* 16-0954  heat mid, figures */
+  --langoustino: #ca6c56; /* 16-1440  heat mid-high */
+  --chili-pepper: #9b1b30; /* 19-1557  warning, "sin Instagram" */
+  --lavender-oil: #c3a6cd; /* 15-3615  night accent, settings */
+  --rosy-future: #f37e9b; /* 15-1910  night warning */
+  --anise-flower: #f4e3b5; /* 12-0717  heat floor */
+  --princess-blue: #00539c; /* 19-4150  links, avatars */
+  --dragon-fire: #fd652d; /* 16-1460  heat button, destructive-ish */
+  --daiquiri-green: #c9d77e; /* 12-0435  avatars */
+  --hibiscus: #de3848; /* 18-1762  avatars */
+
+  /* — surfaces & ink ———————————————————————————————————— */
+  --background: var(--antique-white);
+  --surface: #f7f3eb;
+  --surface-2: #efe9dd;
+  --border: #cbc4bb;
+  --border-input: #c0b8ae;
+  --fg: var(--blue-indigo);
+  --fg-muted: #606479;
+  --primary: var(--blue-indigo);
+  --primary-fg: #f7f3eb;
+  --accent: var(--chili-pepper); /* 19-1557 */
+  --accent-fg: #fbf3ee;
+  --accent-soft: #e2c7bb;
+  --accent-text: var(--chili-pepper);
+  --warn: var(--chili-pepper);
+  --ring: var(--waterfall);
+
+  /* — shape & depth ————————————————————————————————————— */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --shadow-sm: 0 1px 2px 0 rgb(24 22 30 / 0.07);
+  --shadow: 0 6px 20px -6px rgb(24 22 30 / 0.22), 0 2px 6px -2px rgb(24 22 30 / 0.08);
+
+  --top-h: 96px;
+  --step-1: 11.5px;
+  --step-2: 12.5px;
+  --step-3: 13.5px;
+  --step-4: 15px;
+  --step-5: 20px;
+  --step-6: 26px;
+
+  color-scheme: light;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+@font-face{font-family:"Hanken Grotesk";src:url("../assets/hanken-grotesk-latin.woff2") format("woff2");
+  font-weight:100 900;font-style:normal;font-display:swap}
+body{font-family:"Hanken Grotesk",ui-sans-serif,system-ui,sans-serif;
+  background:var(--antique-white);color:var(--blue-indigo);-webkit-font-smoothing:antialiased}
+.wrap{height:100%;display:flex;flex-direction:column;padding:22px 26px;gap:14px;overflow:hidden}
+.top{display:flex;align-items:center;gap:12px;flex:0 0 auto}
+.top h1{font-size:19px;margin:0;letter-spacing:-.01em;white-space:nowrap}
+.stance{margin-left:auto;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap;
+  color:var(--chili-pepper);border:1px solid var(--accent-soft);border-radius:999px;padding:4px 9px}
+.stamp{font-size:9.5px;letter-spacing:.08em;color:var(--fg-muted);text-transform:uppercase;white-space:nowrap}
+.canvas{flex:1;min-height:0;position:relative;overflow:hidden}
+.note{flex:0 0 auto;font-size:11px;line-height:1.45;color:var(--fg-muted);
+  border-top:1px solid var(--border);padding-top:8px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg)}
+
+    .sc{position:absolute;inset:0;display:grid;place-items:center}
+    svg{width:100%;height:100%}
+    .lbl{font-size:11px;fill:var(--blue-indigo);font-weight:600}
+    .axis{font-size:10px;letter-spacing:.08em;text-transform:uppercase;fill:var(--fg-muted)}
+    .quad{font-size:10.5px;fill:var(--chili-pepper);letter-spacing:.06em;text-transform:uppercase}
+    </style></head>
+<body><div class="wrap">
+  <div class="top"><h1>Density vs social</h1><span class="stance">insight · two axes</span>
+    <span class="stamp">real census · 8,681 shops</span></div>
+  <div class="canvas"><div class="sc"><svg viewBox="0 0 1020 560">
+      <line x1="40" y1="440" x2="980" y2="440" stroke="var(--border)"/>
+      <line x1="40" y1="440" x2="40" y2="56" stroke="var(--border)"/>
+      <text x="52" y="44" class="axis">social scene ↑</text>
+      <text x="970" y="462" class="axis" text-anchor="end">dense →</text>
+      <rect x="510.0" y="56" width="470.0" height="179.0" fill="var(--chili-pepper)" opacity=".04"/>
+      <text x="524.0" y="76" class="quad">dense &amp; online</text>
+      <g><circle cx="108" cy="85" r="8"
+              fill="var(--waterfall)" fill-opacity=".55" stroke="var(--blue-indigo)" stroke-opacity=".5"/>
+              <text x="108" y="70" text-anchor="middle" class="lbl">Tijuana</text></g><g><circle cx="170" cy="256" r="9"
+              fill="var(--waterfall)" fill-opacity=".55" stroke="var(--blue-indigo)" stroke-opacity=".5"/>
+              <text x="170" y="241" text-anchor="middle" class="lbl">Los Angeles</text></g><g><circle cx="400" cy="261" r="7"
+              fill="var(--waterfall)" fill-opacity=".55" stroke="var(--blue-indigo)" stroke-opacity=".5"/>
+              <text x="400" y="246" text-anchor="middle" class="lbl">Oakland</text></g><g><circle cx="92" cy="284" r="7"
+              fill="var(--waterfall)" fill-opacity=".55" stroke="var(--blue-indigo)" stroke-opacity=".5"/>
+              <text x="92" y="269" text-anchor="middle" class="lbl">Austin</text></g><g><circle cx="522" cy="298" r="8"
+              fill="var(--waterfall)" fill-opacity=".55" stroke="var(--blue-indigo)" stroke-opacity=".5"/>
+              <text x="522" y="283" text-anchor="middle" class="lbl">Seattle</text></g><g><circle cx="916" cy="322" r="8"
+              fill="var(--waterfall)" fill-opacity=".55" stroke="var(--blue-indigo)" stroke-opacity=".5"/>
+              <text x="916" y="307" text-anchor="middle" class="lbl">San Francisco</text></g><g><circle cx="148" cy="324" r="8"
+              fill="var(--waterfall)" fill-opacity=".55" stroke="var(--blue-indigo)" stroke-opacity=".5"/>
+              <text x="148" y="309" text-anchor="middle" class="lbl">San Diego</text></g><g><circle cx="504" cy="332" r="13"
+              fill="var(--waterfall)" fill-opacity=".55" stroke="var(--blue-indigo)" stroke-opacity=".5"/>
+              <text x="504" y="317" text-anchor="middle" class="lbl">New York City</text></g><g><circle cx="220" cy="364" r="7"
+              fill="var(--waterfall)" fill-opacity=".55" stroke="var(--blue-indigo)" stroke-opacity=".5"/>
+              <text x="220" y="349" text-anchor="middle" class="lbl">Guadalajara</text></g><g><circle cx="136" cy="408" r="9"
+              fill="var(--waterfall)" fill-opacity=".55" stroke="var(--blue-indigo)" stroke-opacity=".5"/>
+              <text x="136" y="393" text-anchor="middle" class="lbl">Mexico City</text></g><g><circle cx="40" cy="440" r="6"
+              fill="var(--waterfall)" fill-opacity=".55" stroke="var(--blue-indigo)" stroke-opacity=".5"/>
+              <text x="40" y="425" text-anchor="middle" class="lbl">Ensenada</text></g></svg></div></div>
+  <div class="note">Physical density against Instagram share, bubble size = shop count. Pro: two stats become one argument (Tijuana is unusual: sparse but highly online). Con: eleven dots is near the limit of readability.</div>
+</div></body></html>

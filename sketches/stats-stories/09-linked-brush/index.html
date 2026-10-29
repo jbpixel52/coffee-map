@@ -1,0 +1,116 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>Stats that drive the map — coffee-map stats sketch</title>
+<style>:root {
+  /* — Pantone NYFW SS27 ————————————————————————————————— */
+  --antique-white: #eee5d3; /* 11-0105  ground */
+  --dolphin: #9a9699; /* 16-2901  borders, recessive marks */
+  --blue-indigo: #49516d; /* 19-3928  ink, primary */
+  --tarragon: #a4ae77; /* 15-0326  parks, success */
+  --waterfall: #3ab0a2; /* 15-5516  water, one avatar hue */
+  --arrowwood: #bc8d1f; /* 16-0954  heat mid, figures */
+  --langoustino: #ca6c56; /* 16-1440  heat mid-high */
+  --chili-pepper: #9b1b30; /* 19-1557  warning, "sin Instagram" */
+  --lavender-oil: #c3a6cd; /* 15-3615  night accent, settings */
+  --rosy-future: #f37e9b; /* 15-1910  night warning */
+  --anise-flower: #f4e3b5; /* 12-0717  heat floor */
+  --princess-blue: #00539c; /* 19-4150  links, avatars */
+  --dragon-fire: #fd652d; /* 16-1460  heat button, destructive-ish */
+  --daiquiri-green: #c9d77e; /* 12-0435  avatars */
+  --hibiscus: #de3848; /* 18-1762  avatars */
+
+  /* — surfaces & ink ———————————————————————————————————— */
+  --background: var(--antique-white);
+  --surface: #f7f3eb;
+  --surface-2: #efe9dd;
+  --border: #cbc4bb;
+  --border-input: #c0b8ae;
+  --fg: var(--blue-indigo);
+  --fg-muted: #606479;
+  --primary: var(--blue-indigo);
+  --primary-fg: #f7f3eb;
+  --accent: var(--chili-pepper); /* 19-1557 */
+  --accent-fg: #fbf3ee;
+  --accent-soft: #e2c7bb;
+  --accent-text: var(--chili-pepper);
+  --warn: var(--chili-pepper);
+  --ring: var(--waterfall);
+
+  /* — shape & depth ————————————————————————————————————— */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --shadow-sm: 0 1px 2px 0 rgb(24 22 30 / 0.07);
+  --shadow: 0 6px 20px -6px rgb(24 22 30 / 0.22), 0 2px 6px -2px rgb(24 22 30 / 0.08);
+
+  --top-h: 96px;
+  --step-1: 11.5px;
+  --step-2: 12.5px;
+  --step-3: 13.5px;
+  --step-4: 15px;
+  --step-5: 20px;
+  --step-6: 26px;
+
+  color-scheme: light;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+@font-face{font-family:"Hanken Grotesk";src:url("../assets/hanken-grotesk-latin.woff2") format("woff2");
+  font-weight:100 900;font-style:normal;font-display:swap}
+body{font-family:"Hanken Grotesk",ui-sans-serif,system-ui,sans-serif;
+  background:var(--antique-white);color:var(--blue-indigo);-webkit-font-smoothing:antialiased}
+.wrap{height:100%;display:flex;flex-direction:column;padding:22px 26px;gap:14px;overflow:hidden}
+.top{display:flex;align-items:center;gap:12px;flex:0 0 auto}
+.top h1{font-size:19px;margin:0;letter-spacing:-.01em;white-space:nowrap}
+.stance{margin-left:auto;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap;
+  color:var(--chili-pepper);border:1px solid var(--accent-soft);border-radius:999px;padding:4px 9px}
+.stamp{font-size:9.5px;letter-spacing:.08em;color:var(--fg-muted);text-transform:uppercase;white-space:nowrap}
+.canvas{flex:1;min-height:0;position:relative;overflow:hidden}
+.note{flex:0 0 auto;font-size:11px;line-height:1.45;color:var(--fg-muted);
+  border-top:1px solid var(--border);padding-top:8px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg)}
+
+    .brush{position:absolute;inset:0;display:grid;grid-template-columns:260px 1fr;gap:12px}
+    .side{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px;
+      display:flex;flex-direction:column;gap:7px;font-size:12px}
+    .side h4{margin:6px 0 2px;font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--fg-muted)}
+    .side label{display:flex;gap:7px;align-items:center;color:var(--fg)}
+    .chips{display:flex;flex-wrap:wrap;gap:5px}
+    .br{font:inherit;font-size:11px;padding:3px 9px;border-radius:999px;border:1px solid var(--border-input);
+      background:var(--background);color:var(--fg);cursor:pointer}
+    .br.on{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
+    .readout{margin-top:auto;border-top:1px solid var(--border);padding-top:10px}
+    .ro-name{font-size:13px;font-weight:600}
+    .readout dl{display:grid;grid-template-columns:1fr auto;gap:3px 10px;margin:8px 0 0;font-size:11.5px}
+    .readout dt{color:var(--fg-muted)}
+    .readout dd{margin:0;font-variant-numeric:tabular-nums;font-weight:600;text-align:right}
+    .mapmock{position:relative;border-radius:var(--radius-lg);border:1px solid var(--border);
+      background:linear-gradient(0deg,var(--surface-2),var(--surface));overflow:hidden}
+    .dot{position:absolute;width:13px;height:13px;border-radius:50%;background:var(--dolphin);opacity:.5;transform:translate(-50%,-50%)}
+    .dot.on{width:19px;height:19px;background:var(--chili-pepper);opacity:1;box-shadow:0 0 0 6px color-mix(in srgb,var(--chili-pepper) 18%,transparent)}
+    .hint{position:absolute;left:16px;bottom:14px;font-size:11px;color:var(--fg-muted);line-height:1.5}
+    </style></head>
+<body><div class="wrap">
+  <div class="top"><h1>Stats that drive the map</h1><span class="stance">interactive · linked</span>
+    <span class="stamp">real census · 8,681 shops</span></div>
+  <div class="canvas"><div class="brush">
+      <aside class="side">
+        <h4>Metric</h4>
+        <label><input type="radio" checked> Cafés per sq mi</label>
+        <label><input type="radio"> Instagram share</label>
+        <label><input type="radio"> Cafés per 100k</label>
+        <h4>City</h4><div class="chips"><button class='br'>New York City</button><button class='br'>Los Angeles</button><button class='br'>Mexico City</button><button class='br'>San Francisco</button><button class='br'>Seattle</button><button class='br'>San Diego</button></div>
+        <div class="readout">
+          <span class="ro-name">Tijuana</span>
+          <dl><dt>per sq mi</dt><dd>1.31</dd><dt>on Instagram</dt><dd>18.7%</dd>
+              <dt>ZIPs</dt><dd>64</dd><dt>walk to next</dt><dd>229 m</dd></dl>
+        </div>
+      </aside>
+      <div class="mapmock">
+        <div class="dot" style="left:32%;top:44%"></div><div class="dot on" style="left:52%;top:58%"></div>
+        <div class="dot" style="left:70%;top:36%"></div><div class="dot" style="left:44%;top:26%"></div>
+        <div class="hint">the map dims to the selected metric;<br>a city chip re-frames the view</div>
+      </div></div></div>
+  <div class="note">The stats panel becomes the map's control surface: choose a metric, the dots re-encode; choose a city, the view re-frames. Pro: keeps the map the product. Con: more state than a sketch can show — needs a real prototype.</div>
+</div></body></html>

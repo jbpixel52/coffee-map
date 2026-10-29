@@ -1,0 +1,107 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>Postcards — coffee-map stats sketch</title>
+<style>:root {
+  /* — Pantone NYFW SS27 ————————————————————————————————— */
+  --antique-white: #eee5d3; /* 11-0105  ground */
+  --dolphin: #9a9699; /* 16-2901  borders, recessive marks */
+  --blue-indigo: #49516d; /* 19-3928  ink, primary */
+  --tarragon: #a4ae77; /* 15-0326  parks, success */
+  --waterfall: #3ab0a2; /* 15-5516  water, one avatar hue */
+  --arrowwood: #bc8d1f; /* 16-0954  heat mid, figures */
+  --langoustino: #ca6c56; /* 16-1440  heat mid-high */
+  --chili-pepper: #9b1b30; /* 19-1557  warning, "sin Instagram" */
+  --lavender-oil: #c3a6cd; /* 15-3615  night accent, settings */
+  --rosy-future: #f37e9b; /* 15-1910  night warning */
+  --anise-flower: #f4e3b5; /* 12-0717  heat floor */
+  --princess-blue: #00539c; /* 19-4150  links, avatars */
+  --dragon-fire: #fd652d; /* 16-1460  heat button, destructive-ish */
+  --daiquiri-green: #c9d77e; /* 12-0435  avatars */
+  --hibiscus: #de3848; /* 18-1762  avatars */
+
+  /* — surfaces & ink ———————————————————————————————————— */
+  --background: var(--antique-white);
+  --surface: #f7f3eb;
+  --surface-2: #efe9dd;
+  --border: #cbc4bb;
+  --border-input: #c0b8ae;
+  --fg: var(--blue-indigo);
+  --fg-muted: #606479;
+  --primary: var(--blue-indigo);
+  --primary-fg: #f7f3eb;
+  --accent: var(--chili-pepper); /* 19-1557 */
+  --accent-fg: #fbf3ee;
+  --accent-soft: #e2c7bb;
+  --accent-text: var(--chili-pepper);
+  --warn: var(--chili-pepper);
+  --ring: var(--waterfall);
+
+  /* — shape & depth ————————————————————————————————————— */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --shadow-sm: 0 1px 2px 0 rgb(24 22 30 / 0.07);
+  --shadow: 0 6px 20px -6px rgb(24 22 30 / 0.22), 0 2px 6px -2px rgb(24 22 30 / 0.08);
+
+  --top-h: 96px;
+  --step-1: 11.5px;
+  --step-2: 12.5px;
+  --step-3: 13.5px;
+  --step-4: 15px;
+  --step-5: 20px;
+  --step-6: 26px;
+
+  color-scheme: light;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+@font-face{font-family:"Hanken Grotesk";src:url("../assets/hanken-grotesk-latin.woff2") format("woff2");
+  font-weight:100 900;font-style:normal;font-display:swap}
+body{font-family:"Hanken Grotesk",ui-sans-serif,system-ui,sans-serif;
+  background:var(--antique-white);color:var(--blue-indigo);-webkit-font-smoothing:antialiased}
+.wrap{height:100%;display:flex;flex-direction:column;padding:22px 26px;gap:14px;overflow:hidden}
+.top{display:flex;align-items:center;gap:12px;flex:0 0 auto}
+.top h1{font-size:19px;margin:0;letter-spacing:-.01em;white-space:nowrap}
+.stance{margin-left:auto;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap;
+  color:var(--chili-pepper);border:1px solid var(--accent-soft);border-radius:999px;padding:4px 9px}
+.stamp{font-size:9.5px;letter-spacing:.08em;color:var(--fg-muted);text-transform:uppercase;white-space:nowrap}
+.canvas{flex:1;min-height:0;position:relative;overflow:hidden}
+.note{flex:0 0 auto;font-size:11px;line-height:1.45;color:var(--fg-muted);
+  border-top:1px solid var(--border);padding-top:8px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg)}
+
+    .deck{position:absolute;inset:0;display:flex;gap:14px;align-items:center}
+    .pc{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;
+      display:flex;flex-direction:column;gap:2px;position:relative;box-shadow:var(--shadow);
+      background-image:repeating-linear-gradient(135deg,color-mix(in srgb,var(--dolphin) 14%,transparent) 0 2px,transparent 2px 9px)}
+    .stampbox{position:absolute;right:12px;top:12px;width:40px;height:46px;border:2px dashed color-mix(in srgb,var(--chili-pepper) 55%,transparent);
+      border-radius:4px;display:grid;place-items:center;font-size:16px;background:var(--surface)}
+    .pc h3{margin:0;font-size:13px}
+    .hero{margin:8px 0 0;font-size:40px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+    .sub{margin:0 0 8px;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--fg-muted)}
+    .pc ul{list-style:none;margin:6px 0 0;padding:10px 0 0;font-size:11px;color:var(--fg-muted);
+      display:flex;flex-direction:column;gap:4px;border-top:1px dashed color-mix(in srgb,var(--dolphin) 45%,transparent)}
+    </style></head>
+<body><div class="wrap">
+  <div class="top"><h1>Postcards</h1><span class="stance">collectible</span>
+    <span class="stamp">real census · 8,681 shops</span></div>
+  <div class="canvas"><div class='deck'><article class="pc"><div class="stampbox">☕</div>
+            <h3>New York City</h3>
+            <p class="hero">2,670</p><p class="sub">coffee shops</p>
+            <ul><li>8.89 per sq mi</li><li>5.7% on Instagram</li>
+            <li>busiest ZIP 10003</li></ul></article><article class="pc"><div class="stampbox">☕</div>
+            <h3>Los Angeles</h3>
+            <p class="hero">1,170</p><p class="sub">coffee shops</p>
+            <ul><li>2.49 per sq mi</li><li>9.7% on Instagram</li>
+            <li>busiest ZIP 90012</li></ul></article><article class="pc"><div class="stampbox">☕</div>
+            <h3>Mexico City</h3>
+            <p class="hero">1,051</p><p class="sub">coffee shops</p>
+            <ul><li>1.83 per sq mi</li><li>1.7% on Instagram</li>
+            <li>busiest ZIP 06600</li></ul></article><article class="pc"><div class="stampbox">☕</div>
+            <h3>San Francisco</h3>
+            <p class="hero">786</p><p class="sub">coffee shops</p>
+            <ul><li>16.77 per sq mi</li><li>6.2% on Instagram</li>
+            <li>busiest ZIP 94122</li></ul></article></div></div>
+  <div class="note">A postcard per city: one hero number, a stamp, three small facts. Pro: shareable, delightful, works offline. Con: hides comparison — pair it with the table.</div>
+</div></body></html>

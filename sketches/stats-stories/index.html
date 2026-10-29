@@ -1,0 +1,89 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>coffee-map · 12 ways to tell the stats</title><style>:root {
+  /* — Pantone NYFW SS27 ————————————————————————————————— */
+  --antique-white: #eee5d3; /* 11-0105  ground */
+  --dolphin: #9a9699; /* 16-2901  borders, recessive marks */
+  --blue-indigo: #49516d; /* 19-3928  ink, primary */
+  --tarragon: #a4ae77; /* 15-0326  parks, success */
+  --waterfall: #3ab0a2; /* 15-5516  water, one avatar hue */
+  --arrowwood: #bc8d1f; /* 16-0954  heat mid, figures */
+  --langoustino: #ca6c56; /* 16-1440  heat mid-high */
+  --chili-pepper: #9b1b30; /* 19-1557  warning, "sin Instagram" */
+  --lavender-oil: #c3a6cd; /* 15-3615  night accent, settings */
+  --rosy-future: #f37e9b; /* 15-1910  night warning */
+  --anise-flower: #f4e3b5; /* 12-0717  heat floor */
+  --princess-blue: #00539c; /* 19-4150  links, avatars */
+  --dragon-fire: #fd652d; /* 16-1460  heat button, destructive-ish */
+  --daiquiri-green: #c9d77e; /* 12-0435  avatars */
+  --hibiscus: #de3848; /* 18-1762  avatars */
+
+  /* — surfaces & ink ———————————————————————————————————— */
+  --background: var(--antique-white);
+  --surface: #f7f3eb;
+  --surface-2: #efe9dd;
+  --border: #cbc4bb;
+  --border-input: #c0b8ae;
+  --fg: var(--blue-indigo);
+  --fg-muted: #606479;
+  --primary: var(--blue-indigo);
+  --primary-fg: #f7f3eb;
+  --accent: var(--chili-pepper); /* 19-1557 */
+  --accent-fg: #fbf3ee;
+  --accent-soft: #e2c7bb;
+  --accent-text: var(--chili-pepper);
+  --warn: var(--chili-pepper);
+  --ring: var(--waterfall);
+
+  /* — shape & depth ————————————————————————————————————— */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --shadow-sm: 0 1px 2px 0 rgb(24 22 30 / 0.07);
+  --shadow: 0 6px 20px -6px rgb(24 22 30 / 0.22), 0 2px 6px -2px rgb(24 22 30 / 0.08);
+
+  --top-h: 96px;
+  --step-1: 11.5px;
+  --step-2: 12.5px;
+  --step-3: 13.5px;
+  --step-4: 15px;
+  --step-5: 20px;
+  --step-6: 26px;
+
+  color-scheme: light;
+}
+
+body{margin:0;background:var(--antique-white);font-family:"Hanken Grotesk",system-ui,sans-serif;color:var(--blue-indigo)}
+header{padding:28px 32px 8px}h1{margin:0;font-size:24px;letter-spacing:-.02em}
+p{margin:6px 0 0;font-size:13px;color:var(--fg-muted);max-width:70ch}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;padding:20px 32px 40px}
+figure{margin:0}iframe{width:100%;aspect-ratio:1200/760;border:1px solid var(--border);border-radius:12px;background:var(--surface)}
+figcaption{font-size:12px;padding-top:6px;color:var(--fg-muted)}figcaption b{color:var(--chili-pepper);margin-right:6px}
+</style></head><body>
+<header><h1>12 ways to tell the coffee-map stats</h1>
+<p>Concept sketches at 1200×760, all drawn with the project's own Pantone SS27 tokens and the real
+census snapshot (8,681 shops, 11 cities). Open any card directly for a full-size page.</p></header>
+<div class="grid"><figure><iframe src="01-league-table/index.html" title="Café capital scoreboard" loading="lazy"></iframe>
+        <figcaption><b>01</b> Café capital scoreboard</figcaption></figure>
+<figure><iframe src="02-dot-ribbon/index.html" title="Density ribbon" loading="lazy"></iframe>
+        <figcaption><b>02</b> Density ribbon</figcaption></figure>
+<figure><iframe src="03-zip-atlas/index.html" title="ZIP atlas" loading="lazy"></iframe>
+        <figcaption><b>03</b> ZIP atlas</figcaption></figure>
+<figure><iframe src="04-walk-strip/index.html" title="Walk to the next café" loading="lazy"></iframe>
+        <figcaption><b>04</b> Walk to the next café</figcaption></figure>
+<figure><iframe src="05-story-cards/index.html" title="Insight cards" loading="lazy"></iframe>
+        <figcaption><b>05</b> Insight cards</figcaption></figure>
+<figure><iframe src="06-scatter-quadrant/index.html" title="Density vs social" loading="lazy"></iframe>
+        <figcaption><b>06</b> Density vs social</figcaption></figure>
+<figure><iframe src="07-fingerprint/index.html" title="City fingerprint" loading="lazy"></iframe>
+        <figcaption><b>07</b> City fingerprint</figcaption></figure>
+<figure><iframe src="08-brand-treemap/index.html" title="Who owns the block" loading="lazy"></iframe>
+        <figcaption><b>08</b> Who owns the block</figcaption></figure>
+<figure><iframe src="09-linked-brush/index.html" title="Stats that drive the map" loading="lazy"></iframe>
+        <figcaption><b>09</b> Stats that drive the map</figcaption></figure>
+<figure><iframe src="10-postcards/index.html" title="Postcards" loading="lazy"></iframe>
+        <figcaption><b>10</b> Postcards</figcaption></figure>
+<figure><iframe src="11-slope-rank/index.html" title="Same city, different rank" loading="lazy"></iframe>
+        <figcaption><b>11</b> Same city, different rank</figcaption></figure>
+<figure><iframe src="12-ambient-ticker/index.html" title="Coffee wire" loading="lazy"></iframe>
+        <figcaption><b>12</b> Coffee wire</figcaption></figure></div></body></html>
