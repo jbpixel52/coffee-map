@@ -51,8 +51,18 @@ hiding it. Colour is **Pantone's NYFW Spring/Summer 2027 report** — seasonless
 ground and ink, **Chili Pepper** as the single accent (tabs, primary buttons,
 selected row, dots), seasonal hues on avatars, heat running Anise Flower →
 Arrowwood → Langoustino → Chili Pepper. Night inverts sheet and
-shell. Spanish (es-MX) strings, PWA-installable, shareable `?ll=&z=` view,
-`prefers-reduced-motion` honoured. Tokens and rules: `DESIGN.md`.
+shell. Spanish (es-MX) strings, PWA-installable, `prefers-reduced-motion` honoured.
+Tokens and rules: `DESIGN.md`.
+
+Shareable state lives in the URL: `?ll=&z=` pins the view, and `?shop=<slug>` opens that
+café's card and flies to it (`lib/shoplink.ts`; a chain has branches, so a slug resolves to
+the first match). Selecting a shop writes the slug, closing the card removes it.
+
+Offline: the service worker (`public/sw.js`) serves the census stale-while-revalidate and
+static assets cache-first, so after one visit the list, filters and cards work with no
+network — the basemap does not, since tiles are remote and deliberately not cached. The
+credit strip dates the data and turns to the warning colour once it is more than 14 days
+old (`lib/freshness.ts`).
 Data is refreshed by local scrape runs; GitHub Actions only builds and deploys
 the committed data.
 
