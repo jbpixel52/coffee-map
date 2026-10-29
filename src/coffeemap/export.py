@@ -44,7 +44,11 @@ def export(con: sqlite3.Connection, city: City) -> dict:
                 "id": r["id"],
                 "name": r["name"],
                 "instagram": None if dead else r["instagram"],
-                "ig_followers": igp["followers"] if igp and not dead else None,
+                # a parsed 0 is a failed read, not an audience of nobody: ship null so the
+                # card and the stats tab both treat it as unknown
+                "ig_followers": igp["followers"]
+                if igp and not dead and (igp["followers"] or 0) > 0
+                else None,
                 "ig_full_name": igp["full_name"] if igp and not dead else None,
                 "ig_latest_code": igp["latest_code"] if igp and not dead else None,
                 "ig_last_post_at": igp["last_post_at"] if igp and not dead else None,

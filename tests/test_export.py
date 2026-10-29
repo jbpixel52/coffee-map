@@ -99,3 +99,21 @@ def test_handle_core_ignores_decoration():
     assert _handle_core("the.greenhousecoffee") == _handle_core("thegreenhouse.coffee")
     assert _handle_core("mukacafetj") != _handle_core("mukacafehn")
     assert _handle_core(None) == ""
+
+
+def test_a_zero_follower_read_ships_as_unknown(tmp_path, monkeypatch):
+    """0 followers is a failed parse, not an audience of nobody."""
+    monkeypatch.setattr("coffeemap.export.OUT_DIR", tmp_path / "data")
+    con = connect(tmp_path / "z.db")
+    upsert_place(con, source="osm", source_id="osm:node/z", name="Café Zero",
+                 lat=32.5, lon=-117.0, instagram="zerocafe")
+    con.execute(
+        "INSERT INTO ig_profiles (handle, capture_state, followers, fetched_at) VALUES (?,?,?,datetime('now'))",
+        ("zerocafe", "public", 0),
+    )
+    con.commit()
+    rebuild_shops(con)
+    export(con, CITY)
+    props = json.loads((tmp_path / "data" / "shops.geojson").read_text())["features"][0]["properties"]
+    assert props["instagram"] == "zerocafe"
+    assert props["ig_followers"] is None
