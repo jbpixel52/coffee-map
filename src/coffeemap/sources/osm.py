@@ -16,6 +16,10 @@ MIRRORS = [
     "https://overpass-api.de/api/interpreter",
 ]
 UA = "coffee-map/0.1 (github.com/jbpixel52/coffee-map)"
+# Per-mirror timeout. Four mirrors at 240 s each meant a single bad Overpass day could burn
+# sixteen minutes before the first retry; 150 s still covers a slow-but-working query on a
+# big bbox (Los Angeles takes minutes) while failing a dead mirror quickly.
+MIRROR_TIMEOUT = 150
 
 
 def build_query(city: City) -> str:
@@ -29,6 +33,10 @@ def build_query(city: City) -> str:
         # but a matcha-branded one is a café in every city's local understanding.
         f'nwr["shop"="tea"]["name"~"matcha",i]{bbox};'
         f'nwr["cuisine"~"matcha",i]{bbox};'
+        # A place whose cuisine IS "coffee_shop" is a café whatever its amenity tag says:
+        # Mexico City alone has 187 of them north of the centre that never carried
+        # amenity=cafe, and they are invisible to a query that only asks for that tag.
+        f'nwr["cuisine"~"coffee_shop",i]{bbox};'
         ");out center tags;"
     )
 
@@ -43,7 +51,7 @@ def fetch(city: City) -> bytes:
                 url,
                 data={"data": query},
                 headers={"User-Agent": UA, "Accept": "application/json"},
-                timeout=240,
+                timeout=MIRROR_TIMEOUT,
             )
             r.raise_for_status()
             return r.content
