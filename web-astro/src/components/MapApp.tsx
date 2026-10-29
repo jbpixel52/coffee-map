@@ -7,6 +7,7 @@ import { shopMatches, type ShopProps } from "../lib/filter";
 import { applyPlanTheme, planStyle, HEAT_LIGHT, HEAT_NIGHT, PLAN } from "../lib/plan";
 import { buildZones } from "../lib/zones";
 import { detailsFromProps, type ShopDetails } from "../lib/details";
+import { freshness } from "../lib/freshness";
 import { format, localeFor, t, type Lang } from "../lib/i18n";
 import { cityInView } from "../lib/viewport";
 import TitleBar from "./TitleBar";
@@ -487,6 +488,7 @@ export default function MapApp() {
 
   const titleCity = city ?? viewCity ?? cities[0] ?? "";
   const titleCount = cityCounts[titleCity] ?? 0;
+  const fresh = freshness(generated || "");
   const generatedLabel = generated
     ? new Date(generated).toLocaleDateString(localeFor(lang), {
         day: "2-digit",
@@ -565,7 +567,14 @@ export default function MapApp() {
 
       <div className="credit-strip">
         <b>{t(lang, "creditData")}</b> © OpenStreetMap ODbL · Google Maps · Instagram
-        {generatedLabel ? <span>· {generatedLabel}</span> : null}
+        {generatedLabel ? (
+          <span className={fresh.stale ? "credit-stale" : undefined}>
+            · {generatedLabel}
+            {fresh.stale && fresh.days !== null
+              ? ` · ${format(t(lang, "dataStale"), { days: String(fresh.days) })}`
+              : null}
+          </span>
+        ) : null}
       </div>
       <PwaBanner lang={lang} />
       {status !== "ready" && (

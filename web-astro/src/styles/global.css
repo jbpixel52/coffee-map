@@ -1233,3 +1233,9 @@ body {
   border: 1px solid color-mix(in srgb, var(--arrowwood) 32%, transparent);
   border-radius: var(--radius-md);
 }
+
+/* The census is a snapshot; past two weeks the date stops being trivia. */
+.credit-stale {
+  color: var(--chili-pepper);
+  font-weight: 600;
+}
