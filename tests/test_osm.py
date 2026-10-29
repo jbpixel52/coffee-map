@@ -18,6 +18,8 @@ def test_query_includes_matcha_shops_but_not_tea_in_general():
     # a matcha-branded tea shop is a café (it serves coffee), a plain tea shop is not
     assert '"shop"="tea"]["name"~"matcha",i]' in q
     assert '"cuisine"~"matcha",i' in q
+    # a restaurant whose cuisine is coffee_shop is a café
+    assert '"cuisine"~"coffee_shop",i' in q
     assert '"shop"="tea"]' not in q.replace('"shop"="tea"]["name"~"matcha",i]', "")
 
 def test_parses_real_overpass_payload():
