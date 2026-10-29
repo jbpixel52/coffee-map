@@ -153,6 +153,7 @@ describe("postcardFacts", () => {
     shopsPerZip: 11.1,
     topZip: { zip: "12345", count: 12 },
     igShops: 20,
+    igAccounts: 7,
     igPct: 20,
     followers: 1000,
     medianFollowers: 500,

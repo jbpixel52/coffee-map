@@ -30,6 +30,8 @@ export interface CityStats {
   shopsPerZip: number | null;
   topZip: { zip: string; count: number } | null;
   igShops: number;
+  /** distinct accounts behind those shops: a chain links one account to many branches */
+  igAccounts: number;
   igPct: number;
   followers: number;
   medianFollowers: number;
@@ -134,6 +136,11 @@ export function cityStats(
     const props = mine.map((f) => f.properties as Record<string, unknown>);
     const shops = mine.length;
     const igShops = props.filter((p) => Boolean(p.instagram)).length;
+    const igAccounts = new Set(
+      props
+        .map((p) => (typeof p.instagram === "string" ? p.instagram.trim().toLowerCase() : ""))
+        .filter(Boolean),
+    ).size;
     // One handle, one audience. A chain's Instagram account is attached to every branch
     // that name-matches it, so summing per shop counts Starbucks 40 times: Los Angeles
     // read 4.2B followers that way, more than the world population.
@@ -186,6 +193,7 @@ export function cityStats(
       shopsPerZip: zips.size ? Math.round((shops / zips.size) * 10) / 10 : null,
       topZip: topZip ? { zip: topZip[0], count: topZip[1] } : null,
       igShops,
+      igAccounts,
       igPct: shops ? Math.round((igShops / shops) * 1000) / 10 : 0,
       // no follower capture yet (only TJ and SD ran ig-recon): 0 means "unknown",
       // so keep it distinct from a real zero in the UI and in the rankings

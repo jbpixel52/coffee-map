@@ -222,6 +222,7 @@ export default function StatsPanel({ stats, city, onCity, lang, onClose }: Props
             emoji="📸"
             label={t(lang, "statInstagram")}
             value={`${current.igShops.toLocaleString(locale)} · ${num(current.igPct, locale)}%`}
+            hint={format(t(lang, "statAccounts"), { n: current.igAccounts.toLocaleString(locale) })}
             colour="var(--waterfall)"
             rank={rank((s) => s.igPct)}
             rankLabel={rankLabel}
