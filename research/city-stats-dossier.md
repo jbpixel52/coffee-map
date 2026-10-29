@@ -16,13 +16,13 @@ US city boundary.
 
 | City | Population (year) | City proper (*localidad*) | Area km² | Published shops | This map | Coverage |
 |---|---|---|---|---|---|---|
-| New York City | 8,584,629 (2025) | — | 778.2 | 4,001 | 2,670 | 67% |
+| New York City | 8,584,629 (2025) | — | 778.2 | 4,001 | 2,714 | 68% |
 | Los Angeles | 3,869,089 (2025) | — | 1,218.6 | 4,750 | 1,170 | 25% |
-| Mexico City | 9,209,944 (2020) | 9,209,944 | 1,485.2 | 7,287 | 1,051 | 14% |
-| San Francisco | 826,079 (2025) | — | 120.9 | 1,792 | 786 | 44% |
-| Seattle | 784,777 (2025) | — | 217.6 | 804 | 773 | 96% |
-| San Diego | 1,406,106 (2025) | — | 844.6 | 1,750 | 674 | 39% |
-| Tijuana | 1,922,523 (2020) | 1,810,645 | 1,239.5 | 1,470 | 627 | 43% |
+| Mexico City | 9,209,944 (2020) | 9,209,944 | 1,485.2 | 7,287 | 1,060 | 15% |
+| San Francisco | 826,079 (2025) | — | 120.9 | 1,792 | 822 | 46% |
+| Seattle | 784,777 (2025) | — | 217.6 | 804 | 800 | 100% |
+| San Diego | 1,406,106 (2025) | — | 844.6 | 1,750 | 721 | 41% |
+| Tijuana | 1,922,523 (2020) | 1,810,645 | 1,239.5 | 1,470 | 644 | 44% |
 | Oakland | 440,838 (2025) | — | 144.9 | 164 | 385 | 235% |
 | Austin | 1,002,632 (2025) | — | 845.3 | 998 | 317 | 32% |
 | Guadalajara | 1,385,629 (2020) | 1,385,629 | 150.4 | 1,471 | 201 | 14% |
@@ -79,11 +79,11 @@ so a low share can mean a narrower definition on our side *or* a broader one on 
 ### Mexico City (MX)
 
 - **Population** 9,209,944 — Entidad (all 16 alcaldias) = city proper, INEGI Censo 2020
-- **City proper** 9,209,944 — per-capita on that base: 11.4 cafés/100k (on the wider boundary: 11.4)
+- **City proper** 9,209,944 — per-capita on that base: 11.5 cafés/100k (on the wider boundary: 11.5)
 - **Metro** 21,804,515 (2020) — INEGI Censo 2020, ZM Valle de Mexico (76 municipios)
 - **Area** 1,485.2 km² — Entidad, 1,485.2 km2 (INEGI, Panorama sociodemografico CDMX, EIC 2025)
 - **Published shop count** 7,287 — mexicocafes.com, https://www.mexicocafes.com/estados/ciudad-de-mexico.html (census-derived, 2026)
-- **This map** 1,051 shops · 0.71/km² · 11.4/100k residents · population density 6,201/km²
+- **This map** 1,060 shops · 0.71/km² · 11.5/100k residents · population density 6,201/km²
 
 **Why it matters.** Published 7,287 vs our 1,051 (14%) is the largest absolute gap and suggests our extraction covers only the specialty/brunch segment. Density of 6,201/km2 makes CDMX the densest city in the set by far, so per-km2 comparisons reward it despite weak extraction.
 
@@ -93,7 +93,7 @@ so a low share can mean a narrower definition on our side *or* a broader one on 
 - **Metro** 19,940,274 (2024) — Census CBSA 2024 estimate, New York-Newark-Jersey City
 - **Area** 778.2 km² — Land area, 2024 Census Gazetteer (300.46 sq mi); excludes 445.4 km2 water
 - **Published shop count** 4,001 — Rentech Digital, May 5 2025, https://rentechdigital.com/smartscraper/business-report-details/united-states/new-york/list-of-coffee-shops-in-new-york-city
-- **This map** 2,670 shops · 3.43/km² · 31.1/100k residents · population density 11,031/km²
+- **This map** 2,714 shops · 3.49/km² · 31.6/100k residents · population density 11,031/km²
 
 **Why it matters.** Highest extraction ratio of the big cities (67%), consistent with the project's NYC-heavy query set. Population density 11,031/km2 is the highest in the set, so NYC wins per-km2 metrics and sits mid-table per-capita.
 
@@ -113,7 +113,7 @@ so a low share can mean a narrower definition on our side *or* a broader one on 
 - **Metro** 3,298,799 (2024) — Census CBSA 2024 estimate, San Diego-Chula Vista-Carlsbad
 - **Area** 844.6 km² — Land area, 2024 Census Gazetteer (326.09 sq mi); excludes 120.0 km2 water
 - **Published shop count** 1,750 — Rentech Digital, https://rentechdigital.com/smartscraper/business-report-details/united-states/california/list-of-coffee-shops-in-san-diego (Apr 1 2026); joe.coffee lists 501 'independent' shops
-- **This map** 674 shops · 0.80/km² · 47.9/100k residents · population density 1,665/km²
+- **This map** 721 shops · 0.85/km² · 51.3/100k residents · population density 1,665/km²
 
 **Why it matters.** City boundary runs to 844.6 km2 of mostly low-density land, so municipal density undersells the walkable core. Clever (2024) ranks SD 3rd nationally at 20.8 coffee shops per 100k, but its implied absolute count only reconciles at metro scale.
 
@@ -123,7 +123,7 @@ so a low share can mean a narrower definition on our side *or* a broader one on 
 - **Metro** 4,648,486 (2024) — Census CBSA 2024 estimate, San Francisco-Oakland-Fremont
 - **Area** 120.9 km² — Land area, 2024 Census Gazetteer (46.69 sq mi); excludes 479.7 km2 water
 - **Published shop count** 1,792 — Rentech Digital (Apr 1 2026); 627 'independent' (joe.coffee); 528 in an older study quoted by Time Out (2024)
-- **This map** 786 shops · 6.50/km² · 95.1/100k residents · population density 6,833/km²
+- **This map** 822 shops · 6.80/km² · 99.5/100k residents · population density 6,833/km²
 
 **Why it matters.** Tiny, fully built-out boundary (120.9 km2) makes SF the fairest per-km2 comparison in the set. Population has fallen ~5% since 2020, which mechanically lifts any per-resident metric.
 
@@ -133,18 +133,18 @@ so a low share can mean a narrower definition on our side *or* a broader one on 
 - **Metro** 4,145,494 (2024) — Census CBSA 2024 estimate, Seattle-Tacoma-Bellevue
 - **Area** 217.6 km² — Land area, 2024 Census Gazetteer (84.00 sq mi); excludes 150.4 km2 water
 - **Published shop count** 804 — Rentech Digital (Apr 1 2026); 476 'independent' (joe.coffee)
-- **This map** 773 shops · 3.55/km² · 98.5/100k residents · population density 3,606/km²
+- **This map** 800 shops · 3.68/km² · 101.9/100k residents · population density 3,606/km²
 
 **Why it matters.** Our 773 vs 804 published = 96%, by far the best coverage match, which makes Seattle's #1 per-capita rank the most trustworthy single figure on the tab. Also note the 2011 NPD figure of 1,640 shops was metro-wide and is still quoted in local press.
 
 ### Tijuana (MX)
 
 - **Population** 1,922,523 — Municipio de Tijuana (INEGI Censo 2020). City proper = localidad Tijuana, 1,810,645 (same census).
-- **City proper** 1,810,645 — per-capita on that base: 34.6 cafés/100k (on the wider boundary: 32.6)
+- **City proper** 1,810,645 — per-capita on that base: 35.6 cafés/100k (on the wider boundary: 33.5)
 - **Metro** 2,157,853 (2020) — INEGI Censo 2020, ZM Tijuana (3 municipios)
 - **Area** 1,239.5 km² — Municipio boundary, 1,239.49 km2 (IMPLAN Tijuana citing Programa Estatal de Desarrollo Urbano BC 2009-2013)
 - **Published shop count** 1,470 — mexicocafes.com, https://mexicocafes.com/cafes/baja-california/tijuana.html (2026 directory built from economic-census 'cafeterias'; broad category incl. soda fountains/ice-cream)
-- **This map** 627 shops · 0.51/km² · 32.6/100k residents · population density 1,551/km²
+- **This map** 644 shops · 0.52/km² · 33.5/100k residents · population density 1,551/km²
 
 **Why it matters.** Area in config (1,239.6) is right. Published 1,470 is ~2.3x our 627; the census category is broader than 'coffee shop'. Specialty scene is small but real (Ilustre, Infuso, BOGESCA, Magul). Cross-border foot traffic makes resident-based per-capita a weak proxy for demand.
 
