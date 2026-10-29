@@ -4,7 +4,7 @@ Working dossier for the Stats tab: one section per city with a scene summary, so
 shop-level stories, one chart hook we can actually compute, and an explicit list of what
 could not be verified.
 
-Written 26 Oct 2026. Every factual claim below carries a link. Shop counts, ZIP counts,
+Written 26 Oct 2026; table refreshed against the 29 Oct census (8,861 shops). Every factual claim below carries a link. Shop counts, ZIP counts,
 Instagram shares and distances come from `web-astro/public/data/shops.geojson` +
 `meta.json` in this repo (computed for this dossier, method at the end); anything from
 outside the repo is linked.
@@ -13,17 +13,17 @@ outside the repo is linked.
 
 | City | Shops | Shops/km² | Busiest ZIP (count) | Instagram share | Median gap to next café* |
 |---|---|---|---|---|---|
-| New York City | 2,670 | 3.43 | 10003 (73) | 5.7% | 76 m |
-| Los Angeles | 1,170 | 0.96 | 90012 (36) | 9.7% | 146 m |
-| Mexico City | 1,051 | 0.71 | 06600 (34) | 1.7% | 120 m |
-| San Francisco | 786 | 6.47 | 94122 (50) | 6.2% | 71 m |
-| Seattle | 773 | 3.56 | 98122 (61) | 7.5% | 82 m |
-| San Diego | 674 | 0.80 | 92101 (43) | 6.1% | 104 m |
-| Tijuana | 627 | 0.51 | 22010 (6) | 18.7% | 100 m |
-| Oakland | 385 | 2.66 | 94704 (27)† | 9.4% | 98 m |
-| Austin | 317 | 0.38 | 78701 (27) | 8.2% | 243 m |
-| Guadalajara | 201 | 1.33 | 44160 (7) | 4.0% | 187 m |
-| Ensenada | 27 | 0.002 | 22800 (3) | 0% | 147 m |
+| New York City | 2,714 | 3.49 | 10003 (76) | 7% | 68 m |
+| Los Angeles | 1,170 | 0.96 | 90012 (35) | 33% | 145 m |
+| Mexico City | 1,060 | 0.71 | 06600 (34) | 2% | 126 m |
+| San Francisco | 822 | 6.77 | 94122 (49) | 11% | 63 m |
+| Seattle | 800 | 3.69 | 98101 (64) | 19% | 79 m |
+| San Diego | 721 | 0.86 | 92101 (41) | 8% | 102 m |
+| Tijuana | 644 | 0.52 | 22010 (6) | 18% | 93 m |
+| Oakland | 385 | 2.66 | 94704 (25) | 12% | 98 m |
+| Austin | 317 | 0.38 | 78701 (27) | 13% | 243 m |
+| Guadalajara | 201 | 1.33 | 44160 (7) | 4% | 187 m |
+| Ensenada | 27 | 0.00 | 22800 (3) | 0% | 147 m |
 
 \* Straight-line median distance to the nearest other café in the same city, not a walking
 route. † 94704 is Berkeley, not Oakland — see the Oakland caveat.
