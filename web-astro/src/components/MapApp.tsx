@@ -8,6 +8,7 @@ import { applyPlanTheme, planStyle, HEAT_LIGHT, HEAT_NIGHT, PLAN } from "../lib/
 import { buildZones } from "../lib/zones";
 import { detailsFromProps, type ShopDetails } from "../lib/details";
 import { freshness } from "../lib/freshness";
+import { shopSlug } from "../lib/shoplink";
 import { format, localeFor, t, type Lang } from "../lib/i18n";
 import { cityInView } from "../lib/viewport";
 import TitleBar from "./TitleBar";
@@ -79,6 +80,10 @@ export default function MapApp() {
         window.matchMedia("(prefers-color-scheme: dark)").matches),
   );
   const [selected, setSelected] = useState<Selected | null>(null);
+  const [deepLinkSlug] = useState<string | null>(
+    () => new URLSearchParams(location.search).get("shop"),
+  );
+  const [deepLinkId, setDeepLinkId] = useState<number | null>(null);
   const [tab, setTab] = useState<string | null>(null);
 
   /** Paint the dots for the current theme and filter state. */
@@ -130,6 +135,13 @@ export default function MapApp() {
       setCityCounts(counts);
       if (meta.generated_at) setGenerated(meta.generated_at);
 
+      if (deepLinkSlug) {
+        const hit = fc.features.find(
+          (f) => shopSlug(String((f.properties as { name?: string } | null)?.name ?? "")) === deepLinkSlug,
+        );
+        const id = (hit?.properties as { id?: number } | undefined)?.id;
+        if (typeof id === "number") setDeepLinkId(id);
+      }
       const params = new URLSearchParams(location.search);
       const ll = (params.get("ll") ?? "").split(",").map(Number);
       const zq = Number(params.get("z"));
@@ -427,6 +439,16 @@ export default function MapApp() {
     };
   }, [status]);
 
+  // The open card is part of the shareable state: `?shop=<slug>` survives a reload and can
+  // be sent to someone else, and closing the card removes it.
+  useEffect(() => {
+    const url = new URL(location.href);
+    const name = (selected as { name?: string } | null)?.name;
+    if (name) url.searchParams.set("shop", shopSlug(name));
+    else url.searchParams.delete("shop");
+    history.replaceState(null, "", url);
+  }, [selected]);
+
   // ── keyboard ──────────────────────────────────────────────────────────
   const closeFicha = useCallback(() => {
     setSelected(null);
@@ -468,6 +490,14 @@ export default function MapApp() {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     mapRef.current?.flyTo({ center: [lon, lat], zoom: 15, duration: reduce ? 0 : 800 });
   }, []);
+
+  // A deep link waits for the map: selectById flies, and there is nothing to fly before
+  // the style has loaded.
+  useEffect(() => {
+    if (deepLinkId == null || status !== "ready") return;
+    selectById(deepLinkId);
+    setDeepLinkId(null);
+  }, [deepLinkId, status, selectById]);
 
   const tabs = [
     {
