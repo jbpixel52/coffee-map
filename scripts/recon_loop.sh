@@ -22,7 +22,8 @@ say() { printf '%s %s\n' "$(date -Is)" "$*" | tee -a "$LOG"; }
 CITIES=(
   "tj:config/city.toml:data/coffeemap.db:data/archive"
   "sd:config/city.san-diego.toml:data/coffeemap-sd.db:data/archive-sd"
-  "la:config/city.la.toml:data/coffeemap-la.db:data/archive-la"
+  "la-n:config/city.la-n.toml:data/coffeemap-la-n.db:data/archive-la-n"
+  "la-s:config/city.la-s.toml:data/coffeemap-la-s.db:data/archive-la-s"
   "nyc-n:config/city.nyc-n.toml:data/coffeemap-nyc-n.db:data/archive-nyc-n"
   "nyc-s:config/city.nyc-s.toml:data/coffeemap-nyc-s.db:data/archive-nyc-s"
   "cdmx-n:config/city.cdmx-n.toml:data/coffeemap-cdmx-n.db:data/archive-cdmx-n"

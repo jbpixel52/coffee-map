@@ -22,7 +22,8 @@ ROOT = Path(__file__).resolve().parents[1]
 CITIES = [
     ("tj", "Tijuana", "data/coffeemap.db"),
     ("sd", "San Diego", "data/coffeemap-sd.db"),
-    ("la", "Los Angeles", "data/coffeemap-la.db"),
+    ("la-n", "Los Angeles (north)", "data/coffeemap-la-n.db"),
+    ("la-s", "Los Angeles (south)", "data/coffeemap-la-s.db"),
     ("cdmx-n", "Mexico City (north)", "data/coffeemap-cdmx-n.db"),
     ("cdmx-s", "Mexico City (south)", "data/coffeemap-cdmx-s.db"),
     ("gdl", "Guadalajara", "data/coffeemap-gdl.db"),

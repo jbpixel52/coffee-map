@@ -7,7 +7,7 @@ center_lon = -118.2437
 zoom = 11.6
 bbox_south = 33.95
 bbox_west = -118.67
-bbox_north = 34.34
+bbox_north = 34.145
 bbox_east = -118.15
 gmaps_queries = [
   "coffee shops Los Angeles",

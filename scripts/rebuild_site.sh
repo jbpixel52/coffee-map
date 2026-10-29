@@ -11,7 +11,7 @@ cd "$(dirname "$0")/.."
 export PATH="/opt/data/home/.local/bin:$PATH"
 unset COFFEEMAP_CITY COFFEEMAP_DB COFFEEMAP_ARCHIVE COFFEEMAP_OUT
 
-for slug in tj sd la cdmx-n cdmx-s gdl ens nyc-n nyc-s aus sea sfo oak; do
+for slug in tj sd la-n la-s cdmx-n cdmx-s gdl ens nyc-n nyc-s aus sea sfo oak; do
   case "$slug" in
     tj) cfg=config/city.toml; db=data/coffeemap.db; archive=data/archive ;;
     sd) cfg=config/city.san-diego.toml; db=data/coffeemap-sd.db; archive=data/archive-sd ;;
