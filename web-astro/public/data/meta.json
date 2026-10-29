@@ -60,8 +60,8 @@
     {
       "name": "San Diego",
       "slug": "sd",
-      "shop_count": 709,
-      "with_instagram": 55,
+      "shop_count": 823,
+      "with_instagram": 62,
       "population": 1386932,
       "area_sq_km": 842.2
     },
@@ -84,13 +84,13 @@
     {
       "name": "Tijuana",
       "slug": "tj",
-      "shop_count": 656,
-      "with_instagram": 118,
+      "shop_count": 659,
+      "with_instagram": 119,
       "population": 1922523,
       "area_sq_km": 1239.6
     }
   ],
-  "generated_at": "2026-10-29T01:45:06Z",
-  "shop_count": 8861,
-  "with_instagram": 1108
+  "generated_at": "2026-10-29T01:58:47Z",
+  "shop_count": 8978,
+  "with_instagram": 1116
 }
