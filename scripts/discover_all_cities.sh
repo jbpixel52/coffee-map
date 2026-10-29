@@ -28,4 +28,7 @@ n = c.execute("SELECT COUNT(*) FROM places WHERE instagram IS NOT NULL").fetchon
 print(f"   places with Instagram: {n}")
 PY
 done
+# ig-attach matches loosely and only ever adds links, so a category- or
+# neighbourhood-word match would stay forever: re-check what it just did.
+uv run python scripts/revalidate_attachments.py | tail -1
 echo "discover-all done"

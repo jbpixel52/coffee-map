@@ -29,7 +29,7 @@
       "name": "Los Angeles",
       "slug": "la",
       "shop_count": 1170,
-      "with_instagram": 389,
+      "with_instagram": 388,
       "population": 3898747,
       "area_sq_km": 1215.0
     },
@@ -45,7 +45,7 @@
       "name": "New York City",
       "slug": "nyc-n",
       "shop_count": 2714,
-      "with_instagram": 258,
+      "with_instagram": 221,
       "population": 8804190,
       "area_sq_km": 778.2
     },
@@ -69,7 +69,7 @@
       "name": "San Francisco",
       "slug": "sfo",
       "shop_count": 822,
-      "with_instagram": 94,
+      "with_instagram": 93,
       "population": 873965,
       "area_sq_km": 121.4
     },
@@ -85,12 +85,12 @@
       "name": "Tijuana",
       "slug": "tj",
       "shop_count": 644,
-      "with_instagram": 126,
+      "with_instagram": 123,
       "population": 1922523,
       "area_sq_km": 1239.6
     }
   ],
-  "generated_at": "2026-10-29T00:34:04Z",
+  "generated_at": "2026-10-29T00:38:35Z",
   "shop_count": 8861,
-  "with_instagram": 1190
+  "with_instagram": 1148
 }
