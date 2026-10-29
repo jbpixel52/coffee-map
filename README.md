@@ -35,7 +35,7 @@ the same coordinates, keeping the claim whose postcode belongs to that city.
 |---|---|---|
 | Backbone | OpenStreetMap (Overpass, ODbL) | the full café census — node/way coordinates, names, tags |
 | Enrichment | Google Maps search (logged-out scrape) | shops OSM misses, with coordinates + place ids |
-| Social | Instagram profiles (logged-out recon) | handle + follower count per shop (120 profiles fetched) |
+| Social | Instagram profiles (logged-out recon) | handle + follower count per shop (712 profiles fetched) |
 
 Map UI: MapLibre GL over **OpenFreeMap** vector tiles with a style of our own
 (`web-astro/src/lib/plan.ts`) that draws the city as a **printed plan** — Antique
