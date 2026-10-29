@@ -39,3 +39,26 @@ def test_export_reads_ig_profiles(tmp_path, monkeypatch):
     fc = json.loads((tmp_path / "data" / "shops.geojson").read_text())
     assert meta["with_instagram"] == 1
     assert fc["features"][0]["properties"]["ig_followers"] == 1200
+
+
+def test_dead_instagram_handles_are_withheld(tmp_path, monkeypatch):
+    """A handle Instagram serves as not_found must not ship as a broken link."""
+    monkeypatch.setattr("coffeemap.export.OUT_DIR", tmp_path / "data")
+    con = connect(tmp_path / "t.db")
+    for handle, state, followers in (("livecafe", "public", 1234), ("deadcafe", "not_found", None)):
+        upsert_place(con, source="osm", source_id=f"osm:node/{handle}", name=f"Café {handle}",
+                     lat=32.5, lon=-117.0, instagram=handle)
+        con.execute(
+            "INSERT INTO ig_profiles (handle, capture_state, followers, fetched_at) VALUES (?,?,?,datetime('now'))",
+            (handle, state, followers),
+        )
+    con.commit()
+    rebuild_shops(con)
+    export(con, CITY)
+
+    fc = json.loads((tmp_path / "data" / "shops.geojson").read_text())
+    props = {f["properties"]["name"]: f["properties"] for f in fc["features"]}
+    assert props["Café livecafe"]["instagram"] == "livecafe"
+    assert props["Café livecafe"]["ig_followers"] == 1234
+    assert props["Café deadcafe"]["instagram"] is None
+    assert props["Café deadcafe"]["ig_followers"] is None

@@ -37,7 +37,7 @@
       "name": "Mexico City",
       "slug": "cdmx-n",
       "shop_count": 1060,
-      "with_instagram": 23,
+      "with_instagram": 18,
       "population": 9209944,
       "area_sq_km": 1485.0
     },
@@ -45,7 +45,7 @@
       "name": "New York City",
       "slug": "nyc-n",
       "shop_count": 2714,
-      "with_instagram": 221,
+      "with_instagram": 195,
       "population": 8804190,
       "area_sq_km": 778.2
     },
@@ -85,12 +85,12 @@
       "name": "Tijuana",
       "slug": "tj",
       "shop_count": 644,
-      "with_instagram": 123,
+      "with_instagram": 118,
       "population": 1922523,
       "area_sq_km": 1239.6
     }
   ],
-  "generated_at": "2026-10-29T00:38:35Z",
+  "generated_at": "2026-10-29T00:42:57Z",
   "shop_count": 8861,
-  "with_instagram": 1148
+  "with_instagram": 1112
 }

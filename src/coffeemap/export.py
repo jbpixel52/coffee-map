@@ -33,17 +33,21 @@ def export(con: sqlite3.Connection, city: City) -> dict:
     features = []
     for r in rows:
         igp = ig.get(r["instagram"]) if r["instagram"] else None
+        # A handle Instagram served as not_found is a dead link: the profile page 404s,
+        # so shipping it puts a broken button on the card. The place keeps existing —
+        # only the handle is withheld.
+        dead = bool(igp and igp["capture_state"] == "not_found")
         features.append({
             "type": "Feature",
             "geometry": {"type": "Point", "coordinates": [r["lon"], r["lat"]]},
             "properties": {
                 "id": r["id"],
                 "name": r["name"],
-                "instagram": r["instagram"],
-                "ig_followers": igp["followers"] if igp else None,
-                "ig_full_name": igp["full_name"] if igp else None,
-                "ig_latest_code": igp["latest_code"] if igp else None,
-                "ig_last_post_at": igp["last_post_at"] if igp else None,
+                "instagram": None if dead else r["instagram"],
+                "ig_followers": igp["followers"] if igp and not dead else None,
+                "ig_full_name": igp["full_name"] if igp and not dead else None,
+                "ig_latest_code": igp["latest_code"] if igp and not dead else None,
+                "ig_last_post_at": igp["last_post_at"] if igp and not dead else None,
                 "website": r["website"],
                 "address": r["address"],
                 "sources": (r["sources"] or "").split(","),
