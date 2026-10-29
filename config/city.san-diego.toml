@@ -7,7 +7,7 @@ center_lon = -117.1611
 zoom = 12.2
 bbox_south = 32.53  # to the border: San Ysidro / Otay Mesa are San Diego
 bbox_west = -117.28
-bbox_north = 32.90
+bbox_north = 32.96  # includes the northern edge of the city
 bbox_east = -116.95
 gmaps_queries = [
   "coffee shops San Diego",

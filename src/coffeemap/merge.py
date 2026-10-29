@@ -225,6 +225,34 @@ def _inside(bbox: tuple[float, float, float, float] | None, lat: float, lon: flo
 REASSIGN_MARGIN_DEG = 0.045
 
 
+def reassign_by_bbox(
+    features: list[dict],
+    bboxes: dict[str, tuple[float, float, float, float]],
+) -> int:
+    """Move a shop to the one city whose box contains it, when its own box does not.
+
+    A scrape reaches past its border in both directions: San Diego's Maps queries return
+    Tijuana matcha bars, and Tijuana's return Chula Vista cafés. When a shop's coordinates
+    sit inside exactly one city's box and outside the box of the city that claims it, the
+    coordinates are the better evidence.
+    """
+    moved = 0
+    for f in features:
+        p = f["properties"]
+        lon, lat = f["geometry"]["coordinates"]
+        own = bboxes.get(p["city"])
+        if own and _inside(own, lat, lon):
+            continue
+        hosts = [name for name, box in bboxes.items() if _inside(box, lat, lon)]
+        if len(hosts) != 1 or hosts[0] == p["city"]:
+            continue
+        p["city"] = hosts[0]
+        if "city_slug" in p:
+            p["city_slug"] = hosts[0]
+        moved += 1
+    return moved
+
+
 def reassign_by_postcode(
     features: list[dict],
     bboxes: dict[str, tuple[float, float, float, float]],

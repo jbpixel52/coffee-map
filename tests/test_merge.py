@@ -171,3 +171,23 @@ def test_postcode_reassignment_needs_the_coordinates_to_agree():
     assert moved == 1
     assert by_name["Starbucks"] == "San Diego"
     assert by_name["Café Centro"] == "Tijuana"
+
+
+def test_coordinates_beat_the_claiming_city():
+    from coffeemap.merge import reassign_by_bbox
+
+    bboxes = {"Tijuana": (32.37, -117.20, 32.70, -116.87), "San Diego": (32.58, -117.28, 32.90, -116.95)}
+    feats = [
+        # a Tijuana matcha bar that San Diego's Maps query returned
+        _feat("Molly matcha", "San Diego", 32.5098, -116.9665, None),
+        # a real San Diego shop stays put
+        _feat("Better Half", "San Diego", 32.7150, -117.1600, None),
+        # outside both boxes: nobody can claim it, leave the claim alone
+        _feat("Far Away", "San Diego", 34.0000, -118.0000, None),
+    ]
+    moved = reassign_by_bbox(feats, bboxes)
+    by_name = {f["properties"]["name"]: f["properties"]["city"] for f in feats}
+    assert moved == 1
+    assert by_name["Molly matcha"] == "Tijuana"
+    assert by_name["Better Half"] == "San Diego"
+    assert by_name["Far Away"] == "San Diego"

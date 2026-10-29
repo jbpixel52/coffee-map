@@ -8,7 +8,7 @@ zoom = 12.4
 bbox_south = 32.37
 bbox_west = -117.20
 bbox_north = 32.70
-bbox_east = -116.87
+bbox_east = -116.78  # municipio extends east of the urban core
 gmaps_queries = [
   "coffee shops Tijuana",
   "cafeterias Tijuana",

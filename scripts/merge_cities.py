@@ -11,7 +11,11 @@ import sys
 import sys as _sys
 
 _sys.path.insert(0, str(__import__('pathlib').Path(__file__).resolve().parents[1] / 'src'))
-from coffeemap.merge import drop_cross_city_duplicates, reassign_by_postcode  # noqa: E402
+from coffeemap.merge import (  # noqa: E402
+    drop_cross_city_duplicates,
+    reassign_by_bbox,
+    reassign_by_postcode,
+)
 from pathlib import Path
 import tomllib  # noqa: E402
 
@@ -88,6 +92,9 @@ def main() -> int:
         unique.append(f)
     bboxes = city_bboxes()
     features = drop_cross_city_duplicates(unique, bboxes)
+    by_bbox = reassign_by_bbox(features, bboxes)
+    if by_bbox:
+        print(f"merge-cities: {by_bbox} shops moved to the city whose bbox contains them")
     moved = reassign_by_postcode(features, bboxes)
     if moved:
         print(f"merge-cities: {moved} shops reassigned to the city that owns their postcode")
