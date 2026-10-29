@@ -1,0 +1,17 @@
+{
+  "_comment": "Canonical property set of a feature in web-astro/public/data/shops.geojson. export.py must emit exactly these keys, and the TS ShopProps interface must declare exactly these keys. Both sides are asserted against this file, so a rename fails a test instead of shipping a blank card.",
+  "keys": [
+    "id",
+    "name",
+    "instagram",
+    "ig_followers",
+    "ig_full_name",
+    "ig_latest_code",
+    "ig_last_post_at",
+    "website",
+    "address",
+    "sources",
+    "city",
+    "city_slug"
+  ]
+}

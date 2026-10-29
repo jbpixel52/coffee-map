@@ -1,10 +1,28 @@
 /** Shop filtering: map search, IG-only toggle, and the all-shops menu list. */
 
+/**
+ * Every property a feature carries in `public/data/shops.geojson`. The key set is pinned
+ * to `schema/shop-properties.json` by a test on both sides (here and in
+ * tests/test_export.py), so a rename in export.py fails a build instead of shipping a
+ * card full of blanks.
+ */
 export interface ShopProps {
+  /** always emitted by export.py */
   name: string;
   instagram: string | null;
   ig_followers: number | null;
+  /** the rest are optional because panels build partial objects from list rows; the key
+   *  set is still pinned to schema/shop-properties.json by the contract test */
+  id?: number;
+  ig_full_name?: string | null;
+  ig_latest_code?: string | null;
+  ig_last_post_at?: string | null;
+  website?: string | null;
+  address?: string | null;
+  /** which sources contributed: "osm", "gmaps", or both */
+  sources?: string[];
   city?: string | null;
+  city_slug?: string | null;
 }
 
 const fold = (s: string) =>

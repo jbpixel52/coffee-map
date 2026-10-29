@@ -62,3 +62,31 @@ def test_dead_instagram_handles_are_withheld(tmp_path, monkeypatch):
     assert props["Café livecafe"]["ig_followers"] == 1234
     assert props["Café deadcafe"]["instagram"] is None
     assert props["Café deadcafe"]["ig_followers"] is None
+
+
+def test_property_keys_match_the_shared_schema(tmp_path, monkeypatch):
+    """One schema, two languages: a rename must fail here, not produce a blank card.
+
+    The TypeScript side asserts the same file (web-astro/src/lib/shop-properties.test.ts),
+    so export.py and ShopProps cannot drift apart.
+    """
+    import json as _json
+    from pathlib import Path
+
+    monkeypatch.setattr("coffeemap.export.OUT_DIR", tmp_path / "data")
+    con = connect(tmp_path / "s.db")
+    upsert_place(con, source="osm", source_id="osm:node/9", name="Café Schema",
+                 lat=32.5, lon=-117.0, instagram="schema_cafe", address="Calle 1, Tijuana, 22000")
+    rebuild_shops(con)
+    export(con, CITY)
+
+    schema = _json.loads(
+        (Path(__file__).resolve().parents[1] / "schema" / "shop-properties.json").read_text()
+    )["keys"]
+    fc = _json.loads((tmp_path / "data" / "shops.geojson").read_text())
+    # the schema describes the file that ships; merge_cities.py adds these two after export
+    keys = set(fc["features"][0]["properties"]) | {"city", "city_slug"}
+    assert keys == set(schema), (
+        f"export.py emits {sorted(keys - set(schema))} beyond the schema and is missing "
+        f"{sorted(set(schema) - keys)}"
+    )
