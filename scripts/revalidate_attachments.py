@@ -32,7 +32,8 @@ from coffeemap.merge import STOP_TOKENS, norm_name  # noqa: E402
 CITIES = {
     "tj": "data/coffeemap.db",
     "sd": "data/coffeemap-sd.db",
-    "la": "data/coffeemap-la.db",
+    "la-n": "data/coffeemap-la-n.db",
+    "la-s": "data/coffeemap-la-s.db",
     "cdmx-n": "data/coffeemap-cdmx-n.db",
     "cdmx-s": "data/coffeemap-cdmx-s.db",
     "gdl": "data/coffeemap-gdl.db",
