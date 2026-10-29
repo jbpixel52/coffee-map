@@ -12,7 +12,7 @@
     {
       "name": "Ensenada",
       "slug": "ens",
-      "shop_count": 27,
+      "shop_count": 32,
       "with_instagram": 0,
       "population": 443807,
       "area_sq_km": 14899.0
@@ -90,7 +90,7 @@
       "area_sq_km": 1239.6
     }
   ],
-  "generated_at": "2026-10-29T01:58:47Z",
-  "shop_count": 8978,
+  "generated_at": "2026-10-29T02:04:09Z",
+  "shop_count": 8983,
   "with_instagram": 1116
 }

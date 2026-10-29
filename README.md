@@ -1,10 +1,10 @@
 # Coffee Map
 
-A web map of **8,978 coffee shops across 11 cities** — built from three
+A web map of **8,983 coffee shops across 11 cities** — built from three
 scraped sources with an archive-first pipeline. Live at
 **https://jbpixel52.github.io/coffee-map/**.
 
-Cities: Austin (317), Ensenada (27), Guadalajara (201), Los Angeles (1,170), Mexico City (1,060), New York City (2,714), Oakland (385), San Diego (823), San Francisco (822), Seattle (800), Tijuana (659).
+Cities: Austin (317), Ensenada (32), Guadalajara (201), Los Angeles (1,170), Mexico City (1,060), New York City (2,714), Oakland (385), San Diego (823), San Francisco (822), Seattle (800), Tijuana (659).
 
 1116 shops carry an Instagram handle, and about two thirds have a street address
 (OSM `addr:*`, plus the Google Maps card text for Tijuana and San Diego).

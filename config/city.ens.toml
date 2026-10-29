@@ -5,10 +5,10 @@ timezone = "America/Tijuana"
 center_lat = 31.8667
 center_lon = -116.5964
 zoom = 12.8
-bbox_south = 31.8
-bbox_west = -116.68
-bbox_north = 31.92
-bbox_east = -116.55
+bbox_south = 31.70  # municipio runs south to San Quintín; this is the populated corridor
+bbox_west = -116.95
+bbox_north = 32.20  # includes Valle de Guadalupe
+bbox_east = -116.20
 gmaps_queries = [
   "cafeterias Ensenada",
   "cafe de especialidad Ensenada",
