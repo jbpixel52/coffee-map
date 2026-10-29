@@ -90,3 +90,12 @@ def test_property_keys_match_the_shared_schema(tmp_path, monkeypatch):
         f"export.py emits {sorted(keys - set(schema))} beyond the schema and is missing "
         f"{sorted(set(schema) - keys)}"
     )
+
+
+def test_handle_core_ignores_decoration():
+    """@the.greenhousecoffee and @thegreenhouse.coffee are one account, not a gap."""
+    from coffeemap.cli import _handle_core
+
+    assert _handle_core("the.greenhousecoffee") == _handle_core("thegreenhouse.coffee")
+    assert _handle_core("mukacafetj") != _handle_core("mukacafehn")
+    assert _handle_core(None) == ""

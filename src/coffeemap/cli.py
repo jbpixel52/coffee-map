@@ -19,6 +19,11 @@ from .store import (
 )
 
 
+def _handle_core(handle: str | None) -> str:
+    """The part of a handle that identifies the account, ignoring . and _ decoration."""
+    return "".join(ch for ch in (handle or "").lower() if ch.isalnum())
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="coffeemap")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -51,6 +56,11 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--refresh", action="store_true")
     sub.add_parser("ig-enrich", help="re-parse archived IG profiles: full_name + latest post code (offline)")
     sub.add_parser("ig-attach", help="attach IG profiles to places by name/handle match")
+    p = sub.add_parser(
+        "ig-review",
+        help="triage queue: handles the model rejected that name-match a café",
+    )
+    p.add_argument("--out", default="", help="CSV path (default data/reports/ig-review-<city>.csv)")
     p = sub.add_parser("classify-places", help="gate gmaps/web places through the local model")
     p.add_argument("--limit", type=int, default=1500)
     sub.add_parser("candidates-apply", help="promote café-verdict candidates to places (dedupe vs existing)")
@@ -436,6 +446,56 @@ def main(argv: list[str] | None = None) -> int:
                 f"full={(prof or {}).get('full_name')!r}"
             )
         print(f"ig-enrich: re-parsed {upd} archived profiles (offline, no network)")
+    elif args.cmd == "ig-review":
+        import csv
+        from pathlib import Path as _Path
+
+        from .merge import name_match
+
+        # The 1.5B gate marks real café handles not_cafe often enough that silently
+        # dropping them loses shops: @andaluciacafe.tj and @barrocafe are both rejected.
+        # This writes the evidence for a human to settle in one pass.
+        verdicts = {
+            r["key"].lstrip("@").lower(): r["verdict"]
+            for r in con.execute("SELECT key, verdict FROM candidates WHERE kind='ig'")
+        }
+        places = [dict(r) for r in con.execute("SELECT * FROM places ORDER BY id")]
+        rows = []
+        for pr in con.execute("SELECT * FROM ig_profiles ORDER BY followers DESC"):
+            handle = pr["handle"]
+            if verdicts.get(handle.lower()) != "not_cafe":
+                continue
+            hits = [
+                pl
+                for pl in places
+                if name_match(pl["name"], handle)
+                or (pr["full_name"] and name_match(pl["name"], pr["full_name"]))
+            ]
+            core = _handle_core(handle)
+            for pl in hits[:3]:
+                # already linked, or linked to a spelling of the same handle? then the wrong
+                # verdict costs nothing and is not triage: @the.greenhousecoffee vs
+                # @thegreenhouse.coffee is one account, not a gap.
+                if _handle_core(pl["instagram"]) == core:
+                    continue
+                rows.append(
+                    {
+                        "handle": handle,
+                        "full_name": pr["full_name"] or "",
+                        "followers": pr["followers"] if pr["followers"] is not None else "",
+                        "matched_place": pl["name"],
+                        "place_source": pl["source"],
+                        "place_instagram": pl["instagram"] or "",
+                        "verdict": "not_cafe",
+                    }
+                )
+        out = _Path(args.out) if args.out else _Path("data/reports") / f"ig-review-{city.name.lower().replace(' ', '-')}.csv"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        with out.open("w", encoding="utf-8-sig", newline="") as fh:
+            writer = csv.DictWriter(fh, fieldnames=list(rows[0].keys()) if rows else ["handle"], delimiter=";")
+            writer.writeheader()
+            writer.writerows(rows)
+        print(f"ig-review: {len(rows)} candidate links for {city.name} -> {out}")
     elif args.cmd == "ig-attach":
         from .merge import name_match
 
