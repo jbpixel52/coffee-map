@@ -10,6 +10,8 @@ from __future__ import annotations
 import json
 import os
 import re
+import time
+import urllib.error
 import urllib.parse
 import urllib.request
 
@@ -22,18 +24,35 @@ class CrwError(RuntimeError):
     """The local search/scrape service failed or returned non-JSON."""
 
 
+TRANSIENT = (429, 502, 503, 504)
+
+
 def _post(path: str, payload: dict, timeout: float) -> dict:
-    req = urllib.request.Request(
-        CRW_BASE + path,
-        data=json.dumps(payload).encode("utf-8"),
-        headers={"Content-Type": "application/json"},
-        method="POST",
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
-            body = resp.read().decode("utf-8")
-    except OSError as exc:  # connection refused / timeout / HTTP status errors
-        raise CrwError(f"POST {path} failed: {exc}") from exc
+    """POST to the search service, backing off on the throttling it answers with.
+
+    A burst of queries makes fastCRW reply 503 to everything for a while; retrying on the
+    spot is what a serial crawl should do, rather than reporting the service as down.
+    """
+    body = ""
+    for attempt in range(4):
+        req = urllib.request.Request(
+            CRW_BASE + path,
+            data=json.dumps(payload).encode("utf-8"),
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                body = resp.read().decode("utf-8")
+            break
+        except urllib.error.HTTPError as exc:
+            if exc.code not in TRANSIENT or attempt == 3:
+                raise CrwError(f"POST {path} failed: {exc}") from exc
+            time.sleep(15 * (attempt + 1))
+        except OSError as exc:  # connection refused / timeout
+            if attempt == 3:
+                raise CrwError(f"POST {path} failed: {exc}") from exc
+            time.sleep(10 * (attempt + 1))
     try:
         return json.loads(body)
     except json.JSONDecodeError as exc:

@@ -266,13 +266,24 @@ def main(argv: list[str] | None = None) -> int:
 
         from .sources import web
 
+        # One slow query must not cost the other sixty: a single CrwError used to abort the
+        # whole list, leaving the archive with whatever had already landed.
+        ok = failed = 0
         for q in city.web_queries:
-            payload = web.search(q, limit=args.limit)
+            try:
+                payload = web.search(q, limit=args.limit)
+            except web.CrwError as exc:
+                failed += 1
+                print(f"web-search [{q}] FAILED: {str(exc)[:90]}", file=sys.stderr)
+                continue
             ref = archive_write(
                 "websearch", q, json.dumps(payload, ensure_ascii=False).encode("utf-8"), "json"
             )
             record_fetch(con, "websearch", q, ref)
+            ok += 1
             print(f"web-search [{q}] {len(web.search_results(payload))} results -> {ref}")
+        if failed:
+            print(f"web-search: {ok} ok, {failed} failed")
     elif args.cmd == "web-scrape":
         import json
 
