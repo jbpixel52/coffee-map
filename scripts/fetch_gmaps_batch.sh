@@ -15,7 +15,7 @@ city="${1:?city slug (tj|sd)}"
 list="${2:?file with one query per line}"
 ok=0
 fail=0
-while IFS= read -r q; do
+while IFS= read -r q || [ -n "$q" ]; do  # last line may lack a newline
   [ -z "$q" ] && continue
   for attempt in 1 2; do
     if uv run python scripts/fetch_gmaps_queries.py "$city" "$q" --max-scrolls 3 2>&1 | grep -q "card links"; then
