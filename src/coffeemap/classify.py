@@ -19,9 +19,9 @@ import time
 import unicodedata
 import urllib.request
 
-LLM_BASE = os.environ.get("COFFEEMAP_LLM_BASE", "http://litellm:4000/v1")
-LLM_MODEL = os.environ.get("COFFEEMAP_LLM_MODEL", "local-small")
-MODEL_TAG = f"litellm:{LLM_MODEL}"
+LLM_BASE = os.environ.get("COFFEEMAP_LLM_BASE", "http://magpie:3425/v1").rstrip("/")
+LLM_MODEL = os.environ.get("COFFEEMAP_LLM_MODEL", "group/hard-to-strong-easy-to-cheap")
+MODEL_TAG = f"llm:{LLM_MODEL}"
 
 SYSTEM_PROMPT = (
     "You classify businesses for a map of coffee shops in Tijuana, Mexico. "
@@ -72,9 +72,10 @@ def parse_verdict(reply: str) -> str | None:
 
 def classify(name: str, hint: str = "", timeout: float = 60.0, attempts: int = 3) -> tuple[str | None, str]:
     """Classify one business name with the local model. Returns (verdict, raw reply)."""
-    key = os.environ.get("LITELLM_API_KEY", "")
+    key = (os.environ.get("COFFEEMAP_LLM_KEY") or os.environ.get("HERMES_CUSTOM_MAGPIE_API_KEY")
+           or os.environ.get("LITELLM_API_KEY") or "")
     if not key:
-        raise RuntimeError("LITELLM_API_KEY is not set — cannot reach the local model gateway")
+        raise RuntimeError("no model gateway key: set COFFEEMAP_LLM_KEY (or MAGPIE_API_KEY)")
     prompt = f"Business: {name.strip()}"
     if hint:
         prompt += f" ({hint.strip()})"
@@ -87,7 +88,9 @@ def classify(name: str, hint: str = "", timeout: float = 60.0, attempts: int = 3
         "model": LLM_MODEL,
         "messages": messages,
         "temperature": 0,
-        "max_tokens": 8,
+        # The gateway routes this group to a reasoning model, which spends tokens thinking
+        # before it answers. Eight tokens truncated it mid-thought and returned empty content.
+        "max_tokens": 300,
     }
     raw = ""
     for attempt in range(attempts):

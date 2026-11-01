@@ -8,11 +8,14 @@ markdown / SERP items so they stay testable offline.
 from __future__ import annotations
 
 import json
+import os
 import re
 import urllib.parse
 import urllib.request
 
-CRW_BASE = "http://172.18.0.15:3000"
+# The search service moves: a hardcoded container IP (172.18.0.15) survived a rebuild and
+# made every web-* command look "down" while the service was serving fine at its DNS name.
+CRW_BASE = os.environ.get("COFFEEMAP_CRW_BASE", "http://fastcrw:3000").rstrip("/")
 
 
 class CrwError(RuntimeError):

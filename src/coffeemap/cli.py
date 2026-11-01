@@ -501,10 +501,20 @@ def main(argv: list[str] | None = None) -> int:
 
         places = [dict(r) for r in con.execute("SELECT * FROM places ORDER BY id")]
         profs = [dict(r) for r in con.execute("SELECT * FROM ig_profiles ORDER BY handle")]
-        allowed = {
-            r["key"].lstrip("@").lower(): r["verdict"]
-            for r in con.execute("SELECT * FROM candidates WHERE kind='ig'")
-        }
+        cand = [dict(r) for r in con.execute("SELECT * FROM candidates WHERE kind='ig'")]
+        allowed = {r["key"].lstrip("@").lower(): r["verdict"] for r in cand}
+        # A handle found by web-search and judged a café is evidence on its own. Attaching only
+        # from ig_profiles dropped every one of them: attach walked scraped profiles, so a
+        # classified candidate stayed invisible until an ig-recon run happened to fetch it —
+        # which never happens, because recon reads ig_profiles too. ig-recon fills the
+        # followers afterwards.
+        known = {p["handle"].lstrip("@").lower() for p in profs}
+        for c in cand:
+            h = c["key"].lstrip("@")
+            if c["verdict"] != "cafe" or h.lower() in known:
+                continue
+            profs.append({"handle": h, "full_name": c["name"] or "", "followers": None})
+            known.add(h.lower())
         set_links = pairs = skipped = 0
         for pr in profs:
             h = pr["handle"]
